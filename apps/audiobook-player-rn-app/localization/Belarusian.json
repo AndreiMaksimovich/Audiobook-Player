@@ -1,0 +1,41 @@
+{
+  "translation": {
+    "Audiobooks": "Аўдыякнігі",
+    "Authors": "Аўтары",
+    "Readers": "Чытачы",
+    "Tab.Catalog": "Каталог",
+    "Tab.Library": "Бібліятэка",
+    "Tab.Search": "Пошук",
+    "Tab.Settings": "Налады",
+
+    "Search": "Пошук",
+    "NewAudiobooks": "Новыя аўдыякнігі",
+    "Library": "Бібліятэка",
+
+    "Author": "Аўтар",
+    "Reader": "Чытач",
+    "Tags": "Тэгі",
+    "Categories": "Катэгорыі",
+    "Settings": "Налады",
+    "Duration": "Працягласць",
+    "Language": "Мова",
+
+    "RemoveFromFavorites": "Упадабанае",
+    "AddToFavorites": "Дадаць у абранае",
+    "Favorites": "Упадабанае",
+    "RecentlyPlayed": "Праслуханае",
+    "RecentlyViewed": "Прагледжанае",
+
+    "Error.SearchQueryIsEmpty": "Пошукавы запыт не можа быць пустым.",
+    "NoAudiobooks": "Аўдыякнігі не знойдзены.",
+    "NoAuthors": "Аўтары не знойдзены.",
+    "NoReaders": "Чытальнікі не знойдзены.",
+
+    "Previous": "Назад",
+    "Next": "Далей",
+
+    "Error404": "Памылка 404",
+    "PageNotFound": "Старонка не знойдзена",
+    "NoAudiobookIsCurrentlyPlaying": "Aўдыякніга зараз не прайграецца."
+  }
+}

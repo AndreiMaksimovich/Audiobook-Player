@@ -1,0 +1,11 @@
+audiobook-files/*
+node_modules/
+.idea/
+secrets/*
+import/*
+
+.env
+.env.local
+.env.*.local
+
+!.gitignore

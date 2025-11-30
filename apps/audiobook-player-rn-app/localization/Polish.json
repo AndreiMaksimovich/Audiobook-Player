@@ -1,0 +1,41 @@
+{
+  "translation": {
+    "Audiobooks": "Audiobooki",
+    "Authors": "Autorzy",
+    "Readers": "Czytelnicy",
+    "Tab.Catalog": "Katalog",
+    "Tab.Library": "Biblioteka",
+    "Tab.Search": "Szukaj",
+    "Tab.Settings": "Ustawienia",
+
+    "Search": "Szukaj",
+    "NewAudiobooks": "Nowe audiobooki",
+    "Library": "Biblioteka",
+
+    "Author": "Autor",
+    "Reader": "Czytelnik",
+    "Tags": "Tagi",
+    "Categories": "Kategorie",
+    "Settings": "Ustawienia",
+    "Duration": "Czas trwania",
+    "Language": "Język",
+
+    "RemoveFromFavorites": "Ulubione",
+    "AddToFavorites": "Dodaj do ulubionych",
+    "Favorites": "Ulubione",
+    "RecentlyPlayed": "Ostatnio odtwarzane",
+    "RecentlyViewed": "Ostatnio oglądane",
+
+    "Error.SearchQueryIsEmpty": "Pole wyszukiwania nie może być puste.",
+    "NoAudiobooks": "Nie znaleziono audiobooków.",
+    "NoAuthors": "Nie znaleziono autorów.",
+    "NoReaders": "Nie znaleziono lektorów.",
+
+    "Previous": "Wstecz",
+    "Next": "Dalej",
+
+    "Error404": "Błąd 404",
+    "PageNotFound": "Strona nie została znaleziona",
+    "NoAudiobookIsCurrentlyPlaying": "Żaden audiobook nie jest obecnie odtwarzany."
+  }
+}

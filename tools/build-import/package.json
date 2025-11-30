@@ -1,0 +1,15 @@
+{
+  "name": "audiobook-player-installer",
+  "version": "0.0.1",
+  "description": "",
+  "license": "ISC",
+  "author": "Andrei Maksimovich",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "import": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}

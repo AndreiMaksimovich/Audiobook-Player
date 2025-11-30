@@ -1,0 +1,42 @@
+{
+  "translation": {
+    "Audiobooks": "Audiobooks",
+    "Authors": "Authors",
+    "Readers": "Readers",
+    "Tab.Catalog": "Catalog",
+    "Tab.Library": "Library",
+    "Tab.Search": "Search",
+    "Tab.Settings": "Settings",
+
+    "Search": "Search",
+    "NewAudiobooks": "New Audiobooks",
+    "Library": "Library",
+
+    "Author": "Author",
+    "Reader": "Reader",
+    "Tags": "Tags",
+    "Categories": "Categories",
+    "Settings": "Settings",
+    "Duration": "Duration",
+    "Language": "Language",
+
+    "RemoveFromFavorites": "Favorite",
+    "AddToFavorites": "Add to Favorites",
+    "Favorites": "Favorites",
+    "RecentlyPlayed": "Recently Played",
+    "RecentlyViewed": "Recently Viewed",
+
+    "Error.SearchQueryIsEmpty": "Search query cannot be empty.",
+    "NoAudiobooks": "No audiobooks found.",
+    "NoAuthors": "No authors found.",
+    "NoReaders": "No readers found.",
+
+    "Previous": "Previous",
+    "Next": "Next",
+
+    "Error404": "Error 404",
+    "PageNotFound": "Page no found",
+    "HomePage": "Home Page",
+    "NoAudiobookIsCurrentlyPlaying": "No audiobook is currently playing."
+  }
+}

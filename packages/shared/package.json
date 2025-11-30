@@ -1,0 +1,14 @@
+{
+  "name": "shared",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "author": "Andrei Maksimovich",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  }
+}

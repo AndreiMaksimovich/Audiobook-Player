@@ -1,0 +1,10 @@
+DELETE FROM audiobooks_to_authors WHERE 1;
+DELETE FROM audiobooks_to_categories WHERE 1;
+DELETE FROM audiobooks_to_readers  WHERE 1;
+DELETE FROM audiobooks_to_tags  WHERE 1;
+DELETE FROM audiobooks WHERE 1;
+DELETE FROM authors  WHERE 1;
+DELETE FROM readers  WHERE 1;
+DELETE FROM categories  WHERE 1;
+DELETE FROM tags  WHERE 1;
+DELETE FROM media_files WHERE 1;

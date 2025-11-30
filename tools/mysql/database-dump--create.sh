@@ -1,0 +1,1 @@
+mysqldump --defaults-extra-file=../../secrets/mysql-config--local.ini --skip-lock-tables --routines --add-drop-table --disable-keys --set-gtid-purged=COMMENTED --extended-insert audiobooks  > dumps/$(date +"%Y-%m-%d_%H-%M").sql
