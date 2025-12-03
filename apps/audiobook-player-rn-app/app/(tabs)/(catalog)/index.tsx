@@ -1,22 +1,62 @@
-import {StyleSheet} from 'react-native';
+import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
 import '@/src/localization'
 import {useTranslation} from 'react-i18next'
-import {AudiobookLimit, AudiobooksOrderBy} from "shared";
-import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
+import {AudiobookLimit, AudiobooksOrderBy, GetAudiobooksRequest} from "shared";
 import {ThemedText} from "@/src/views/ThemedText";
-import TagsDynamicView from "@/src/views/TagsDynamicView";
-import CategoriesDynamicView from "@/src/views/CategoriesDynamicView";
 import SearchPanelLinkView from "@/src/views/SearchPanelLinkView";
 import {Link} from "expo-router";
 import {HStackView} from "@/src/views/HStackView";
 import AppScreenView from "@/src/views/AppScreenView";
 import SpacerView from "@/src/views/SpacerView";
+import {useEffect, useState} from "react";
+import {
+    useLazyGetAudiobooksQuery,
+    useLazyGetCategoriesQuery,
+    useLazyGetTagsQuery
+} from "@/src/store/AudiobookProviderApi";
+import {HumanReadableErrorView} from "@/src/views/HumanReadableErrorView";
+import {AudiobookListView} from "@/src/views/AudiobookListView";
+import TagsView from "@/src/views/TagsView";
+import CategoriesView from "@/src/views/CategoriesView";
+
+const getNewBooksRequest: GetAudiobooksRequest = {
+    offset: 0,
+    limit: AudiobookLimit._10,
+    orderBy: AudiobooksOrderBy.AddTime
+}
 
 export default function CatalogMainScreen() {
     const { t } = useTranslation();
 
+    const [loadNewBooksTrigger, {data: loadNewBooksResponse, error: loadNewBooksError, isLoading: loadNewBooksIsLoading}] = useLazyGetAudiobooksQuery();
+    const [loadTagsTrigger, {data: loadTagsResponse, error: loadTagsError, isLoading: loadTagsIsLoading}] = useLazyGetTagsQuery();
+    const [loadCategoriesTrigger, {data: loadCategoriesResponse, error: loadCategoriesError, isLoading: loadCategoriesIsLoadings}] = useLazyGetCategoriesQuery()
+
+    function retry() {
+        if (loadNewBooksError && !loadNewBooksIsLoading) {
+            loadNewBooksTrigger(getNewBooksRequest)
+        }
+        if (loadTagsError && !loadTagsIsLoading) {
+            loadTagsTrigger()
+        }
+        if (loadCategoriesError && !loadCategoriesIsLoadings) {
+            loadCategoriesTrigger()
+        }
+    }
+
+    const isLoading = loadNewBooksIsLoading || loadTagsIsLoading || loadCategoriesIsLoadings
+    const error = loadNewBooksError ?? loadTagsError ?? loadCategoriesError ?? undefined
+
+    // initial load
+    useEffect(() => {
+        loadNewBooksTrigger(getNewBooksRequest)
+        loadTagsTrigger()
+        loadCategoriesTrigger()
+    }, []);
+
     return (
-        <AppScreenView>
+        <AppScreenView
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={retry}/>}>
 
             {/* Search */}
             <ThemedText type={"subtitle"}>{t("Search")}</ThemedText>
@@ -38,42 +78,33 @@ export default function CatalogMainScreen() {
 
             <SpacerView size={10}/>
 
-            {/* Recent Audiobooks */}
-            <ThemedText type={"subtitle"}>{t("NewAudiobooks")}</ThemedText>
-            <AudiobookDynamicListView
-                baseRequest={{
-                    offset: 0,
-                    limit: AudiobookLimit._10,
-                    orderBy: AudiobooksOrderBy.AddTime
-                }}
-                hidePages={true}
-                hideError={false}/>
+            {/* Is Loading */}
+            {isLoading && (<ActivityIndicator />)}
 
-            <SpacerView size={10}/>
+            {/* Error */}
+            {error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={retry} /> )}
+
+            {/* Recent Audiobooks */}
+            {loadNewBooksResponse && (<>
+                <ThemedText type={"subtitle"}>{t("NewAudiobooks")}</ThemedText>
+                <AudiobookListView audiobooks={loadNewBooksResponse.audiobooks}/>
+                <SpacerView size={10}/>
+            </>)}
 
             {/* Tags */}
-            <ThemedText type={"subtitle"}>{t("Tags")}</ThemedText>
-            <TagsDynamicView />
-
-            <SpacerView size={10}/>
+            {loadTagsResponse && (<>
+                <ThemedText type={"subtitle"}>{t("Tags")}</ThemedText>
+                <TagsView tags={loadTagsResponse}/>
+                <SpacerView size={10}/>
+            </>)}
 
             {/* Categories */}
-            <ThemedText type={"subtitle"}>{t("Categories")}</ThemedText>
-            <CategoriesDynamicView />
+            {loadCategoriesResponse && (<>
+                <ThemedText type={"subtitle"}>{t("Categories")}</ThemedText>
+                <CategoriesView categories={loadCategoriesResponse}/>
+                <SpacerView size={10}/>
+            </>)}
 
         </AppScreenView>
     );
 }
-
-const styles = StyleSheet.create({
-    headerImage: {
-        color: '#808080',
-        bottom: -90,
-        left: -35,
-        position: 'absolute',
-    },
-    titleContainer: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-});
