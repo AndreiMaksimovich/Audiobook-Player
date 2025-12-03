@@ -1,9 +1,10 @@
 import {Audiobook} from "shared";
-import TrackPlayer, { Event }from 'react-native-track-player';
+import TrackPlayer, {AppKilledPlaybackBehavior, Capability, Event} from 'react-native-track-player';
 
 import {
     handleTrackPlayerEventPlaybackActiveTrackChanged,
-    handleTrackPlayerEventPlaybackQueueEnded, handleTrackPlayerProgress
+    handleTrackPlayerEventPlaybackQueueEnded,
+    handleTrackPlayerProgress
 } from "@/src/store/CurrentlyPlaying";
 
 import {AppDispatch} from "@/src/store";
@@ -27,6 +28,20 @@ export class AudiobookPlayer {
         this.isTrackPlayerInitialized = true;
 
         await TrackPlayer.setupPlayer()
+
+        await TrackPlayer.updateOptions({
+            capabilities: [
+                Capability.Play,
+                Capability.Pause,
+                Capability.SkipToNext,
+                Capability.SkipToPrevious,
+                Capability.JumpBackward,
+                Capability.JumpForward
+            ],
+            android: {
+                appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
+            }
+        })
 
         TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (data) => {
             this.isPlaying = false

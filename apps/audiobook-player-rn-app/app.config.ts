@@ -17,12 +17,24 @@ module.exports = () => {
                 output: "static",
                 favicon: "./assets/images/favicon.png"
             },
+            android: {
+                package: "com.amaxsoftware.audiobookplayer"
+            },
+            ios: {
+                supportsTablet: true,
+                bundleIdentifier: "com.amaxsoftware.audiobookplayer",
+                infoPlist: {
+                    UIBackgroundModes: [
+                        "audio"
+                    ]
+                }
+            },
             plugins: [
                 "expo-router"
             ],
             experiments: {
-                "typedRoutes": true,
-                "reactCompiler": true,
+                typedRoutes: true,
+                reactCompiler: true,
             },
             extra: {
                 API_URL: process.env[`API_URL_${environment.toUpperCase()}`],
