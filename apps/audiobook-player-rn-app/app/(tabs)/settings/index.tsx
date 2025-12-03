@@ -1,22 +1,22 @@
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import AppScreenView from "@/src/views/AppScreenView";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/src/store";
 import {setLocalizationLanguageCode} from "@/src/store/Settings";
-import {Picker} from "@react-native-picker/picker";
 import {SupportedLanguages} from "@/src/localization/Localization";
 import {VStackView} from "@/src/views/VStackView";
 import {HStackView} from "@/src/views/HStackView";
 import {ThemedText} from "@/src/views/ThemedText";
 import SpacerView from "@/src/views/SpacerView";
+import SimplePickerView from "@/src/views/SimplePickerView";
 
 export default function HomeScreen() {
     const {t} = useTranslation()
     const dispatch = useDispatch()
     const settings = useSelector((state: RootState)=> state.settings)
 
-    const languages = Array.from(SupportedLanguages.values())
+    const languages = Array.from(SupportedLanguages.values()).map(language => {return { value: language.code, label: language.name }})
 
     return (
         <AppScreenView title={t("Settings")}>
@@ -24,21 +24,19 @@ export default function HomeScreen() {
             <SpacerView size={10}/>
 
             <VStackView>
+
+                {/* Language */}
                 <HStackView alignItems={"center"}>
+
                     <View style={{flex: 1}}>
                         <ThemedText type={"defaultSemiBold"}>{t("Language")}</ThemedText>
                     </View>
+
                     <View style={{flex: 1}}>
-                        <Picker
+                        <SimplePickerView
+                            items={languages}
                             selectedValue={settings.localizationLanguageCode}
-                            onValueChange={(itemValue, itemIndex) => {
-                                dispatch(setLocalizationLanguageCode(itemValue))
-                            }}
-                        >
-                            {languages.map(language => (
-                                <Picker.Item key={language.code} label={language.name} value={language.code}/>
-                            ))}
-                        </Picker>
+                            onSelectionChanged={(code) => dispatch(setLocalizationLanguageCode(code))} />
                     </View>
 
                 </HStackView>
@@ -48,7 +46,3 @@ export default function HomeScreen() {
         </AppScreenView>
     );
 }
-
-const styles = StyleSheet.create({
-
-});
