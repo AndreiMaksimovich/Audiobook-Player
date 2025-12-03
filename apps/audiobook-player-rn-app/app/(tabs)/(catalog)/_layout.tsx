@@ -11,7 +11,7 @@ export default function Layout() {
 
     return (
         <Stack initialRouteName="index">
-            <Stack.Screen name={"index"} options={{headerShown: false}}/>
+            <Stack.Screen name={"index"} options={{title: t('Tab.Catalog'), headerShown: false}}/>
             <Stack.Screen name={"authors"} options={{title: t("Authors"), headerShown: true}}/>
             <Stack.Screen name={"readers"} options={{title: t("Readers"), headerShown: true}}/>
             <Stack.Screen name={"audiobooks"} options={{title: t("Audiobooks"), headerShown: true}}/>
