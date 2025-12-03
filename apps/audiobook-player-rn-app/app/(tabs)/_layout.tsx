@@ -24,7 +24,7 @@ export default function TabLayout() {
                 name="(catalog)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="product" size={28} color={color}/>,
+                    tabBarIcon: ({color}) => <AntDesign name="product" size={26} color={color}/>,
                 }}
 
             />
@@ -33,7 +33,7 @@ export default function TabLayout() {
                 name="(library)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <Ionicons name="library" size={28} color={color}/>,
+                    tabBarIcon: ({color}) => <Ionicons name="library" size={26} color={color}/>,
                 }}
             />
 
@@ -41,7 +41,7 @@ export default function TabLayout() {
                 name="(currently-playing)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="play-circle" size={34} color={color}/>,
+                    tabBarIcon: ({color}) => <AntDesign name="play-circle" size={28} color={color}/>,
                 }}
             />
 
@@ -49,7 +49,7 @@ export default function TabLayout() {
                 name="(search)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <FontAwesome name="search" size={28} color={color}/>,
+                    tabBarIcon: ({color}) => <FontAwesome name="search" size={26} color={color}/>,
                 }}
             />
 
@@ -57,7 +57,7 @@ export default function TabLayout() {
                 name="settings"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <MaterialIcons name="settings" size={28} color={color}/>,
+                    tabBarIcon: ({color}) => <MaterialIcons name="settings" size={26} color={color}/>,
                 }}
             />
 
