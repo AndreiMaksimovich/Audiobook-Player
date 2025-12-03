@@ -111,7 +111,7 @@ export default function SearchScreen() {
         <AppScreenView title={t("Search")}>
             <SpacerView size={10}/>
             <HStackView>
-                <TextInput id={"searchQuery"} style={styles.searchField} value={searchQuery}
+                <TextInput id={"searchQuery"} style={styles.searchField}  value={searchQuery}
                            onChangeText={onSearchQueryTextChange}/>
                 <SpacerView size={5}/>
                 <Button title={t("Search")} onPress={() => search(searchQuery)}/>
@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
         color: "blue"
     },
     searchField: {
+        fontSize: 16,
         padding: 5,
         borderWidth: 1,
         borderRadius: 6,

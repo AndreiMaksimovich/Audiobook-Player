@@ -26,6 +26,7 @@ export default function SearchPanelLinkView(props: SearchPanelLinkViewProps) {
 
 const styles = StyleSheet.create({
     searchField: {
+        fontSize: 16,
         padding: 5,
         borderWidth: 1,
         borderRadius: 6,
