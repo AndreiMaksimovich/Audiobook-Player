@@ -21,7 +21,7 @@ export default function TagsDynamicView(props: TagsDynamicViewProps) {
             {isLoading && (<ActivityIndicator/>)}
 
             {/* Error */}
-            {!props.hideError && error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={trigger}/> )}
+            {!props.hideError && error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={() => trigger()}/> )}
 
             {/* Tags */}
             {tags && (<TagsView tags={tags}/> )}

@@ -21,7 +21,7 @@ export default function CategoriesDynamicView(props: CategoriesDynamicViewProps)
             {isLoading && (<ActivityIndicator/>)}
 
             {/* Error */}
-            {!props.hideError && error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={trigger}/> )}
+            {!props.hideError && error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={() => trigger()}/> )}
 
             {/* Categories */}
             {categories && (<CategoriesView categories={categories}/> )}
