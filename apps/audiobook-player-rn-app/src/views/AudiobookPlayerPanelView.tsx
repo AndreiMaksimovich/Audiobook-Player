@@ -17,6 +17,7 @@ import {HStackView} from "@/src/views/HStackView";
 import {ThemedText} from "@/src/views/ThemedText";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import SpacerView from "@/src/views/SpacerView";
+import {VStackView} from "@/src/views/VStackView";
 
 export interface AudiobookPlayerPanelViewProps {
     audiobook: Audiobook
@@ -88,70 +89,72 @@ export default function AudiobookPlayerPanelView(props: AudiobookPlayerPanelView
     }, [currentlyPlaying.currentAudioFileTime]);
 
     return (
-        <View style={{padding: 5, borderRadius: 10, borderColor: 'black', borderWidth: 1, margin: 5, maxWidth: 400, alignItems: "center"}}>
+        <VStackView alignItems={"center"}>
+            <View style={{padding: 5, borderRadius: 10, borderColor: 'black', borderWidth: 1, margin: 5, width: "90%", maxWidth: 450, alignItems: "center"}}>
 
-            <HStackView alignItems={"flex-end"} justifyContent={"center"} style={{height: 25, width: "90%"}}>
-                {isCurrentAudiobook && currentAudioFile && (
-                    <>
-                        <ThemedText style={{maxWidth: "70%"}} numberOfLines={1} type={"defaultSemiBold"}>{getMediaFileName(currentAudioFile)}</ThemedText>
-                        {audiobook?.audioFiles && audiobook.audioFiles.length > 1 && (
-                            <>
-                                <SpacerView size={5}/>
-                                <ThemedText type={"default"}>[{currentlyPlaying.currentAudioFileIndex+1}/{audiobook.audioFiles.length}]</ThemedText>
-                            </>
-                        )}
-                    </>
-                )}
-            </HStackView>
+                <HStackView alignItems={"flex-end"} justifyContent={"center"} style={{height: 25, width: "90%"}}>
+                    {isCurrentAudiobook && currentAudioFile && (
+                        <>
+                            <ThemedText style={{maxWidth: "70%"}} numberOfLines={1} type={"defaultSemiBold"}>{getMediaFileName(currentAudioFile)}</ThemedText>
+                            {audiobook?.audioFiles && audiobook.audioFiles.length > 1 && (
+                                <>
+                                    <SpacerView size={5}/>
+                                    <ThemedText type={"default"}>[{currentlyPlaying.currentAudioFileIndex+1}/{audiobook.audioFiles.length}]</ThemedText>
+                                </>
+                            )}
+                        </>
+                    )}
+                </HStackView>
 
-            <Slider
-                style={{width: "90%", height: 40}}
-                minimumValue={0}
-                maximumValue={1}
-                minimumTrackTintColor="black"
-                maximumTrackTintColor="gray"
-                value={progress}
-                disabled={!isCurrentAudiobook}
-                onValueChange={onSliderValueChanged}
-            />
-            <HStackView alignItems={"center"} style={{height: 20, width: "90%"}}>
-                {isCurrentAudiobook && currentAudioFile && (
-                    <>
-                        <ThemedText type={"default"}>{DateTimeUtils.formatDuration(currentlyPlaying.currentAudioFileTime)}</ThemedText>
-                        <View style={{flexGrow: 1}}></View>
-                        <ThemedText type={"default"}>{DateTimeUtils.formatDuration(currentAudioFile.duration)}</ThemedText>
-                    </>
-                )}
-            </HStackView>
+                <Slider
+                    style={{width: "90%", height: 40}}
+                    minimumValue={0}
+                    maximumValue={1}
+                    minimumTrackTintColor="black"
+                    maximumTrackTintColor="gray"
+                    value={progress}
+                    disabled={!isCurrentAudiobook}
+                    onValueChange={onSliderValueChanged}
+                />
+                <HStackView alignItems={"center"} style={{height: 20, width: "90%"}}>
+                    {isCurrentAudiobook && currentAudioFile && (
+                        <>
+                            <ThemedText type={"default"}>{DateTimeUtils.formatDuration(currentlyPlaying.currentAudioFileTime)}</ThemedText>
+                            <View style={{flexGrow: 1}}></View>
+                            <ThemedText type={"default"}>{DateTimeUtils.formatDuration(currentAudioFile.duration)}</ThemedText>
+                        </>
+                    )}
+                </HStackView>
 
 
-            <HStackView justifyContent={"space-around"} alignItems={"center"} style={{width: 250}}>
+                <HStackView justifyContent={"space-around"} alignItems={"center"} style={{width: 250}}>
 
-                <Pressable key={"button-skip-backward"} onPress={onButtonPressSkipBackward}>
-                    <MaterialCommunityIcons name="skip-backward" size={30} color="black" />
-                </Pressable>
+                    <Pressable key={"button-skip-backward"} onPress={onButtonPressSkipBackward}>
+                        <MaterialCommunityIcons name="skip-backward" size={30} color="black" />
+                    </Pressable>
 
-                <Pressable key={"button-rewind"} onPress={onButtonPressFastBackward}>
-                    <MaterialCommunityIcons name="rewind-15" size={30} color="black" />
-                </Pressable>
+                    <Pressable key={"button-rewind"} onPress={onButtonPressFastBackward}>
+                        <MaterialCommunityIcons name="rewind-15" size={30} color="black" />
+                    </Pressable>
 
-                <Pressable key={"button-play"} onPress={onButtonPlayPress}>
-                    {(isCurrentAudiobook && currentlyPlaying.isPlaying)
-                        ? (<Entypo name="controller-stop" size={36} color="black" />)
-                        : (<Entypo name="controller-play" size={36} color="black" />)
-                    }
-                </Pressable>
+                    <Pressable key={"button-play"} onPress={onButtonPlayPress}>
+                        {(isCurrentAudiobook && currentlyPlaying.isPlaying)
+                            ? (<Entypo name="controller-stop" size={36} color="black" />)
+                            : (<Entypo name="controller-play" size={36} color="black" />)
+                        }
+                    </Pressable>
 
-                <Pressable key={"button-fast-forward"} onPress={onButtonPressFastForward}>
-                    <MaterialCommunityIcons name="fast-forward-15" size={30} color="black" />
-                </Pressable>
+                    <Pressable key={"button-fast-forward"} onPress={onButtonPressFastForward}>
+                        <MaterialCommunityIcons name="fast-forward-15" size={30} color="black" />
+                    </Pressable>
 
-                <Pressable key={"button-skip-forward"} onPress={onButtonPressSkipForward}>
-                    <MaterialCommunityIcons name="skip-forward" size={30} color="black" />
-                </Pressable>
+                    <Pressable key={"button-skip-forward"} onPress={onButtonPressSkipForward}>
+                        <MaterialCommunityIcons name="skip-forward" size={30} color="black" />
+                    </Pressable>
 
-            </HStackView>
-        </View>
+                </HStackView>
+            </View>
+        </VStackView>
     )
 }
 
