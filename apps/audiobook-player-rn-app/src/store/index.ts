@@ -27,3 +27,17 @@ export const useAppDispatch = (): AppDispatch => {
 }
 
 setupListeners(store.dispatch)
+
+// Configure Audiobook Player
+import {audiobookPlayer} from "@/src/audio-player";
+import {
+    handleTrackPlayerEventPlaybackQueueEnded,
+    handleTrackPlayerEventPlaybackActiveTrackChanged,
+    handleTrackPlayerProgress
+} from "./CurrentlyPlaying"
+
+audiobookPlayer.configure({
+    onPlaybackQueueEnded: (data) => store.dispatch(handleTrackPlayerEventPlaybackQueueEnded(data)),
+    onTrackPlayerProgressChanged: (data) => store.dispatch(handleTrackPlayerProgress(data)),
+    onPlaybackActiveTrackChanged: (data) => store.dispatch(handleTrackPlayerEventPlaybackActiveTrackChanged(data)),
+})

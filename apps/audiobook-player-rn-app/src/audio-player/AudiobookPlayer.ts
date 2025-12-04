@@ -1,26 +1,31 @@
 import {Audiobook} from "shared";
-import TrackPlayer, {AppKilledPlaybackBehavior, Capability, Event} from '@/src/track-player';
+import TrackPlayer, {
+    AppKilledPlaybackBehavior,
+    Capability,
+    Event,
+    PlaybackActiveTrackChangedEvent, Progress
+} from '@/src/track-player';
+import {PlaybackQueueEndedEvent} from "react-native-track-player-v4";
 
-import {
-    handleTrackPlayerEventPlaybackActiveTrackChanged,
-    handleTrackPlayerEventPlaybackQueueEnded,
-    handleTrackPlayerProgress
-} from "@/src/store/CurrentlyPlaying";
-
-import {AppDispatch} from "@/src/store";
+export interface AudiobookPlayerCallbacks {
+    onPlaybackActiveTrackChanged?: (event: PlaybackActiveTrackChangedEvent) => void;
+    onPlaybackQueueEnded?: (event: PlaybackQueueEndedEvent) => void;
+    onTrackPlayerProgressChanged?: (progress: Progress) => void;
+}
 
 export class AudiobookPlayer {
 
     protected audioFileUrls: string[] | null = null;
     protected isPlaying: boolean = false;
     protected isTrackPlayerInitialized: boolean = false;
-    protected appDispatch: AppDispatch | null = null;
     protected updateTimeInterval: number | null = null;
+
+    protected callbacks?: AudiobookPlayerCallbacks;
 
     constructor() {}
 
-    configure(appDispatch: AppDispatch) {
-        this.appDispatch = appDispatch;
+    configure(callbacks: AudiobookPlayerCallbacks) {
+        this.callbacks = callbacks;
     }
 
     protected async setupTrackPlayer(): Promise<void> {
@@ -45,11 +50,11 @@ export class AudiobookPlayer {
 
         TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (data) => {
             this.isPlaying = false
-            this.appDispatch?.(handleTrackPlayerEventPlaybackQueueEnded(data))
+            this.callbacks?.onPlaybackQueueEnded?.(data)
         })
 
         TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (data) => {
-            this.appDispatch?.(handleTrackPlayerEventPlaybackActiveTrackChanged(data))
+            this.callbacks?.onPlaybackActiveTrackChanged?.(data)
         })
     }
 
@@ -73,7 +78,7 @@ export class AudiobookPlayer {
         this.isPlaying = true
         this.updateTimeInterval = setInterval(
             () => {
-                TrackPlayer.getProgress().then(data => {this.appDispatch?.(handleTrackPlayerProgress(data))}).catch(console.error)
+                TrackPlayer.getProgress().then(data => {this.callbacks?.onTrackPlayerProgressChanged?.(data)}).catch(console.error)
             },
             1000)
     }

@@ -2,12 +2,11 @@ import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
-import {appDispatch, store} from "@/src/store";
+import {store} from "@/src/store";
 import {Provider as ReduxProvider} from 'react-redux'
 import {useColorScheme} from '@/src/hooks/use-color-scheme';
 import AudiobookHistoryController from "@/src/data/AudiobookHistoryController";
 import {useEffect, useState} from "react";
-import {audiobookPlayer} from "@/src/audio-player";
 import AudiobookHistoryRecentlyPlayedController from "@/src/data/AudiobookHistoryRecentlyPlayedController";
 import AudiobookCurrentlyPlayingController from "@/src/data/AudiobookCurrentlyPlayingController";
 import AppSettingsController from "@/src/data/AppSettingsController";
@@ -21,7 +20,7 @@ export const unstable_settings = {
 };
 
 async function initialize() {
-    audiobookPlayer.configure(appDispatch)
+
 }
 
 export default function App() {
