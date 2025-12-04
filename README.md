@@ -1,4 +1,4 @@
-# Audio Player
+# Open Source Audiobook Player for Mobile-Web, Android and iOS
 
 Check out the demo here: https://audiobooks.amaxsoftware.com
 
