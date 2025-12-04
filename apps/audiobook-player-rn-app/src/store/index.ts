@@ -1,11 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import {settingsStateSlice} from './Settings'
-import { audiobookProviderApi } from "./AudiobookProviderApi";
+import {audiobookProviderApi} from "./AudiobookProviderApi";
 import {setupListeners} from '@reduxjs/toolkit/query'
 import {currentlyPlayingStateSlice} from "@/src/store/CurrentlyPlaying";
 import {audiobookHistoryStateSlice} from "@/src/store/AudiobookHistory";
 import {audiobookFavoritesStateSlice} from "@/src/store/AudiobookFavorites";
 import {useDispatch} from "react-redux";
+import {Event} from '@/src/track-player';
 
 export const store = configureStore({
     reducer: {
@@ -28,16 +29,44 @@ export const useAppDispatch = (): AppDispatch => {
 
 setupListeners(store.dispatch)
 
-// Configure Audiobook Player
+// ---- Configure AudiobookPlayer
+
 import {audiobookPlayer} from "@/src/audio-player";
 import {
-    handleTrackPlayerEventPlaybackQueueEnded,
     handleTrackPlayerEventPlaybackActiveTrackChanged,
-    handleTrackPlayerProgress
+    handleTrackPlayerEventPlaybackQueueEnded,
+    handleTrackPlayerProgress,
+    handleButtonFastForward,
+    handleButtonFastBackward,
+    handleButtonSkipForward,
+    handleButtonSkipBackward,
+    handleButtonPlay,
 } from "./CurrentlyPlaying"
 
 audiobookPlayer.configure({
     onPlaybackQueueEnded: (data) => store.dispatch(handleTrackPlayerEventPlaybackQueueEnded(data)),
     onTrackPlayerProgressChanged: (data) => store.dispatch(handleTrackPlayerProgress(data)),
     onPlaybackActiveTrackChanged: (data) => store.dispatch(handleTrackPlayerEventPlaybackActiveTrackChanged(data)),
+    onRemoteEvent: event => {
+        switch (event) {
+            case Event.RemotePause:
+            case Event.RemotePlay:
+                store.dispatch(handleButtonPlay());
+                break;
+
+            case Event.RemoteNext:
+                store.dispatch(handleButtonSkipForward());
+                break;
+            case Event.RemotePrevious:
+                store.dispatch(handleButtonSkipBackward());
+                break;
+
+            case Event.RemoteJumpBackward:
+                store.dispatch(handleButtonFastBackward());
+                break;
+            case Event.RemoteJumpForward:
+                store.dispatch(handleButtonFastForward());
+                break;
+        }
+    }
 })

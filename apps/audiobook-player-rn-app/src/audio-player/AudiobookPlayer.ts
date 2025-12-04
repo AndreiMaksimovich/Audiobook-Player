@@ -1,16 +1,18 @@
 import {Audiobook} from "shared";
 import TrackPlayer, {
     AppKilledPlaybackBehavior,
-    Capability,
     Event,
-    PlaybackActiveTrackChangedEvent, Progress
+    PlaybackActiveTrackChangedEvent,
+    Progress,
+    PlaybackQueueEndedEvent,
+    Capability
 } from '@/src/track-player';
-import {PlaybackQueueEndedEvent} from "react-native-track-player-v4";
 
 export interface AudiobookPlayerCallbacks {
     onPlaybackActiveTrackChanged?: (event: PlaybackActiveTrackChangedEvent) => void;
     onPlaybackQueueEnded?: (event: PlaybackQueueEndedEvent) => void;
     onTrackPlayerProgressChanged?: (progress: Progress) => void;
+    onRemoteEvent?: (event: Event) => void;
 }
 
 export class AudiobookPlayer {
@@ -43,6 +45,14 @@ export class AudiobookPlayer {
                 Capability.JumpBackward,
                 Capability.JumpForward
             ],
+            notificationCapabilities: [
+                Capability.Pause,
+                Capability.Play,
+                Capability.SkipToNext,
+                Capability.SkipToPrevious,
+                Capability.JumpBackward,
+                Capability.JumpForward
+            ],
             android: {
                 appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
             }
@@ -56,6 +66,10 @@ export class AudiobookPlayer {
         TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (data) => {
             this.callbacks?.onPlaybackActiveTrackChanged?.(data)
         })
+
+        for (const eventType of [Event.RemotePause, Event.RemotePlay, Event.RemoteNext, Event.RemotePrevious, Event.RemoteJumpBackward, Event.RemoteJumpForward,]) {
+            TrackPlayer.addEventListener(eventType, () => {this.callbacks?.onRemoteEvent?.(eventType)})
+        }
     }
 
     async getCurrentAudioFile(): Promise<{ index: number; time: number }> {

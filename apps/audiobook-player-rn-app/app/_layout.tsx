@@ -1,5 +1,5 @@
 import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
-import {Stack} from 'expo-router';
+import {Stack, usePathname, useRouter} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {store} from "@/src/store";
@@ -25,7 +25,17 @@ async function initialize() {
 
 export default function App() {
     const [isInitialized, setIsInitialized] = useState(false);
+    const router = useRouter()
+    const path = usePathname()
 
+    // Handle click on Audio/Music player notification -> Route to currently playing screen
+    useEffect(() => {
+        if (path === '/notification.click') {
+            router.navigate({pathname: "/(tabs)/(currently-playing)", params: {}})
+        }
+    }, [path]);
+
+    // Initialization & Splashscreen
     useEffect(() => {
         (async () => {
             const startTime = DateTimeUtils.now()
