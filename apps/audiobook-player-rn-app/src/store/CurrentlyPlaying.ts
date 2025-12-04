@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import {Audiobook, MediaFile} from "shared";
 import {audiobookPlayer} from "@/src/audio-player";
-import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, Progress} from "react-native-track-player";
+import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, Progress} from '@/src/track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
 
 export interface CurrentlyPlayingState {

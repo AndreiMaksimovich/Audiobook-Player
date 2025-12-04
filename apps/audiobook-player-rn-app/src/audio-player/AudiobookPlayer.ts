@@ -1,5 +1,5 @@
 import {Audiobook} from "shared";
-import TrackPlayer, {AppKilledPlaybackBehavior, Capability, Event} from 'react-native-track-player';
+import TrackPlayer, {AppKilledPlaybackBehavior, Capability, Event} from '@/src/track-player';
 
 import {
     handleTrackPlayerEventPlaybackActiveTrackChanged,
