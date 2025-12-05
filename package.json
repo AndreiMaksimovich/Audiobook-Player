@@ -4,7 +4,8 @@
   "private": "true",
   "scripts": {
     "start-server": "npm run dev --prefix apps/audiobook-player-server",
-    "start-client": "npm run start --prefix apps/audiobook-player-rn-app"
+    "start-client": "npm run start --prefix apps/audiobook-player-rn-app",
+    "start-client-https-proxy": "npx local-ssl-proxy --source 443 --target 8081 --cert secrets/localhost.crt --key secrets/localhost.key"
   },
   "workspaces": [
     "apps/*",
