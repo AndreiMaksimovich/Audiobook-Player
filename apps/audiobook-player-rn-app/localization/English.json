@@ -39,6 +39,20 @@
     "Error404": "Error 404",
     "PageNotFound": "Page no found",
     "HomePage": "Home Page",
-    "NoAudiobookIsCurrentlyPlaying": "No audiobook is currently playing."
+    "NoAudiobookIsCurrentlyPlaying": "No audiobook is currently playing.",
+
+    "OfflineAudiobookNotFound": "Oops, something went wrong. The offline book is missing.",
+
+    "OfflineAudiobooks": "Offline Audiobooks",
+    "DownloadTasks": "Active Downloads",
+
+    "CancelDownloadTaskConfirmation.Message": "Are you sure you would like to cancel the download of the audiobook “{title}”?",
+    "RemoveOfflineAudiobookConfirmation.Message": "Are you sure would like to remove the offline version of the audiobook “{title}”?",
+
+    "Cancel": "Cancel",
+    "Delete": "Delete",
+    "Yes": "Yes",
+    "No": "No"
+
   }
 }

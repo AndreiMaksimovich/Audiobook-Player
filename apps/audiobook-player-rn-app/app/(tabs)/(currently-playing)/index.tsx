@@ -13,7 +13,7 @@ export default function CurrentlyPlayingScreen() {
     return (
         <AppScreenView>
             {/* Audiobook */}
-            {currentlyPlaying.audiobook && (<AudiobookView audiobook={currentlyPlaying.audiobook}/>)}
+            {currentlyPlaying.audiobook && (<AudiobookView mode={currentlyPlaying.isOffline ? 'offline' : 'online'} audiobook={currentlyPlaying.audiobook}/>)}
 
             {/* No audiobook */}
             {!currentlyPlaying.audiobook && (<ThemedText center={true} type={"subtitle"}>{t("NoAudiobookIsCurrentlyPlaying")}</ThemedText>)}

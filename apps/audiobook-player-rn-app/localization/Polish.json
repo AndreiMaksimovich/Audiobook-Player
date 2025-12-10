@@ -38,6 +38,19 @@
 
     "Error404": "Błąd 404",
     "PageNotFound": "Strona nie została znaleziona",
-    "NoAudiobookIsCurrentlyPlaying": "Żaden audiobook nie jest obecnie odtwarzany."
+    "NoAudiobookIsCurrentlyPlaying": "Żaden audiobook nie jest obecnie odtwarzany.",
+
+    "OfflineAudiobookNotFound": "Ups, coś poszło nie tak. Offline’owa książka jest niedostępna.",
+
+    "OfflineAudiobooks": "Pobrane audiobooki",
+    "DownloadTasks": "Aktywne pobierania",
+
+    "CancelDownloadTaskConfirmation.Message": "Czy na pewno chcesz anulować pobieranie audiobooka „{title}”?",
+    "RemoveOfflineAudiobookConfirmation.Message": "Czy na pewno chcesz usunąć wersję offline audiobooka „{title}”?",
+
+    "Cancel": "Anuluj",
+    "Delete": "Usuń",
+    "Yes": "Tak",
+    "No": "Nie"
   }
 }

@@ -1,0 +1,71 @@
+import {DownloadTask} from "@/src/offline-audiobooks";
+import {Pressable, StyleSheet, View, Alert} from "react-native";
+import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
+import {ThemedText} from "@/src/views/ThemedText";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {useTranslation} from "react-i18next";
+import {cancelDownloadTask, downloadAudiobook} from "@/src/store/OfflineAudiobooks"
+import {useDispatch} from "react-redux";
+import {useState} from "react";
+import DownloadTaskRemovalConfirmationModal from "@/src/views/DownloadTaskRemovalConfirmationModal";
+
+export interface DownloadTaskListElementViewProps {
+    downloadTask: DownloadTask
+}
+
+export default function DownloadTaskListElementView(props: DownloadTaskListElementViewProps) {
+    const {downloadTask} = props;
+    const {audiobook} = downloadTask;
+    const {t} = useTranslation()
+    const dispatch = useDispatch();
+    const [isDeleteConfirmationModalVisible, setIsDeleteConfirmationModalVisible] = useState(false);
+
+    function startDownload() {
+        dispatch(downloadAudiobook(audiobook));
+    }
+
+    function onButtonClickDelete() {
+        setIsDeleteConfirmationModalVisible(true);
+    }
+
+    function handleDeleteConfirmation(result: boolean) {
+        setIsDeleteConfirmationModalVisible(false);
+        if (result) {
+            dispatch(cancelDownloadTask(downloadTask))
+        }
+    }
+
+    return (
+        <View style={styles.container}>
+            <AudiobookLinkView audiobookId={audiobook.id}>
+                <ThemedText type={"subtitle"}>{audiobook.title}</ThemedText>
+            </AudiobookLinkView>
+            <View style={styles.buttonContainer}>
+                <Pressable key={"play-circle-outline"} onPress={startDownload}>
+                    <MaterialCommunityIcons name="play-circle-outline" size={40} color="black"/>
+                </Pressable>
+                <Pressable key={"close-circle-outline"} onPress={onButtonClickDelete}>
+                    <MaterialCommunityIcons name="close-circle-outline" size={40} color="black"/>
+                </Pressable>
+            </View>
+            <DownloadTaskRemovalConfirmationModal isVisible={isDeleteConfirmationModalVisible} audiobook={audiobook} onResult={handleDeleteConfirmation}/>
+        </View>
+
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: "100%",
+        padding: 5,
+        borderRadius: 5,
+        borderColor: "gray",
+        borderWidth: 1,
+        marginTop: 10,
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    }
+})

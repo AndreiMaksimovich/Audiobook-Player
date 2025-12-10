@@ -17,15 +17,16 @@ import {VStackView} from "@/src/views/VStackView";
 import {HStackView} from "@/src/views/HStackView";
 import SpacerView from "@/src/views/SpacerView";
 import {useTranslation} from "react-i18next";
+import AudiobookOfflineVersionButtonView from "@/src/views/AudiobookOfflineVersionButtonView";
 
 export interface AudiobookViewProps {
     audiobook: Audiobook;
+    mode?: "offline" | "online"
 }
 
 export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
     const {audiobook} = props;
     const dispatch = useDispatch();
-
     const {t} = useTranslation();
 
     useLayoutEffect(() => {
@@ -92,7 +93,10 @@ export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
                                 </VStackView>
                             </HStackView>
                         )}
-                        <AudiobookFavoriteButtonView audiobook={audiobook}/>
+                        <HStackView>
+                            <AudiobookOfflineVersionButtonView audiobook={audiobook}/>
+                            <AudiobookFavoriteButtonView audiobook={audiobook}/>
+                        </HStackView>
                     </View>
                 </HStackView>
 
@@ -103,7 +107,7 @@ export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
 
                 {/*  Audio audio-player panel  */}
                 <SpacerView size={10}/>
-                <AudiobookPlayerPanelView audiobook={audiobook}/>
+                <AudiobookPlayerPanelView mode={props.mode} audiobook={audiobook}/>
                 <SpacerView size={10}/>
 
                 {/* Audio files */}
@@ -114,7 +118,7 @@ export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
                             <>
                                 {audiobook.audioFiles!.map((mediaFile, index) => {
                                         duration += mediaFile.duration
-                                        return (<AudiobookAudioFileRowView audioFile={mediaFile} key={mediaFile.id} audiobook={audiobook} startTime={duration-mediaFile.duration} audioFileIndex={index}/>)
+                                        return (<AudiobookAudioFileRowView mode={props.mode} audioFile={mediaFile} key={mediaFile.id} audiobook={audiobook} startTime={duration-mediaFile.duration} audioFileIndex={index}/>)
                                     }
                                 )}
                             </>

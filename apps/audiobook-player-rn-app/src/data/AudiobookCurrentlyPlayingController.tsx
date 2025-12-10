@@ -6,6 +6,7 @@ import {appStorage} from "@/src/data/AppStorage";
 import {delay} from "@/src/utils";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {CurrentlyPlayingStateSavePeriodicity} from "@/src/config";
+import {offlineAudiobooksManager} from "@/src/offline-audiobooks";
 
 export interface AudiobookCurrentlyPlayingControllerProps {}
 
@@ -19,12 +20,19 @@ export default function AudiobookCurrentlyPlayingController(props: AudiobookCurr
     useEffect(() => {
         (async () => {
             const savedState = await appStorage.loadCurrentlyPlaying()
+
+            if (savedState.audiobook && savedState.isOffline) {
+                await delay(250)
+                savedState.audiobook = await offlineAudiobooksManager.getOfflineAudiobook(savedState.audiobook!.id)
+            }
+
             dispatch(setAudiobook({
                 audiobook: savedState.audiobook,
                 audioFileIndex: savedState.currentAudioFileIndex,
                 audioFileTime: savedState.currentAudioFileTime,
                 startPlaying: false,
                 totalTime: undefined,
+                isOffline: savedState.isOffline,
             }))
             setAudiobookId(savedState.audiobook?.id ?? null)
 

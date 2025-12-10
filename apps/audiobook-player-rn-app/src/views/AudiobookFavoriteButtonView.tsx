@@ -4,8 +4,9 @@ import {ThemedText} from "@/src/views/ThemedText";
 import {useAppDispatch} from "@/src/store";
 import {useIsAudiobookFavorite} from "@/src/store/AudiobookFavoritesHooks";
 import {addFavoriteAudiobook, removeFavoriteAudiobook} from "@/src/store/AudiobookFavorites";
-import {Entypo} from "@expo/vector-icons";
+import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
 import {useTranslation} from "react-i18next";
+import {themeStyles} from "@/src/theme"
 
 export interface AudiobookFavoriteButtonViewProps {
     audiobook: Audiobook
@@ -17,22 +18,18 @@ export default function AudiobookFavoriteButtonView(props: AudiobookFavoriteButt
     const dispatch = useAppDispatch();
     const isFavorite = useIsAudiobookFavorite(props.audiobook.id);
 
+    function handleOnPress() {
+        if (isFavorite) {
+            dispatch(removeFavoriteAudiobook(props.audiobook.id))
+        } else {
+            dispatch(addFavoriteAudiobook(props.audiobook))
+        }
+    }
+
     return (
-        <Pressable onPress={() => {
-            if (isFavorite) {
-                dispatch(removeFavoriteAudiobook(props.audiobook.id))
-            } else {
-                dispatch(addFavoriteAudiobook(props.audiobook))
-            }
-        }}>
-            <View
-                style={[
-                    styles.base,
-                    isFavorite ? styles.isFavorite : styles.isNotFavorite
-                ]}
-            >
-                <Entypo name={isFavorite ? "star" : "star-outlined"} size={28} color="#0a7ea4" />
-                <ThemedText type={"linkSemiBold"}>{t(isFavorite ? "RemoveFromFavorites" : "AddToFavorites")}</ThemedText>
+        <Pressable onPress={handleOnPress}>
+            <View style={themeStyles.circleActionButton}>
+                <MaterialCommunityIcons name={isFavorite ? "star" : "star-plus-outline"} size={30} color="black" />
             </View>
         </Pressable>
     )

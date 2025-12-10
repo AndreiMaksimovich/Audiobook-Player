@@ -16,6 +16,7 @@ export default function Layout() {
             <Stack.Screen name={"category/[category_id]"} options={{title: "", headerShown: true}}/>
             <Stack.Screen name={"tag/[tag_id]"} options={{title: "", headerShown: true}}/>
             <Stack.Screen name={"audiobook/[audiobook_id]"} options={{title: "", headerShown: true}}/>
+            <Stack.Screen name={"offline-audiobook/[audiobook_id]"} options={{title: "", headerShown: true}}/>
         </Stack>
     );
 }

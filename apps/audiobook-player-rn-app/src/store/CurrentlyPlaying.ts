@@ -4,12 +4,17 @@ import {Audiobook, MediaFile} from "shared";
 import {audiobookPlayer} from "@/src/audio-player";
 import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, Progress} from '@/src/track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
+import {
+    handleOfflineAudiobooksActiveDownloadTaskCompletion,
+    removeOfflineAudiobook
+} from "@/src/store/GlobalActions";
 
 export interface CurrentlyPlayingState {
     audiobook: Audiobook | null,
     currentAudioFileIndex: number,
     currentAudioFileTime: number,
     isPlaying: boolean,
+    isOffline: boolean
 }
 
 const initialState: CurrentlyPlayingState = {
@@ -17,6 +22,7 @@ const initialState: CurrentlyPlayingState = {
     currentAudioFileIndex: 0,
     currentAudioFileTime: 0,
     isPlaying: false,
+    isOffline: false
 }
 
 function setTime(state: CurrentlyPlayingState, time: number) {
@@ -67,11 +73,12 @@ export const currentlyPlayingStateSlice = createSlice({
     initialState,
     reducers: {
 
-        setAudiobook: (state, action: PayloadAction<{audiobook: Audiobook | null, totalTime: number | undefined, audioFileIndex: number | undefined, audioFileTime: number | undefined, startPlaying: boolean}>) => {
+        setAudiobook: (state, action: PayloadAction<{audiobook: Audiobook | null, totalTime: number | undefined, audioFileIndex: number | undefined, audioFileTime: number | undefined, startPlaying: boolean, isOffline: boolean}>) => {
             state.audiobook = action.payload.audiobook
             state.currentAudioFileIndex = 0
             state.currentAudioFileTime = 0
             state.isPlaying = action.payload.startPlaying
+            state.isOffline = action.payload.isOffline
 
             if (action.payload.audiobook) {
                 if (action.payload.totalTime) {
@@ -163,6 +170,30 @@ export const currentlyPlayingStateSlice = createSlice({
             state.currentAudioFileTime = audioFile.duration * action.payload
             audiobookPlayer.playAudioFile(state.currentAudioFileIndex, state.currentAudioFileTime).catch(console.error)
         }
+    },
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(handleOfflineAudiobooksActiveDownloadTaskCompletion, (state, action) => {
+                if (state.audiobook && state.audiobook?.id === action.payload.id) {
+                    state.audiobook = action.payload
+                    state.isOffline = true
+                    ignoreTrackPlayerEventPlaybackActiveTrackChanged = true
+                    audiobookPlayer.setAudiobook(state.audiobook, state.currentAudioFileIndex, state.currentAudioFileTime, state.isPlaying).catch(console.error).finally(() => {
+                        ignoreTrackPlayerEventPlaybackActiveTrackChanged = false
+                    })
+                }
+            })
+            .addCase(removeOfflineAudiobook, (state, action) => {
+                if (state.audiobook && state.audiobook.id === action.payload) {
+                    state.isPlaying = false
+                    state.currentAudioFileIndex = 0
+                    state.currentAudioFileTime = 0
+                    state.audiobook = null
+                    state.isOffline = false
+                    audiobookPlayer.pause().catch(console.error)
+                }
+            })
     }
 })
 

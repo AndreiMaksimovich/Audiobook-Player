@@ -8,6 +8,8 @@
   "main": "index.js",
   "scripts": {
     "export": "node index.js",
+    "export-client": "node index.js -- client",
+    "export-server": "node index.js -- server",
     "export-client-server": "node index.js -- client server",
     "export-production": "node index.js -- production",
     "export-all": "node index.js -- client server database files",

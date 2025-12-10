@@ -14,14 +14,14 @@ import SplashScreenView from "@/src/views/SplashScreenView";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {SplashScreenMinDisplayDuration} from "@/src/config";
 import {delay} from "@/src/utils";
+import OfflineAudiobooksInitializationController
+    from "@/src/offline-audiobooks/OfflineAudiobooksInitializationController";
 
 export const unstable_settings = {
     anchor: '(tabs)',
 };
 
-async function initialize() {
-
-}
+async function initialize() {}
 
 export default function App() {
     const [isInitialized, setIsInitialized] = useState(false);
@@ -63,6 +63,7 @@ function FunctionalComponents() {
             <AudiobookHistoryRecentlyPlayedController/>
             <AudiobookHistoryController/>
             <AudiobookCurrentlyPlayingController/>
+            <OfflineAudiobooksInitializationController/>
         </>
     )
 }
@@ -75,6 +76,7 @@ function RootLayout() {
             <Stack>
                 <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
                 <Stack.Screen name="+not-found" options={{headerShown: false}}/>
+                <Stack.Screen name="test" options={{headerShown: false}}/>
             </Stack>
             <StatusBar style="auto"/>
         </ThemeProvider>

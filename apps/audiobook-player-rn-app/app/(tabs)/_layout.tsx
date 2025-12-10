@@ -9,6 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TabLayout() {
+    console.log("render")
     const colorScheme = useColorScheme();
 
     return (
@@ -64,3 +65,4 @@ export default function TabLayout() {
         </Tabs>
     );
 }
+

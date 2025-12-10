@@ -12,4 +12,4 @@ export const AudioPlaybackFastBackwardDuration = 15000
 
 export const CurrentlyPlayingStateSavePeriodicity = 5000
 
-export const SplashScreenMinDisplayDuration = 1000
+export const SplashScreenMinDisplayDuration = 500

@@ -15,7 +15,8 @@ export interface AudiobookAudioFileRowViewProps {
     audioFileIndex: number
     audioFile: MediaFile,
     audiobook: Audiobook,
-    startTime?: number
+    startTime?: number,
+    mode?: "offline" | "online"
 }
 
 function getName(audioFile: MediaFile) {
@@ -23,6 +24,7 @@ function getName(audioFile: MediaFile) {
 }
 
 export default function AudiobookAudioFileRowView(props: AudiobookAudioFileRowViewProps) {
+    const isOffline = props.mode === "offline";
     const dispatch = useDispatch()
     const currentlyPlaying = useSelector((state: RootState) => state.currentlyPlaying)
     const isCurrentAudioFile = currentlyPlaying.audiobook && compareAudiobooks(currentlyPlaying.audiobook, props.audiobook) && currentlyPlaying.currentAudioFileIndex == props.audioFileIndex
@@ -36,7 +38,8 @@ export default function AudiobookAudioFileRowView(props: AudiobookAudioFileRowVi
                 startPlaying: true,
                 audioFileIndex: props.audioFileIndex ?? 0,
                 audioFileTime: 0,
-                totalTime: undefined
+                totalTime: undefined,
+                isOffline: isOffline
             }))
         }
     }
@@ -50,9 +53,6 @@ export default function AudiobookAudioFileRowView(props: AudiobookAudioFileRowVi
                         <ThemedText type={"default"} style={{minWidth: 25}} allowFontScaling={true}>{props.audioFileIndex + 1}.</ThemedText>
                         <SpacerView size={5}/>
                         <ThemedText numberOfLines={1} type={"defaultSemiBold"}>{getName(props.audioFile)}</ThemedText>
-                        {/*<SpacerView size={5}/>*/}
-                        {/*<ThemedText*/}
-                        {/*    type={"default"}>[{DateTimeUtils.formatDuration(props.audioFile.duration)}]</ThemedText>*/}
                     </HStackView>
                     <HStackView>
                         <ThemedText

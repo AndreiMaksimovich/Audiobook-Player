@@ -38,6 +38,18 @@
 
     "Error404": "Памылка 404",
     "PageNotFound": "Старонка не знойдзена",
-    "NoAudiobookIsCurrentlyPlaying": "Aўдыякніга зараз не прайграецца."
+    "NoAudiobookIsCurrentlyPlaying": "Aўдыякніга зараз не прайграецца.",
+
+    "OfflineAudiobookNotFound": "Ой, нешта пайшло не так. Афлайн-кніга адсутнічае.",
+    "OfflineAudiobooks": "Афлайн-аудыякнігі",
+    "DownloadTasks": "Актыўныя спампоўванні",
+
+    "CancelDownloadTaskConfirmation.Message": "Вы ўпэўнены, што хочаце адмяніць спампоўванне аўдыякнігі «{title}»?",
+    "RemoveOfflineAudiobookConfirmation.Message": "Вы ўпэўнены, што хочаце выдаліць афлайн-версію аўдыякнігі «{title}»?",
+
+    "Cancel": "Адмяніць",
+    "Delete": "Выдаліць",
+    "Yes": "Так",
+    "No": "Не"
   }
 }

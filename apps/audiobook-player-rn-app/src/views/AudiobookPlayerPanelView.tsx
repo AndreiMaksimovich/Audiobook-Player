@@ -20,7 +20,8 @@ import SpacerView from "@/src/views/SpacerView";
 import {VStackView} from "@/src/views/VStackView";
 
 export interface AudiobookPlayerPanelViewProps {
-    audiobook: Audiobook
+    audiobook: Audiobook,
+    mode?: "offline" | "online"
 }
 
 export default function AudiobookPlayerPanelView(props: AudiobookPlayerPanelViewProps) {
@@ -46,6 +47,7 @@ export default function AudiobookPlayerPanelView(props: AudiobookPlayerPanelView
                 startPlaying: true,
                 audioFileTime: undefined,
                 audioFileIndex: undefined,
+                isOffline: props.mode === "offline",
             }))
         }
     }

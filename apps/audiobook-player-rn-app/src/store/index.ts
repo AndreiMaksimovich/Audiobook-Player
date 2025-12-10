@@ -2,11 +2,30 @@ import {configureStore} from '@reduxjs/toolkit'
 import {settingsStateSlice} from './Settings'
 import {audiobookProviderApi} from "./AudiobookProviderApi";
 import {setupListeners} from '@reduxjs/toolkit/query'
-import {currentlyPlayingStateSlice} from "@/src/store/CurrentlyPlaying";
 import {audiobookHistoryStateSlice} from "@/src/store/AudiobookHistory";
 import {audiobookFavoritesStateSlice} from "@/src/store/AudiobookFavorites";
 import {useDispatch} from "react-redux";
 import {Event} from '@/src/track-player';
+import {audiobookPlayer} from "@/src/audio-player";
+import {
+    currentlyPlayingStateSlice,
+    handleButtonFastBackward,
+    handleButtonFastForward,
+    handleButtonPlay,
+    handleButtonSkipBackward,
+    handleButtonSkipForward,
+    handleTrackPlayerEventPlaybackActiveTrackChanged,
+    handleTrackPlayerEventPlaybackQueueEnded,
+    handleTrackPlayerProgress,
+} from "@/src/store/CurrentlyPlaying"
+import {EventType} from "@/src/offline-audiobooks";
+import {
+    offlineAudiobooksStateSlice,
+    handleActiveDownloadTaskProgress,
+    handleActiveDownloadTaskFailure,
+} from '@/src/store/OfflineAudiobooks'
+import {offlineAudiobooksManager} from "@/src/offline-audiobooks"
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion} from "@/src/store/GlobalActions";
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +34,7 @@ export const store = configureStore({
         currentlyPlaying: currentlyPlayingStateSlice.reducer,
         audiobookFavorites: audiobookFavoritesStateSlice.reducer,
         audiobookHistory: audiobookHistoryStateSlice.reducer,
+        offlineAudiobooks: offlineAudiobooksStateSlice.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(audiobookProviderApi.middleware)
 })
@@ -30,18 +50,6 @@ export const useAppDispatch = (): AppDispatch => {
 setupListeners(store.dispatch)
 
 // ---- Configure AudiobookPlayer
-
-import {audiobookPlayer} from "@/src/audio-player";
-import {
-    handleTrackPlayerEventPlaybackActiveTrackChanged,
-    handleTrackPlayerEventPlaybackQueueEnded,
-    handleTrackPlayerProgress,
-    handleButtonFastForward,
-    handleButtonFastBackward,
-    handleButtonSkipForward,
-    handleButtonSkipBackward,
-    handleButtonPlay,
-} from "./CurrentlyPlaying"
 
 audiobookPlayer.configure({
     onPlaybackQueueEnded: (data) => store.dispatch(handleTrackPlayerEventPlaybackQueueEnded(data)),
@@ -69,4 +77,21 @@ audiobookPlayer.configure({
                 break;
         }
     }
+})
+
+// ----- Configure Offline Audiobooks
+
+// Offline Audiobooks
+offlineAudiobooksManager.addEventListener(EventType.DownloadTaskProgress, event => {
+    store.dispatch(handleActiveDownloadTaskProgress(event.payload!));
+})
+
+// Download Tasks
+offlineAudiobooksManager.addEventListener(EventType.DownloadTaskFailed, event => {
+    store.dispatch(handleActiveDownloadTaskFailure(event.payload!));
+})
+
+// Active Download task
+offlineAudiobooksManager.addEventListener(EventType.DownloadTaskComplete, event => {
+    store.dispatch(handleOfflineAudiobooksActiveDownloadTaskCompletion(event.payload!));
 })

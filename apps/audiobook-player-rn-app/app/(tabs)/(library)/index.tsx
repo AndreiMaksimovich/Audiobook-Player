@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {ThemedText} from '@/src/views/ThemedText';
 import {VStackView} from "@/src/views/VStackView";
 import {HStackView} from "@/src/views/HStackView";
@@ -9,39 +9,59 @@ import {useState} from "react";
 import AppScreenView from "@/src/views/AppScreenView";
 import {useTranslation} from "react-i18next";
 import SpacerView from "@/src/views/SpacerView";
+import {AudiobookListView} from "@/src/views/AudiobookListView";
+import DownloadTaskListView from "@/src/views/DownloadTaskListView";
+import ActiveDownloadTaskView from "@/src/views/ActiveDownloadTaskView";
 
 enum Mode {
     Favorites = 0,
     RecentlyPlayed = 1,
-    RecentlyViewed = 2
+    RecentlyViewed = 2,
+    OfflineAudiobooks = 3,
+    DownloadTasks = 4
 }
 
 export default function LibraryScreen() {
     const {t} = useTranslation()
     const favoriteAudiobooks = useSelector((state: RootState) => state.audiobookFavorites)
     const audiobookHistory = useSelector((state: RootState) => state.audiobookHistory)
+    const {offlineAudiobooks, downloadTasks, activeDownloadTask} = useSelector((state: RootState) => state.offlineAudiobooks)
     const [mode, setMode] = useState(Mode.Favorites)
+
+    const header = [
+        [
+            {mode: Mode.Favorites, label: t('Favorites')},
+            {mode: Mode.RecentlyPlayed, label: t('RecentlyPlayed')},
+            {mode: Mode.RecentlyViewed, label: t('RecentlyViewed')}
+        ],
+        [
+            {mode: Mode.OfflineAudiobooks, label: t('OfflineAudiobooks')},
+            {mode: Mode.DownloadTasks, label: t('DownloadTasks')},
+        ]
+    ]
 
     return (
         <AppScreenView title={t("Library")}>
 
             <SpacerView size={5}/>
 
-            <HStackView justifyContent={'space-around'} style={styles.modeContainer}>
-                {[t('Favorites'), t('RecentlyPlayed'), t('RecentlyViewed')].map((modeName, index) => (
-                    <Pressable
-                        key={index}
-                        onPress={() => {
-                            setMode(index)
-                        }}
-                    >
-                        <ThemedText
-                            type={index != mode ? "linkSemiBold" : "linkSemiBoldInactive"}>{modeName}</ThemedText>
-                    </Pressable>
+            <View style={styles.headerContainer}>
+                {header.map((row, index) => (
+                    <HStackView key={`header-${index}`} justifyContent={'space-around'} style={styles.headerRow}>
+                        {row.map(item => (
+                            <Pressable
+                                key={item.mode}
+                                onPress={() => {
+                                    setMode(item.mode)
+                                }}
+                            >
+                                <ThemedText
+                                    type={item.mode != mode ? "linkSemiBold" : "linkSemiBoldInactive"}>{item.label}</ThemedText>
+                            </Pressable>
+                        ))}
+                    </HStackView>
                 ))}
-            </HStackView>
-
-            <SpacerView size={5}/>
+            </View>
 
             <VStackView>
 
@@ -54,6 +74,15 @@ export default function LibraryScreen() {
                 {mode === Mode.RecentlyViewed && (<>{audiobookHistory.recentlyViewed.toReversed().map((record) => (
                     <AudiobookHistoryRecordView record={record} key={`viewed.${record.id}`}/>))}</>)}
 
+                {mode === Mode.OfflineAudiobooks && (<AudiobookListView audiobooks={offlineAudiobooks} mode={'offline'}/>)}
+
+                {mode === Mode.DownloadTasks && (
+                    <>
+                        <ActiveDownloadTaskView />
+                        <DownloadTaskListView />
+                    </>
+                )}
+
             </VStackView>
 
         </AppScreenView>
@@ -61,5 +90,11 @@ export default function LibraryScreen() {
 }
 
 const styles = StyleSheet.create({
-    modeContainer: {boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)", borderRadius: 5, borderColor: "gray", borderWidth: 1},
+    headerContainer: {
+        boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+        borderRadius: 5,
+        borderColor: "gray",
+        borderWidth: 1
+    },
+    headerRow: {},
 });

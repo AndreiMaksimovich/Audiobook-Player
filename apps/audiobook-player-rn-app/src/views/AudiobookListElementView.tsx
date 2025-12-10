@@ -7,21 +7,41 @@ import AuthorLinkView from "@/src/views/AuthorLinkView";
 import ReaderLinkView from "@/src/views/ReaderLinkView";
 import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
 import {useTranslation} from "react-i18next";
-import {StyleSheet, View} from "react-native";
+import {Pressable, StyleSheet, View} from "react-native";
 import HSplitterView from "@/src/views/HSplitterView";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {useState} from "react";
+import OfflineAudiobookRemovalConfirmationModal from "./OfflineAudiobookRemovalConfirmationModal";
+import {useDispatch} from "react-redux";
+import {removeOfflineAudiobook} from "@/src/store/GlobalActions";
 
 export interface AudiobookListElementViewProps {
-    audiobook: Audiobook
+    audiobook: Audiobook,
+    mode?: 'online' | 'offline';
 }
 
 export function AudiobookListElementView(props: AudiobookListElementViewProps) {
     const {t} = useTranslation()
     const {audiobook} = props;
+    const dispatch = useDispatch();
+
+    const [isRemovalConfirmationVisible, setIsRemovalConfirmationVisible] = useState<boolean>(false);
+
+    function handleRemovalConfirmation(remove: boolean) {
+        setIsRemovalConfirmationVisible(false);
+        if (remove) {
+            dispatch(removeOfflineAudiobook(audiobook.id))
+        }
+    }
+
+    function deleteOfflineAudiobook() {
+        setIsRemovalConfirmationVisible(true);
+    }
 
     return (
         <VStackView>
             <HStackView alignItems={"center"} style={{padding: 5}}>
-                <AudiobookLinkView audiobookId={audiobook.id}>
+                <AudiobookLinkView mode={props.mode} audiobookId={audiobook.id}>
                     <View style={styles.audiobookIconContainer}>
                         <AudiobookIconView audiobook={audiobook} width={50} height={75}/>
                     </View>
@@ -43,6 +63,16 @@ export function AudiobookListElementView(props: AudiobookListElementViewProps) {
                         </HStackView>
                     )}
                 </VStackView>
+                {props.mode === 'offline' && (
+                    <>
+                        <View style={{position: 'absolute', top: 5, right: 5}}>
+                            <Pressable onPress={deleteOfflineAudiobook}>
+                                <MaterialCommunityIcons name="close-circle-outline" size={36} color="black"/>
+                            </Pressable>
+                        </View>
+                        <OfflineAudiobookRemovalConfirmationModal audiobook={audiobook} isVisible={isRemovalConfirmationVisible} onResult={handleRemovalConfirmation} />
+                    </>
+                )}
             </HStackView>
             <HSplitterView/>
         </VStackView>
