@@ -25,7 +25,7 @@ if (filesPath !== null) {
 }
 
 // HTTPS
-if (process.env.SSL_ENABLED) {
+if (process.env.SSL_ENABLED === "true") {
     const options = {
         key: fs.readFileSync(process.env.SSL_KEY_PATH!).toString(),
         cert: fs.readFileSync(process.env.SSL_CERT_PATH!).toString(),
