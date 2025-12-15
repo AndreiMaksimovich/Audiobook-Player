@@ -3,7 +3,6 @@ import {Pressable, StyleSheet, View, Alert} from "react-native";
 import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
 import {ThemedText} from "@/src/views/ThemedText";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {useTranslation} from "react-i18next";
 import {cancelDownloadTask, downloadAudiobook} from "@/src/store/OfflineAudiobooks"
 import {useDispatch} from "react-redux";
 import {useState} from "react";
@@ -16,7 +15,6 @@ export interface DownloadTaskListElementViewProps {
 export default function DownloadTaskListElementView(props: DownloadTaskListElementViewProps) {
     const {downloadTask} = props;
     const {audiobook} = downloadTask;
-    const {t} = useTranslation()
     const dispatch = useDispatch();
     const [isDeleteConfirmationModalVisible, setIsDeleteConfirmationModalVisible] = useState(false);
 
@@ -38,7 +36,9 @@ export default function DownloadTaskListElementView(props: DownloadTaskListEleme
     return (
         <View style={styles.container}>
             <AudiobookLinkView audiobookId={audiobook.id}>
-                <ThemedText type={"subtitle"}>{audiobook.title}</ThemedText>
+                <View style={styles.titleContainer}>
+                    <ThemedText style={styles.title} type={"subtitle"}>{audiobook.title}</ThemedText>
+                </View>
             </AudiobookLinkView>
             <View style={styles.buttonContainer}>
                 <Pressable key={"play-circle-outline"} onPress={startDownload}>
@@ -58,14 +58,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        padding: 5,
+        padding: 10,
         borderRadius: 5,
         borderColor: "gray",
         borderWidth: 1,
         marginTop: 10,
     },
+    titleContainer: {
+        width: "100%",
+    },
+    title: {
+        textAlign: "center",
+    },
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    progressSliderContainer: {
+        alignItems: "center"
     }
 })

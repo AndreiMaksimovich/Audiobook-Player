@@ -52,7 +52,10 @@
     "Cancel": "Cancel",
     "Delete": "Delete",
     "Yes": "Yes",
-    "No": "No"
+    "No": "No",
+
+    "DownloadTaskFailed.ToastMessage": "Failed to download {title}",
+    "AudiobookPlaybackError.ToastMessage": "Playback error: {message}"
 
   }
 }

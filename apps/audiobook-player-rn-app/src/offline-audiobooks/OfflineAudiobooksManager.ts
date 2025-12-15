@@ -7,9 +7,15 @@ import {
     OfflineAudiobooksManagerConfiguration
 } from "./Types";
 import {Audiobook, MediaFile} from "shared"
-import {appFileStorage, AppFileStorageFileType, IAppFileStorage} from "@/src/app-file-storage";
+import {
+    appFileStorage,
+    AppFileStorageFileType,
+    IAppFileStorage,
+    StorageIsNotPersistent
+} from "@/src/app-file-storage";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
-import { fetch } from 'expo/fetch';
+import {fetch} from 'expo/fetch';
+import {delay} from "@/src/utils";
 
 export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
     private eventListeners: Map<EventType, any[]> = new Map();
@@ -108,7 +114,7 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
         this.downloadTaskAbortController?.abort()
     }
 
-    async downloadAudiobook(audiobook: Audiobook): Promise<Audiobook | null>{
+    async downloadAudiobook(audiobook: Audiobook): Promise<Audiobook | null> {
         this.downloadTaskAbortController?.abort()
         const abortController = new AbortController()
         this.downloadTaskAbortController = abortController
@@ -141,9 +147,14 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
     }
 
 
-    private async downloadAudiobookTask(abortSignal: AbortSignal, audiobook: Audiobook, onProgress: (progress: number) => void): Promise<Audiobook|null> {
+    private async downloadAudiobookTask(abortSignal: AbortSignal, audiobook: Audiobook, onProgress: (progress: number) => void): Promise<Audiobook | null> {
         const downloadDir = this.getDownloadTaskDir(audiobook.id)
         const mediaFiles = this.collectMediaFiles(audiobook)
+
+        const isPersistent = await this.fileStorage!.persist()
+        if (!isPersistent) {
+            throw new StorageIsNotPersistent('is not persistent')
+        }
 
         await this.fileStorage!.mkdir(downloadDir)
         await this.fileStorage!.writeTextFile(`${downloadDir}/audiobook.json`, JSON.stringify(audiobook))
@@ -301,7 +312,7 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
         await this.fileStorage!.mkdir(this.downloadTasksDir)
     }
 
-    async getOfflineAudiobook(audiobookId:number): Promise<Audiobook> {
+    async getOfflineAudiobook(audiobookId: number): Promise<Audiobook> {
         const dir = this.getOfflineAudiobookDir(audiobookId)
 
         if (!await this.fileStorage!.directoryExists(dir)) {

@@ -37,6 +37,7 @@ export class BaseError {
     }
 }
 
+export class StorageIsNotPersistent extends BaseError {}
 export class FileNotFoundError extends BaseError {}
 export class FileAlreadyExistsError extends BaseError {}
 export class DirectoryNotFoundError extends BaseError {}

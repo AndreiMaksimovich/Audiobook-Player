@@ -19,7 +19,7 @@ export const useOfflineAudiobookState = (audiobookId: number):OfflineAudiobookSt
         return OfflineAudiobookState.Offline
     }
 
-    if (state.activeDownloadTask && state.activeDownloadTask.audiobook.id === audiobookId) {
+    if (state.activeDownloadTask && state.activeDownloadTask.audiobook && state.activeDownloadTask.audiobook.id === audiobookId) {
         // In progress
         if (state.activeDownloadTask.isActive) {
             return OfflineAudiobookState.DownloadInProgress

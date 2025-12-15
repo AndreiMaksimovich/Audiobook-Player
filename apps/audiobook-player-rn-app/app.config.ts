@@ -30,7 +30,9 @@ module.exports = () => {
                 }
             },
             plugins: [
-                "expo-router"
+                "expo-router",
+                "expo-localization",
+                "expo-web-browser"
             ],
             experiments: {
                 typedRoutes: true,

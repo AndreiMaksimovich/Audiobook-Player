@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import type {PayloadAction} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 import {Audiobook, MediaFile} from "shared";
 import {audiobookPlayer} from "@/src/audio-player";
 import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, Progress} from '@/src/track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
-import {
-    handleOfflineAudiobooksActiveDownloadTaskCompletion,
-    removeOfflineAudiobook
-} from "@/src/store/GlobalActions";
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {PlaybackErrorEvent} from "react-native-track-player-v4";
+import {toasts, ToastType} from "@/src/toasts";
+import i18next from '@/src/localization'
 
 export interface CurrentlyPlayingState {
     audiobook: Audiobook | null,
@@ -169,6 +169,14 @@ export const currentlyPlayingStateSlice = createSlice({
             if (!audioFile) return
             state.currentAudioFileTime = audioFile.duration * action.payload
             audiobookPlayer.playAudioFile(state.currentAudioFileIndex, state.currentAudioFileTime).catch(console.error)
+        },
+
+        handleTrackPlayerEventPlaybackError: (state, action: PayloadAction<PlaybackErrorEvent>) => {
+            if (state.isPlaying) {
+                state.isPlaying = false
+            }
+            console.error(action.payload)
+            toasts.show(ToastType.Error, i18next.t('AudiobookPlaybackError.ToastMessage').replace('{message}', action.payload.message))
         }
     },
 
@@ -208,5 +216,6 @@ export const {
     handleButtonSkipForward,
     handleButtonSkipBackward,
     handleButtonPlay,
-    setCurrentAudioFileNormalizedProgress
+    setCurrentAudioFileNormalizedProgress,
+    handleTrackPlayerEventPlaybackError
 } = currentlyPlayingStateSlice.actions

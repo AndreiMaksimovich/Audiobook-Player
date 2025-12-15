@@ -2,43 +2,75 @@ import {StyleSheet, Text, type TextProps} from 'react-native';
 
 import {useThemeColor} from '@/src/hooks/use-theme-color';
 
+export type ThemedTextType =
+    'small'
+    | 'default'
+    | 'title'
+    | 'defaultSemiBold'
+    | 'subtitle'
+    | 'link'
+    | 'error'
+    | 'navLink'
+    | 'linkSemiBold'
+    | 'linkSemiBoldInactive'
+    | 'subtitleLink';
+
 export type ThemedTextProps = TextProps & {
     lightColor?: string;
     darkColor?: string;
-    type?: 'small' | 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'error' | 'navLink' | 'linkSemiBold' | 'linkSemiBoldInactive';
+    type?: ThemedTextType;
     center?: boolean;
 };
 
-export function ThemedText({
-                               style,
-                               lightColor,
-                               darkColor,
-                               type = 'default',
-                               center = false,
-                               ...rest
-                           }: ThemedTextProps) {
+export function ThemedText(
+    {
+        style,
+        lightColor,
+        darkColor,
+        type = 'default',
+        center = false,
+        ...rest
+    }: ThemedTextProps) {
+
     const color = useThemeColor({light: lightColor, dark: darkColor}, 'text');
 
     return (
         <Text
             style={[
                 {color},
-                type === 'default' ? styles.default : undefined,
-                type === 'title' ? styles.title : undefined,
-                type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-                type === 'subtitle' ? styles.subtitle : undefined,
-                type === 'link' ? styles.link : undefined,
-                type === 'error' ? styles.error : undefined,
-                type === 'navLink' ? styles.navLink : undefined,
-                type === 'linkSemiBold' ? styles.linkSemiBold : undefined,
-                type === 'linkSemiBoldInactive' ? styles.linkSemiBoldInactive : undefined,
-                type === 'small' ? styles.small : undefined,
+                getStyle(type),
                 center ? styles.center : undefined,
                 style
             ]}
             {...rest}
         />
     );
+}
+
+function getStyle(type: ThemedTextType) {
+    switch (type) {
+        case 'title':
+            return styles.title;
+        case 'defaultSemiBold':
+            return styles.defaultSemiBold;
+        case 'subtitle':
+            return styles.subtitle;
+        case 'link':
+            return styles.link;
+        case 'error':
+            return styles.error;
+        case 'navLink':
+            return styles.navLink;
+        case 'linkSemiBold':
+            return styles.linkSemiBold;
+        case 'linkSemiBoldInactive':
+            return styles.linkSemiBoldInactive;
+        case 'small':
+            return styles.small;
+        case 'default':
+        default:
+            return styles.default;
+    }
 }
 
 const styles = StyleSheet.create({
@@ -63,6 +95,12 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    subtitleLink: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#0a7ea4',
+        textDecorationLine: 'underline',
     },
     link: {
         lineHeight: 30,

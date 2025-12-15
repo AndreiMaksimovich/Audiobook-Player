@@ -1,9 +1,9 @@
-import {createSlice, current, type PayloadAction} from "@reduxjs/toolkit";
-import {Audiobook, MediaFile} from "shared";
+import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {Audiobook} from "shared";
 import {DownloadTask, offlineAudiobooksManager} from "@/src/offline-audiobooks";
-import {
-    handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook
-} from "@/src/store/GlobalActions";
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {toasts, ToastType} from "@/src/toasts";
+import i18next from '@/src/localization'
 
 export interface OfflineAudiobooksState {
     offlineAudiobooks: Audiobook[];
@@ -116,6 +116,9 @@ export const offlineAudiobooksStateSlice = createSlice({
 
             state.activeDownloadTask.isActive = false;
             state.activeDownloadTask.error = action.payload;
+
+            console.log(state.activeDownloadTask);
+            toasts.show(ToastType.Error, i18next.t('DownloadTaskFailed.ToastMessage').replace('{title}', state.activeDownloadTask.audiobook.title));
         },
 
         removeAllOfflineAudiobooks: (state) => {
@@ -192,7 +195,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                 const index = state.offlineAudiobooks.findIndex(audiobook => audiobook.id === audiobookId);
                 if (index > -1) {
                     state.offlineAudiobooks.splice(index, 1);
-                    offlineAudiobooksManager.removeOfflineAudiobook(audiobookId).then(console.error);
+                    offlineAudiobooksManager.removeOfflineAudiobook(audiobookId).catch(console.error);
                 }
             })
     }

@@ -52,7 +52,9 @@ export default function ActiveDownloadTaskView(props: ActiveDownloadTaskViewProp
 
         <View style={styles.container}>
             <AudiobookLinkView audiobookId={audiobook.id}>
-                <ThemedText type={"subtitle"}>{audiobook.title}</ThemedText>
+                <View style={styles.titleContainer}>
+                    <ThemedText style={styles.title} type={"subtitle"}>{audiobook.title}</ThemedText>
+                </View>
             </AudiobookLinkView>
             <SpacerView size={5}/>
             <View style={styles.buttonContainer}>
@@ -62,29 +64,26 @@ export default function ActiveDownloadTaskView(props: ActiveDownloadTaskViewProp
                         color="black"/>
                 </Pressable>
 
-                <View style={{
-                    flexGrow: 1,
-                    maxWidth: "70%",
-                    alignItems: "center"
-                }}>
-                    <Slider
-                        style={{height: 40, width: "100%"}}
-                        minimumValue={0}
-                        maximumValue={1}
-                        minimumTrackTintColor="black"
-                        maximumTrackTintColor="gray"
-                        value={activeDownloadTask.progress}
-                        disabled={true}
-                    />
-                    <ThemedText type={"default"}>{((activeDownloadTask.progress ?? 0) * 100).toFixed(2)}%</ThemedText>
-                </View>
-
                 <Pressable key={"close-circle-outline"} onPress={onDeleteButtonPress}>
                     <MaterialCommunityIcons name="close-circle-outline" size={36} color="black"/>
                 </Pressable>
             </View>
 
-            <DownloadTaskRemovalConfirmationModal isVisible={isDeleteConfirmationModalVisible} audiobook={audiobook} onResult={deleteConfirmationModalResult}/>
+            <View style={styles.progressSliderContainer}>
+                <Slider
+                    style={{height: 40, width: "90%"}}
+                    minimumValue={0}
+                    maximumValue={1}
+                    minimumTrackTintColor="black"
+                    maximumTrackTintColor="gray"
+                    value={activeDownloadTask.progress}
+                    disabled={true}
+                />
+                <ThemedText type={"default"}>{((activeDownloadTask.progress ?? 0) * 100).toFixed(2)}%</ThemedText>
+            </View>
+
+            <DownloadTaskRemovalConfirmationModal isVisible={isDeleteConfirmationModalVisible} audiobook={audiobook}
+                                                  onResult={deleteConfirmationModalResult}/>
 
         </View>
 
@@ -95,14 +94,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        padding: 5,
+        padding: 10,
         borderRadius: 5,
         borderColor: "gray",
         borderWidth: 1,
         marginTop: 10,
+        backgroundColor: "white",
+    },
+    titleContainer: {
+        width: "100%",
+    },
+    title: {
+        textAlign: "center",
     },
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    progressSliderContainer: {
+        alignItems: "center"
     }
 })

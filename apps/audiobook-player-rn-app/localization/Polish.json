@@ -51,6 +51,9 @@
     "Cancel": "Anuluj",
     "Delete": "Usuń",
     "Yes": "Tak",
-    "No": "Nie"
+    "No": "Nie",
+
+    "DownloadTaskFailed.ToastMessage": "Błąd pobierania: «{title}»",
+    "AudiobookPlaybackError.ToastMessage": "Błąd odtwarzania: {message}"
   }
 }

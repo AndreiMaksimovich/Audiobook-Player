@@ -7,12 +7,14 @@ import TrackPlayer, {
     PlaybackQueueEndedEvent,
     Capability
 } from '@/src/track-player';
+import {PlaybackErrorEvent} from "react-native-track-player-v4";
 
 export interface AudiobookPlayerCallbacks {
     onPlaybackActiveTrackChanged?: (event: PlaybackActiveTrackChangedEvent) => void;
     onPlaybackQueueEnded?: (event: PlaybackQueueEndedEvent) => void;
     onTrackPlayerProgressChanged?: (progress: Progress) => void;
     onRemoteEvent?: (event: Event) => void;
+    onPlaybackErrorEvent?: (event: PlaybackErrorEvent) => void;
 }
 
 export class AudiobookPlayer {
@@ -65,6 +67,10 @@ export class AudiobookPlayer {
 
         TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (data) => {
             this.callbacks?.onPlaybackActiveTrackChanged?.(data)
+        })
+
+        TrackPlayer.addEventListener(Event.PlaybackError, (data) => {
+            this.callbacks?.onPlaybackErrorEvent?.(data)
         })
 
         for (const eventType of [Event.RemotePause, Event.RemotePlay, Event.RemoteNext, Event.RemotePrevious, Event.RemoteJumpBackward, Event.RemoteJumpForward,]) {

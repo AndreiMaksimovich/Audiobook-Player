@@ -39,7 +39,6 @@ export class AppFileStorage implements IAppFileStorage {
 
     async mkdir(path: string): Promise<AppFileStorageFile> {
         const directory = new Directory(Paths.join(this.rootDirectory, path))
-        console.log('mkdir', path, directory)
         if (!directory.exists) {
             directory.create({idempotent: true, intermediates: true})
         }
@@ -61,6 +60,7 @@ export class AppFileStorage implements IAppFileStorage {
         // File
         const file = new File(fullPath)
         if (file.exists) {
+            console.log(`Delete file: ${fullPath}`)
             file.delete()
             return
         }
@@ -68,6 +68,7 @@ export class AppFileStorage implements IAppFileStorage {
         // Directory
         const directory = new Directory(fullPath)
         if (directory.exists) {
+            console.log(`Delete directory: ${fullPath}`)
             directory.delete()
             return
         }
@@ -79,8 +80,6 @@ export class AppFileStorage implements IAppFileStorage {
         const result: AppFileStorageFile[] = []
         const fullPath = Paths.join(this.rootDirectory, path)
         const directory = new Directory(fullPath)
-
-        console.log('list', path, fullPath, directory)
 
         if (!directory.exists) {
             throw new DirectoryNotFoundError()
@@ -94,8 +93,6 @@ export class AppFileStorage implements IAppFileStorage {
                 result.push(this.fileToStorageFile(file))
             }
         }
-
-        console.log('list-result', path, result)
 
         return result
     }
@@ -133,8 +130,7 @@ export class AppFileStorage implements IAppFileStorage {
     }
 
     async getFileUrl(path: string): Promise<string> {
-        const fullPath = Paths.join(this.rootDirectory, path)
-        return `file://${fullPath}`
+        return this.getFile(path, true).uri
     }
 
     async writeTextFile(path: string, text: string): Promise<void> {

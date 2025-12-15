@@ -10,10 +10,10 @@ import {HStackView} from "@/src/views/HStackView";
 import {ThemedText} from "@/src/views/ThemedText";
 import SpacerView from "@/src/views/SpacerView";
 import SimplePickerView from "@/src/views/SimplePickerView";
-import {HumanReadableErrorView} from "@/src/views/HumanReadableErrorView";
 import {appFileStorage, AppFileStorageFileType} from "@/src/app-file-storage";
-import {offlineAudiobooksManager} from "@/src/offline-audiobooks";
 import {useState} from "react";
+import useIsStandaloneApp from "@/src/hooks/use-is-standalone-app";
+import {toasts, ToastType} from "@/src/toasts";
 
 async function debugPrintFileStorageTree() {
     async function print(path: string, prefix: string) {
@@ -34,9 +34,13 @@ export default function HomeScreen() {
     const offlineAudiobooksState = useSelector((state: RootState) => state.offlineAudiobooks)
     const {t} = useTranslation()
     const dispatch = useDispatch()
-    const settings = useSelector((state: RootState)=> state.settings)
-    const languages = Array.from(SupportedLanguages.values()).map(language => {return { value: language.code, label: language.name }})
+    const settings = useSelector((state: RootState) => state.settings)
+    const languages = Array.from(SupportedLanguages.values()).map(language => {
+        return {value: language.code, label: language.name}
+    })
     const [error, setError] = useState<any>(false);
+
+    const isStandalone = useIsStandaloneApp()
 
     async function clearFileStorage() {
         await appFileStorage.clear();
@@ -64,12 +68,29 @@ export default function HomeScreen() {
                         <SimplePickerView
                             items={languages}
                             selectedValue={settings.localizationLanguageCode}
-                            onSelectionChanged={(code) => dispatch(setLocalizationLanguageCode(code))} />
+                            onSelectionChanged={(code) => dispatch(setLocalizationLanguageCode(code))}/>
                     </View>
 
                 </HStackView>
 
+                <ThemedText>Is standalone: {isStandalone ? "true" : "false"}</ThemedText>
+
             </VStackView>
+
+            <View style={styles.testButtonContainer}>
+                <Button title={"Test Toast Info"}
+                        onPress={() => toasts.show(ToastType.Info, 'Info Message Info Message Info Message Info Message')}/>
+            </View>
+
+            <View style={styles.testButtonContainer}>
+                <Button title={"Test Toast Success"}
+                        onPress={() => toasts.show(ToastType.Success, 'Success Message Success Message Success Message')}/>
+            </View>
+
+            <View style={styles.testButtonContainer}>
+                <Button title={"Test Toast Error"}
+                        onPress={() => toasts.show(ToastType.Error, 'Error Message Error Message Error Message Error Message')}/>
+            </View>
 
             {/*<View style={styles.testButtonContainer}>*/}
             {/*    <Button title={"Test"} onPress={test}/>*/}
@@ -99,11 +120,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-    image: {
-        width: 200, // Set desired width
-        height: 200, // Set desired height
-        resizeMode: 'contain', // Or 'cover', 'stretch', 'repeat', 'center'
-    },
     testButtonContainer: {
         padding: 5,
     }

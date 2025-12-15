@@ -88,7 +88,7 @@ export default function AudiobookOfflineVersionButtonView(props: AudiobookOfflin
                     {/* In Download Backlog - Start Download */}
                     {state === OfflineAudiobookState.InDownloadBacklog && (
                         <>
-                            <ActivityIndicator size={'large'}/>
+                            <MaterialCommunityIcons name="play" size={30} style={{position: 'absolute'}} color="black" />
                         </>
                     )}
 
@@ -101,9 +101,8 @@ export default function AudiobookOfflineVersionButtonView(props: AudiobookOfflin
                     )}
 
                     {/* Download Failed - Restart */}
-                    {state === OfflineAudiobookState.DownloadPaused && (
+                    {state === OfflineAudiobookState.Failed && (
                         <>
-                            <ActivityIndicator size={'large'}/>
                             <MaterialCommunityIcons name="cloud-alert-outline" size={24} style={{position: 'absolute'}} color="black" />
                         </>
                     )}

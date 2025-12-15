@@ -50,6 +50,9 @@
     "Cancel": "Адмяніць",
     "Delete": "Выдаліць",
     "Yes": "Так",
-    "No": "Не"
+    "No": "Не",
+
+    "DownloadTaskFailed.ToastMessage": "Памылка спампоўкі «{title}»",
+    "AudiobookPlaybackError.ToastMessage": "Памылка прайгравання: {message}"
   }
 }

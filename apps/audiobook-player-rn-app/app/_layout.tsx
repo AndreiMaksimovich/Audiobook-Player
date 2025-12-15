@@ -16,6 +16,7 @@ import {SplashScreenMinDisplayDuration} from "@/src/config";
 import {delay} from "@/src/utils";
 import OfflineAudiobooksInitializationController
     from "@/src/offline-audiobooks/OfflineAudiobooksInitializationController";
+import {ToastController} from "@/src/toasts";
 
 export const unstable_settings = {
     anchor: '(tabs)',
@@ -64,6 +65,7 @@ function FunctionalComponents() {
             <AudiobookHistoryController/>
             <AudiobookCurrentlyPlayingController/>
             <OfflineAudiobooksInitializationController/>
+            <ToastController />
         </>
     )
 }

@@ -14,7 +14,7 @@ import {
     handleButtonPlay,
     handleButtonSkipBackward,
     handleButtonSkipForward,
-    handleTrackPlayerEventPlaybackActiveTrackChanged,
+    handleTrackPlayerEventPlaybackActiveTrackChanged, handleTrackPlayerEventPlaybackError,
     handleTrackPlayerEventPlaybackQueueEnded,
     handleTrackPlayerProgress,
 } from "@/src/store/CurrentlyPlaying"
@@ -55,6 +55,7 @@ audiobookPlayer.configure({
     onPlaybackQueueEnded: (data) => store.dispatch(handleTrackPlayerEventPlaybackQueueEnded(data)),
     onTrackPlayerProgressChanged: (data) => store.dispatch(handleTrackPlayerProgress(data)),
     onPlaybackActiveTrackChanged: (data) => store.dispatch(handleTrackPlayerEventPlaybackActiveTrackChanged(data)),
+    onPlaybackErrorEvent: (data) => store.dispatch(handleTrackPlayerEventPlaybackError(data)),
     onRemoteEvent: event => {
         switch (event) {
             case Event.RemotePause:
@@ -76,7 +77,7 @@ audiobookPlayer.configure({
                 store.dispatch(handleButtonFastForward());
                 break;
         }
-    }
+    },
 })
 
 // ----- Configure Offline Audiobooks
@@ -95,3 +96,4 @@ offlineAudiobooksManager.addEventListener(EventType.DownloadTaskFailed, event =>
 offlineAudiobooksManager.addEventListener(EventType.DownloadTaskComplete, event => {
     store.dispatch(handleOfflineAudiobooksActiveDownloadTaskCompletion(event.payload!));
 })
+
