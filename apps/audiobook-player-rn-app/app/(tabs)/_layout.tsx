@@ -4,9 +4,6 @@ import {HapticTab} from '@/src/views/HapticTab';
 import {Colors} from '@/src/theme/theme';
 import {useColorScheme} from '@/src/hooks/use-color-scheme';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TabLayout() {
     console.log("render")
@@ -25,7 +22,7 @@ export default function TabLayout() {
                 name="(catalog)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="product" size={26} color={color}/>,
+                    tabBarIcon: ({color}) => <MaterialIcons name="library-books" size={26} color={color}/>,
                 }}
 
             />
@@ -34,7 +31,7 @@ export default function TabLayout() {
                 name="(library)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <Ionicons name="library" size={26} color={color}/>,
+                    tabBarIcon: ({color}) => <MaterialIcons name="local-library" size={26} color={color}/>,
                 }}
             />
 
@@ -42,7 +39,7 @@ export default function TabLayout() {
                 name="(currently-playing)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="play-circle" size={28} color={color}/>,
+                    tabBarIcon: ({color}) => <MaterialIcons name="play-circle-outline" size={26} color={color}/>,
                 }}
             />
 
@@ -50,7 +47,7 @@ export default function TabLayout() {
                 name="(search)"
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <FontAwesome name="search" size={26} color={color}/>,
+                    tabBarIcon: ({color}) => <MaterialIcons name="search" size={26} color={color}/>,
                 }}
             />
 

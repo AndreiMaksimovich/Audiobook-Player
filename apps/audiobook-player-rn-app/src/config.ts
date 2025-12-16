@@ -13,3 +13,6 @@ export const AudioPlaybackFastBackwardDuration = 15000
 export const CurrentlyPlayingStateSavePeriodicity = 5000
 
 export const SplashScreenMinDisplayDuration = 500
+
+export const OfflineAudiobooksDownloadTasksDir = 'OfflineAudiobooks/DownloadTasks'
+export const OfflineAudiobooksDir = 'OfflineAudiobooks/Audiobooks'

@@ -1,13 +1,11 @@
 import {Audiobook} from "shared";
 import TrackPlayer, {
-    AppKilledPlaybackBehavior,
     Event,
     PlaybackActiveTrackChangedEvent,
     Progress,
     PlaybackQueueEndedEvent,
-    Capability
-} from '@/src/track-player';
-import {PlaybackErrorEvent} from "react-native-track-player-v4";
+    PlaybackErrorEvent
+} from '@/src/wrappers/react-native-track-player';
 
 export interface AudiobookPlayerCallbacks {
     onPlaybackActiveTrackChanged?: (event: PlaybackActiveTrackChangedEvent) => void;
@@ -21,7 +19,6 @@ export class AudiobookPlayer {
 
     protected audioFileUrls: string[] | null = null;
     protected isPlaying: boolean = false;
-    protected isTrackPlayerInitialized: boolean = false;
     protected updateTimeInterval: number | null = null;
 
     protected callbacks?: AudiobookPlayerCallbacks;
@@ -30,52 +27,6 @@ export class AudiobookPlayer {
 
     configure(callbacks: AudiobookPlayerCallbacks) {
         this.callbacks = callbacks;
-    }
-
-    protected async setupTrackPlayer(): Promise<void> {
-        if (this.isTrackPlayerInitialized) return;
-        this.isTrackPlayerInitialized = true;
-
-        await TrackPlayer.setupPlayer()
-
-        await TrackPlayer.updateOptions({
-            capabilities: [
-                Capability.Play,
-                Capability.Pause,
-                Capability.SkipToNext,
-                Capability.SkipToPrevious,
-                Capability.JumpBackward,
-                Capability.JumpForward
-            ],
-            notificationCapabilities: [
-                Capability.Pause,
-                Capability.Play,
-                Capability.SkipToNext,
-                Capability.SkipToPrevious,
-                Capability.JumpBackward,
-                Capability.JumpForward
-            ],
-            android: {
-                appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
-            }
-        })
-
-        TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (data) => {
-            this.isPlaying = false
-            this.callbacks?.onPlaybackQueueEnded?.(data)
-        })
-
-        TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (data) => {
-            this.callbacks?.onPlaybackActiveTrackChanged?.(data)
-        })
-
-        TrackPlayer.addEventListener(Event.PlaybackError, (data) => {
-            this.callbacks?.onPlaybackErrorEvent?.(data)
-        })
-
-        for (const eventType of [Event.RemotePause, Event.RemotePlay, Event.RemoteNext, Event.RemotePrevious, Event.RemoteJumpBackward, Event.RemoteJumpForward,]) {
-            TrackPlayer.addEventListener(eventType, () => {this.callbacks?.onRemoteEvent?.(eventType)})
-        }
     }
 
     async getCurrentAudioFile(): Promise<{ index: number; time: number }> {
@@ -95,12 +46,6 @@ export class AudiobookPlayer {
 
     async play(): Promise<void> {
         await TrackPlayer.play()
-        this.isPlaying = true
-        this.updateTimeInterval = setInterval(
-            () => {
-                TrackPlayer.getProgress().then(data => {this.callbacks?.onTrackPlayerProgressChanged?.(data)}).catch(console.error)
-            },
-            1000)
     }
 
     async playAudioFile(audioFileIndex: number, time: number): Promise<void> {
@@ -117,7 +62,6 @@ export class AudiobookPlayer {
     async setAudiobook(audiobook: Audiobook | null, audioFileIndex: number = 0, audioFileTime: number = 0, startPlaying: boolean | undefined = undefined): Promise<void> {
         this.audioFileUrls = audiobook?.audioFiles?.map(mf => mf.url) ?? null;
 
-        await this.setupTrackPlayer()
         await this.reset()
 
         if (audiobook) {

@@ -26,6 +26,22 @@ module.exports = {
             platforms: {
                 web: null,
             }
-        }
+        },
+
+        // Service Worker related stuff
+        'workbox-routing': {
+            platforms: {
+                android: null,
+                ios: null,
+                web: null,
+            }
+        },
+        'workbox-strategies': {
+            platforms: {
+                android: null,
+                ios: null,
+                web: null,
+            }
+        },
     },
 };

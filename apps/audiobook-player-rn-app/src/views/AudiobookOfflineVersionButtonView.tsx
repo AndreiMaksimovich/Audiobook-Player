@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/src/store";
 import {ActivityIndicator, Pressable, StyleSheet, View} from "react-native";
 import {ThemedText} from "@/src/views/ThemedText";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import {cancelDownloadTask, downloadAudiobook} from "@/src/store/OfflineAudiobooks";
 import {useState} from "react";
 import DownloadTaskRemovalConfirmationModal from "@/src/views/DownloadTaskRemovalConfirmationModal";
@@ -69,12 +69,12 @@ export default function AudiobookOfflineVersionButtonView(props: AudiobookOfflin
 
                     {/* Online -  */}
                     {state === OfflineAudiobookState.Online && (
-                        <MaterialCommunityIcons name="arrow-down" size={30} color="black" />
+                        <MaterialIcons name="download" size={30} color="black" />
                     )}
 
                     {/* Offline - Delete */}
                     {state === OfflineAudiobookState.Offline && (
-                        <MaterialCommunityIcons name="delete-outline" size={30} color="black" />
+                        <MaterialIcons name="delete" size={30} color="black" />
                     )}
 
                     {/* Download In Progress - Cancel */}
@@ -88,7 +88,7 @@ export default function AudiobookOfflineVersionButtonView(props: AudiobookOfflin
                     {/* In Download Backlog - Start Download */}
                     {state === OfflineAudiobookState.InDownloadBacklog && (
                         <>
-                            <MaterialCommunityIcons name="play" size={30} style={{position: 'absolute'}} color="black" />
+                            <MaterialIcons name="play-arrow" size={30} style={{position: 'absolute'}} color="black" />
                         </>
                     )}
 
@@ -96,14 +96,14 @@ export default function AudiobookOfflineVersionButtonView(props: AudiobookOfflin
                     {state === OfflineAudiobookState.DownloadPaused && (
                         <>
                             <ActivityIndicator size={'large'}/>
-                            <MaterialCommunityIcons name="play" size={30} style={{position: 'absolute'}} color="black" />
+                            <MaterialIcons name="play-arrow" size={30} style={{position: 'absolute'}} color="black" />
                         </>
                     )}
 
                     {/* Download Failed - Restart */}
                     {state === OfflineAudiobookState.Failed && (
                         <>
-                            <MaterialCommunityIcons name="cloud-alert-outline" size={24} style={{position: 'absolute'}} color="black" />
+                            <MaterialIcons name="error" size={24} style={{position: 'absolute'}} color="black" />
                         </>
                     )}
 

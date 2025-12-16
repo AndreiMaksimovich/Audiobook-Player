@@ -1,15 +1,11 @@
 import {Audiobook} from "shared"
-import {IAppFileStorage} from "@/src/app-file-storage";
 
-export enum EventType {
-    DownloadTaskComplete = "DownloadTaskComplete",
-    DownloadTaskFailed = "DownloadTaskFailed",
-    DownloadTaskProgress = "DownloadTaskProgress",
-    DownloadTaskCanceled = "DownloadTaskCanceled",
-}
-
-export interface Event<T> {
-    payload?: T
+export interface OfflineAudiobooksManagerListeners {
+    onDownloadTaskComplete: (audiobook: Audiobook) => void;
+    onDownloadTaskFailed: (error: any) => void;
+    onDownloadTaskProgress: (progress: number) => void;
+    onDownloadTaskCanceled: (audiobook?: Audiobook) => void;
+    onWorkerStateChanged: (workerState: WorkerState) => void;
 }
 
 export interface DownloadTask {
@@ -19,26 +15,18 @@ export interface DownloadTask {
     error?: any
 }
 
-export interface OfflineAudiobooksManagerConfiguration {
-    fileStorage: IAppFileStorage,
-    audiobooksDir: string,
-    downloadTasksDir: string,
-}
-
 export interface IOfflineAudiobooksManager {
-    init(configuration: OfflineAudiobooksManagerConfiguration): Promise<void>
+    init(): Promise<void>
+    configure(listeners: OfflineAudiobooksManagerListeners): void
 
-    addEventListener<T extends EventType>(type: T, listener: EventPayloadByEvent[T] extends never ? () => void : (event: EventPayloadByEvent[T]) => void): void
-    removeEventListener<T extends EventType>(type: T, listener: EventPayloadByEvent[T] extends never ? () => void : (event: EventPayloadByEvent[T]) => void): void
-
-    downloadAudiobook(audiobook: Audiobook): Promise<Audiobook | null>
+    downloadAudiobook(audiobook: Audiobook): void
     cancelDownload(): void
 
-    removeOfflineAudiobook(audiobookId: number): Promise<void>
     removeDownloadTask(audiobookId: number): Promise<void>
+    removeAllDownloadTasks(): Promise<void>
 
     removeAllOfflineAudiobooks(): Promise<void>
-    removeAllDownloadTasks(): Promise<void>
+    removeOfflineAudiobook(audiobookId: number): Promise<void>
 
     loadOfflineAudiobooks(): Promise<Audiobook[]>
     loadDownloadTasks(): Promise<DownloadTask[]>
@@ -46,18 +34,29 @@ export interface IOfflineAudiobooksManager {
     getOfflineAudiobook(audiobookId: number): Promise<Audiobook>
 }
 
-export type EventPayloadByEvent = {
-    [EventType.DownloadTaskComplete]: Event<Audiobook>;
-    [EventType.DownloadTaskFailed]: Event<Error>;
-    [EventType.DownloadTaskProgress]: Event<number>;
-    [EventType.DownloadTaskCanceled]: Event<Audiobook>;
-}
-
 export class OfflineAudiobookNotFound extends Error {}
+
 export class OfflineAudiobookIntegrityCheckFailed extends Error {
     error?: any;
     constructor(message?: string, error?: any) {
         super(message);
         this.error = error;
     }
+}
+
+export interface WorkerState {
+    currentlyDownloading: Audiobook | null,
+    progress: number,
+    isActive: boolean,
+}
+
+export enum WorkerMessageType {
+    DownloadTasks_Client_Download = "DownloadTasks_Client_Download",
+    DownloadTasks_Client_CancelDownload = "DownloadTasks_Client_CancelDownload",
+    DownloadTasks_Client_GetState = "DownloadTasks_Client_GetState",
+
+    DownloadTasks_Worker_State = "DownloadTasks_Worker_State",
+    DownloadTasks_Worker_DownloadProgress = "DownloadTasks_Worker_DownloadProgress",
+    DownloadTasks_Worker_DownloadComplete = "DownloadTasks_Worker_DownloadComplete",
+    DownloadTasks_Worker_DownloadFailed = "DownloadTasks_Worker_DownloadFailed",
 }

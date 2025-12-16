@@ -71,7 +71,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             if (state.activeDownloadTask && state.activeDownloadTask.audiobook.id == action.payload.id) {
                 state.activeDownloadTask.isActive = true
                 state.activeDownloadTask.error = undefined;
-                offlineAudiobooksManager.downloadAudiobook(clone(state.activeDownloadTask.audiobook)).catch(console.error);
+                offlineAudiobooksManager.downloadAudiobook(clone(state.activeDownloadTask.audiobook));
                 return;
             }
 
@@ -82,7 +82,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                 state.activeDownloadTask.isActive = true
                 state.activeDownloadTask.error = undefined;
                 updateIsActiveOnBacklogTasks(state)
-                offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook)).catch(console.error);
+                offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook));
                 return;
             }
 
@@ -95,7 +95,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             state.downloadTasks.push(task);
             state.activeDownloadTask = task;
             updateIsActiveOnBacklogTasks(state)
-            offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook)).catch(console.error);
+            offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook));
         },
 
         pauseActiveDownloadTask: (state) => {
@@ -150,7 +150,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                     nextTask.isActive = true
                     nextTask.error = undefined
                     state.activeDownloadTask = nextTask
-                    offlineAudiobooksManager.downloadAudiobook(clone(nextTask.audiobook)).catch(console.error)
+                    offlineAudiobooksManager.downloadAudiobook(clone(nextTask.audiobook))
                     updateIsActiveOnBacklogTasks(state)
                 }
             }
@@ -187,7 +187,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                     state.activeDownloadTask.isActive = true
                     state.activeDownloadTask.error = undefined;
                     updateIsActiveOnBacklogTasks(state)
-                    offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook)).catch(console.error);
+                    offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook));
                 }
             })
             .addCase(removeOfflineAudiobook, (state, action) => {

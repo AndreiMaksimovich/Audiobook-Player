@@ -5,13 +5,14 @@ import {HStackView} from "@/src/views/HStackView";
 import {useSelector} from "react-redux";
 import {RootState} from "@/src/store";
 import AudiobookHistoryRecordView from "@/src/views/AudiobookHistoryRecordView";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import AppScreenView from "@/src/views/AppScreenView";
 import {useTranslation} from "react-i18next";
 import SpacerView from "@/src/views/SpacerView";
 import {AudiobookListView} from "@/src/views/AudiobookListView";
 import DownloadTaskListView from "@/src/views/DownloadTaskListView";
 import ActiveDownloadTaskView from "@/src/views/ActiveDownloadTaskView";
+import {useAreOfflineAudiobooksAvailable} from "@/src/store/SettingsHooks";
 
 enum Mode {
     Favorites = 0,
@@ -25,20 +26,28 @@ export default function LibraryScreen() {
     const {t} = useTranslation()
     const favoriteAudiobooks = useSelector((state: RootState) => state.audiobookFavorites)
     const audiobookHistory = useSelector((state: RootState) => state.audiobookHistory)
-    const {offlineAudiobooks, downloadTasks, activeDownloadTask} = useSelector((state: RootState) => state.offlineAudiobooks)
+    const {offlineAudiobooks} = useSelector((state: RootState) => state.offlineAudiobooks)
     const [mode, setMode] = useState(Mode.Favorites)
+    const areOfflineAudiobooksAvailable = useAreOfflineAudiobooksAvailable()
 
-    const header = [
-        [
-            {mode: Mode.Favorites, label: t('Favorites')},
-            {mode: Mode.RecentlyPlayed, label: t('RecentlyPlayed')},
-            {mode: Mode.RecentlyViewed, label: t('RecentlyViewed')}
-        ],
-        [
-            {mode: Mode.OfflineAudiobooks, label: t('OfflineAudiobooks')},
-            {mode: Mode.DownloadTasks, label: t('DownloadTasks')},
-        ]
-    ]
+    const header = useMemo(() => {
+        const result = [
+            [
+                {mode: Mode.Favorites, label: t('Favorites')},
+                {mode: Mode.RecentlyPlayed, label: t('RecentlyPlayed')},
+                {mode: Mode.RecentlyViewed, label: t('RecentlyViewed')}
+            ]
+        ];
+        if (areOfflineAudiobooksAvailable) {
+            result.push(
+                [
+                    {mode: Mode.OfflineAudiobooks, label: t('OfflineAudiobooks')},
+                    {mode: Mode.DownloadTasks, label: t('DownloadTasks')},
+                ]
+            )
+        }
+        return result
+    }, [areOfflineAudiobooksAvailable])
 
     return (
         <AppScreenView title={t("Library")}>
@@ -74,12 +83,13 @@ export default function LibraryScreen() {
                 {mode === Mode.RecentlyViewed && (<>{audiobookHistory.recentlyViewed.toReversed().map((record) => (
                     <AudiobookHistoryRecordView record={record} key={`viewed.${record.id}`}/>))}</>)}
 
-                {mode === Mode.OfflineAudiobooks && (<AudiobookListView audiobooks={offlineAudiobooks} mode={'offline'}/>)}
+                {mode === Mode.OfflineAudiobooks && (
+                    <AudiobookListView audiobooks={offlineAudiobooks} mode={'offline'}/>)}
 
                 {mode === Mode.DownloadTasks && (
                     <>
-                        <ActiveDownloadTaskView />
-                        <DownloadTaskListView />
+                        <ActiveDownloadTaskView/>
+                        <DownloadTaskListView/>
                     </>
                 )}
 

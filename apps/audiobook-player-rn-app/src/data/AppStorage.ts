@@ -62,7 +62,8 @@ export class AppStorage {
                 audiobook: null,
                 currentAudioFileIndex: 0,
                 currentAudioFileTime: 0,
-                isPlaying: false
+                isPlaying: false,
+                isOffline: false,
             }
         )
     }

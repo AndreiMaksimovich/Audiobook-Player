@@ -9,11 +9,11 @@ import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
 import {useTranslation} from "react-i18next";
 import {Pressable, StyleSheet, View} from "react-native";
 import HSplitterView from "@/src/views/HSplitterView";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {useState} from "react";
 import OfflineAudiobookRemovalConfirmationModal from "./OfflineAudiobookRemovalConfirmationModal";
 import {useDispatch} from "react-redux";
 import {removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export interface AudiobookListElementViewProps {
     audiobook: Audiobook,
@@ -67,7 +67,7 @@ export function AudiobookListElementView(props: AudiobookListElementViewProps) {
                     <>
                         <View style={{position: 'absolute', top: 5, right: 5}}>
                             <Pressable onPress={deleteOfflineAudiobook}>
-                                <MaterialCommunityIcons name="close-circle-outline" size={36} color="black"/>
+                                <MaterialIcons name="cancel" size={36} color="black"/>
                             </Pressable>
                         </View>
                         <OfflineAudiobookRemovalConfirmationModal audiobook={audiobook} isVisible={isRemovalConfirmationVisible} onResult={handleRemovalConfirmation} />

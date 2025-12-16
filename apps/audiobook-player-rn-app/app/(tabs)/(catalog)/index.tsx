@@ -8,7 +8,7 @@ import {Link} from "expo-router";
 import {HStackView} from "@/src/views/HStackView";
 import AppScreenView from "@/src/views/AppScreenView";
 import SpacerView from "@/src/views/SpacerView";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {
     useLazyGetAudiobooksQuery,
     useLazyGetCategoriesQuery,

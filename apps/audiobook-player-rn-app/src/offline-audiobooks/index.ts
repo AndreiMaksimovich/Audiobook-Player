@@ -2,5 +2,6 @@ import {OfflineAudiobooksManager} from "@/src/offline-audiobooks/OfflineAudioboo
 import {IOfflineAudiobooksManager} from "@/src/offline-audiobooks/Types";
 
 export * from './Types'
+export * from './Functions'
 
 export const offlineAudiobooksManager: IOfflineAudiobooksManager = new OfflineAudiobooksManager();

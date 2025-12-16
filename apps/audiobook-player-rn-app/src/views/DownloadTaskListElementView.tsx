@@ -2,7 +2,7 @@ import {DownloadTask} from "@/src/offline-audiobooks";
 import {Pressable, StyleSheet, View, Alert} from "react-native";
 import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
 import {ThemedText} from "@/src/views/ThemedText";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import {cancelDownloadTask, downloadAudiobook} from "@/src/store/OfflineAudiobooks"
 import {useDispatch} from "react-redux";
 import {useState} from "react";
@@ -41,11 +41,11 @@ export default function DownloadTaskListElementView(props: DownloadTaskListEleme
                 </View>
             </AudiobookLinkView>
             <View style={styles.buttonContainer}>
-                <Pressable key={"play-circle-outline"} onPress={startDownload}>
-                    <MaterialCommunityIcons name="play-circle-outline" size={40} color="black"/>
+                <Pressable key={"btn-play"} onPress={startDownload}>
+                    <MaterialIcons name="play-arrow" size={40} color="black"/>
                 </Pressable>
-                <Pressable key={"close-circle-outline"} onPress={onButtonClickDelete}>
-                    <MaterialCommunityIcons name="close-circle-outline" size={40} color="black"/>
+                <Pressable key={"btn-cancel"} onPress={onButtonClickDelete}>
+                    <MaterialIcons name="cancel" size={40} color="black"/>
                 </Pressable>
             </View>
             <DownloadTaskRemovalConfirmationModal isVisible={isDeleteConfirmationModalVisible} audiobook={audiobook} onResult={handleDeleteConfirmation}/>
