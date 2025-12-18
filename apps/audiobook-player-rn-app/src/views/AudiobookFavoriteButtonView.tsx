@@ -1,11 +1,9 @@
 import {Audiobook} from "shared";
-import {Pressable, StyleSheet, View} from "react-native";
-import {ThemedText} from "@/src/views/ThemedText";
+import {Pressable, View} from "react-native";
 import {useAppDispatch} from "@/src/store";
 import {useIsAudiobookFavorite} from "@/src/store/AudiobookFavoritesHooks";
 import {addFavoriteAudiobook, removeFavoriteAudiobook} from "@/src/store/AudiobookFavorites";
-import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
-import {useTranslation} from "react-i18next";
+import {MaterialIcons} from "@expo/vector-icons";
 import {themeStyles} from "@/src/theme"
 
 export interface AudiobookFavoriteButtonViewProps {
@@ -13,8 +11,6 @@ export interface AudiobookFavoriteButtonViewProps {
 }
 
 export default function AudiobookFavoriteButtonView(props: AudiobookFavoriteButtonViewProps) {
-    const {t} = useTranslation()
-
     const dispatch = useAppDispatch();
     const isFavorite = useIsAudiobookFavorite(props.audiobook.id);
 
@@ -29,21 +25,8 @@ export default function AudiobookFavoriteButtonView(props: AudiobookFavoriteButt
     return (
         <Pressable onPress={handleOnPress}>
             <View style={themeStyles.circleActionButton}>
-                <MaterialCommunityIcons name={isFavorite ? "star" : "star-plus-outline"} size={30} color="black" />
+                <MaterialIcons name={isFavorite ? "star" : "star-outline"} size={30} color="black" />
             </View>
         </Pressable>
     )
 }
-
-const styles = StyleSheet.create({
-    base: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    isFavorite: {
-
-    },
-    isNotFavorite: {
-
-    }
-})

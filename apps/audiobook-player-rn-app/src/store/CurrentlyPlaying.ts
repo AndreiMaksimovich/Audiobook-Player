@@ -2,10 +2,9 @@ import type {PayloadAction} from '@reduxjs/toolkit'
 import {createSlice} from '@reduxjs/toolkit'
 import {Audiobook, MediaFile} from "shared";
 import {audiobookPlayer} from "@/src/audio-player";
-import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, Progress} from '@/src/track-player';
+import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, PlaybackState, Progress, PlaybackErrorEvent, State} from '@/src/wrappers/react-native-track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
 import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/GlobalActions";
-import {PlaybackErrorEvent} from "react-native-track-player-v4";
 import {toasts, ToastType} from "@/src/toasts";
 import i18next from '@/src/localization'
 
@@ -114,7 +113,7 @@ export const currentlyPlayingStateSlice = createSlice({
         handleTrackPlayerEventPlaybackActiveTrackChanged: (state, action: PayloadAction<PlaybackActiveTrackChangedEvent>) => {
             if (ignoreTrackPlayerEventPlaybackActiveTrackChanged) return
             const index = action.payload.index
-            if (state.isPlaying && index !== undefined && state.currentAudioFileIndex !== index) {
+            if (index !== undefined && state.currentAudioFileIndex !== index) {
                 state.currentAudioFileIndex = index
                 state.currentAudioFileTime = 0
             }
@@ -162,6 +161,19 @@ export const currentlyPlayingStateSlice = createSlice({
             } else{
                 audiobookPlayer.pause().catch(console.error)
             }
+        },
+
+        handleTrackPlayerStateChange: (state, action: PayloadAction<PlaybackState>) => {
+            const playbackState = action.payload.state
+            if (playbackState === State.Playing && !state.isPlaying) {
+                state.isPlaying = true
+            } else if ((playbackState === State.Error || playbackState === State.None || playbackState === State.Ended || playbackState === State.Paused || playbackState === State.Stopped) && state.isPlaying) {
+                state.isPlaying = false
+            }
+        },
+
+        handleRemoteButtonPlay: (state, action: PayloadAction<boolean>) => {
+            state.isPlaying = action.payload
         },
 
         setCurrentAudioFileNormalizedProgress: (state, action: PayloadAction<number>) => {
@@ -217,5 +229,7 @@ export const {
     handleButtonSkipBackward,
     handleButtonPlay,
     setCurrentAudioFileNormalizedProgress,
-    handleTrackPlayerEventPlaybackError
+    handleTrackPlayerEventPlaybackError,
+    handleTrackPlayerStateChange,
+    handleRemoteButtonPlay
 } = currentlyPlayingStateSlice.actions

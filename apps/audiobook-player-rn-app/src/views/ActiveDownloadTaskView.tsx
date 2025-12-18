@@ -3,12 +3,12 @@ import {RootState} from "@/src/store";
 import {Pressable, StyleSheet, View} from "react-native";
 import {AudiobookLinkView} from "@/src/views/AudiobookLinkView";
 import {ThemedText} from "@/src/views/ThemedText";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {useState} from "react";
 import {cancelDownloadTask, downloadAudiobook, pauseActiveDownloadTask} from "@/src/store/OfflineAudiobooks";
 import Slider from "@react-native-community/slider";
 import SpacerView from "@/src/views/SpacerView";
 import DownloadTaskRemovalConfirmationModal from "@/src/views/DownloadTaskRemovalConfirmationModal";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export interface ActiveDownloadTaskViewProps {
 }
@@ -58,14 +58,14 @@ export default function ActiveDownloadTaskView(props: ActiveDownloadTaskViewProp
             </AudiobookLinkView>
             <SpacerView size={5}/>
             <View style={styles.buttonContainer}>
-                <Pressable key={"play-pause-button"} onPress={resumePauseTask}>
-                    <MaterialCommunityIcons
-                        name={activeDownloadTask.isActive ? "pause-circle-outline" : "play-circle-outline"} size={36}
+                <Pressable key={"btn-play-pause"} onPress={resumePauseTask}>
+                    <MaterialIcons
+                        name={activeDownloadTask.isActive ? "pause" : "play-arrow"} size={36}
                         color="black"/>
                 </Pressable>
 
-                <Pressable key={"close-circle-outline"} onPress={onDeleteButtonPress}>
-                    <MaterialCommunityIcons name="close-circle-outline" size={36} color="black"/>
+                <Pressable key={"btn-cancel"} onPress={onDeleteButtonPress}>
+                    <MaterialIcons name="cancel" size={36} color="black"/>
                 </Pressable>
             </View>
 

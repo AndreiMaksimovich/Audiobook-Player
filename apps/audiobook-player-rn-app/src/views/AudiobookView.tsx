@@ -18,6 +18,7 @@ import {HStackView} from "@/src/views/HStackView";
 import SpacerView from "@/src/views/SpacerView";
 import {useTranslation} from "react-i18next";
 import AudiobookOfflineVersionButtonView from "@/src/views/AudiobookOfflineVersionButtonView";
+import {useAreOfflineAudiobooksAvailable} from "@/src/store/SettingsHooks";
 
 export interface AudiobookViewProps {
     audiobook: Audiobook;
@@ -28,6 +29,7 @@ export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
     const {audiobook} = props;
     const dispatch = useDispatch();
     const {t} = useTranslation();
+    const areOfflineAudiobooksAvailable = useAreOfflineAudiobooksAvailable()
 
     useLayoutEffect(() => {
         dispatch(addRecentlyViewAudiobook(audiobook));
@@ -94,7 +96,7 @@ export default function AudiobookView(props: AudiobookViewProps): JSX.Element {
                             </HStackView>
                         )}
                         <HStackView>
-                            <AudiobookOfflineVersionButtonView audiobook={audiobook}/>
+                            {areOfflineAudiobooksAvailable && (<AudiobookOfflineVersionButtonView audiobook={audiobook}/>)}
                             <AudiobookFavoriteButtonView audiobook={audiobook}/>
                         </HStackView>
                     </View>

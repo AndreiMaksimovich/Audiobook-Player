@@ -12,12 +12,12 @@ import {
 } from "@/src/store/CurrentlyPlaying";
 import Slider from "@react-native-community/slider";
 import {useEffect, useState} from "react";
-import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
 import {HStackView} from "@/src/views/HStackView";
 import {ThemedText} from "@/src/views/ThemedText";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import SpacerView from "@/src/views/SpacerView";
 import {VStackView} from "@/src/views/VStackView";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export interface AudiobookPlayerPanelViewProps {
     audiobook: Audiobook,
@@ -132,26 +132,26 @@ export default function AudiobookPlayerPanelView(props: AudiobookPlayerPanelView
                 <HStackView justifyContent={"space-around"} alignItems={"center"} style={{width: 250}}>
 
                     <Pressable key={"button-skip-backward"} onPress={onButtonPressSkipBackward}>
-                        <MaterialCommunityIcons name="skip-backward" size={30} color="black" />
+                        <MaterialIcons name="skip-previous" size={30} color="black" />
                     </Pressable>
 
                     <Pressable key={"button-rewind"} onPress={onButtonPressFastBackward}>
-                        <MaterialCommunityIcons name="rewind-15" size={30} color="black" />
+                        <MaterialIcons name="fast-rewind" size={30} color="black" />
                     </Pressable>
 
                     <Pressable key={"button-play"} onPress={onButtonPlayPress}>
                         {(isCurrentAudiobook && currentlyPlaying.isPlaying)
-                            ? (<Entypo name="controller-stop" size={36} color="black" />)
-                            : (<Entypo name="controller-play" size={36} color="black" />)
+                            ? (<MaterialIcons name="pause" size={36} color="black" />)
+                            : (<MaterialIcons name="play-arrow" size={36} color="black" />)
                         }
                     </Pressable>
 
                     <Pressable key={"button-fast-forward"} onPress={onButtonPressFastForward}>
-                        <MaterialCommunityIcons name="fast-forward-15" size={30} color="black" />
+                        <MaterialIcons name="fast-forward" size={30} color="black" />
                     </Pressable>
 
                     <Pressable key={"button-skip-forward"} onPress={onButtonPressSkipForward}>
-                        <MaterialCommunityIcons name="skip-forward" size={30} color="black" />
+                        <MaterialIcons name="skip-next" size={30} color="black" />
                     </Pressable>
 
                 </HStackView>

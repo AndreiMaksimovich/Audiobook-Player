@@ -8,8 +8,8 @@ import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import SpacerView from "@/src/views/SpacerView";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/src/store";
-import {Entypo} from "@expo/vector-icons";
 import {setAudiobook, setIsPlaying} from "@/src/store/CurrentlyPlaying";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export interface AudiobookAudioFileRowViewProps {
     audioFileIndex: number
@@ -59,8 +59,8 @@ export default function AudiobookAudioFileRowView(props: AudiobookAudioFileRowVi
                             type={"default"}>{props.startTime !== undefined ? DateTimeUtils.formatDuration(props.startTime) : null}</ThemedText>
                         <SpacerView size={5}/>
                         {isCurrentAudioFile && currentlyPlaying.isPlaying
-                            ? (<Entypo name="controller-stop" size={26} color="black"/>)
-                            : (<Entypo name="controller-play" size={26} color="black"/>)
+                            ? (<MaterialIcons name="pause" size={26} color="black"/>)
+                            : (<MaterialIcons name="play-arrow" size={26} color="black"/>)
                         }
                     </HStackView>
 

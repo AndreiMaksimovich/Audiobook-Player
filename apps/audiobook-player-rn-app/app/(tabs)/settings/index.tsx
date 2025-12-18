@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import AppScreenView from "@/src/views/AppScreenView";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +10,7 @@ import {HStackView} from "@/src/views/HStackView";
 import {ThemedText} from "@/src/views/ThemedText";
 import SpacerView from "@/src/views/SpacerView";
 import SimplePickerView from "@/src/views/SimplePickerView";
+import useIsStandaloneApp from "@/src/hooks/use-is-standalone-app";
 
 export default function HomeScreen() {
     const {t} = useTranslation()
@@ -18,6 +19,8 @@ export default function HomeScreen() {
     const languages = Array.from(SupportedLanguages.values()).map(language => {
         return {value: language.code, label: language.name}
     })
+
+    const isStandalone = useIsStandaloneApp()
 
     return (
         <AppScreenView title={t("Settings")}>
@@ -41,6 +44,8 @@ export default function HomeScreen() {
                     </View>
 
                 </HStackView>
+
+                <ThemedText>Is standalone: {isStandalone ? "true" : "false"}</ThemedText>
 
             </VStackView>
 
