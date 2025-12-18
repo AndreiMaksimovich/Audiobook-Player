@@ -1,10 +1,14 @@
 ///<reference lib="WebWorker" />
 import {appFileStorage} from "@/src/app-file-storage";
 declare const self: ServiceWorkerGlobalScope;
+import { registerRoute, Route } from 'workbox-routing';
+import { NetworkFirst } from 'workbox-strategies';
+import {OfflineAudiobooksEnabled, UseServiceWorkerForOfflineAudiobookDownloads} from "@/src/config";
+import {ServiceWorkerOfflineAudiobookManagerWorker} from "@/src/offline-audiobooks/manager/ServiceWorkerOfflineAudiobookManagerWorker.web";
+
 const LogTag = 'Service-Worker:'
 
-import { registerRoute, Route } from 'workbox-routing';
-import { CacheFirst, NetworkFirst } from 'workbox-strategies';
+// ---- Cache -------------------------
 
 const fontRoute = new Route(({ request, sameOrigin }) => {
     return sameOrigin && request.destination === 'font'
@@ -26,12 +30,23 @@ const styleRoute = new Route(({ request, sameOrigin }) => {
     return sameOrigin && request.destination === 'style'
 }, new NetworkFirst());
 
-// Register the new route
 registerRoute(fontRoute);
 registerRoute(imageRoute);
 registerRoute(scriptRoute);
 registerRoute(documentRoute);
 registerRoute(styleRoute);
+
+// ---- Offline Audiobooks -------------------------
+
+const offlineAudiobookManagerWorker = new ServiceWorkerOfflineAudiobookManagerWorker()
+
+if (OfflineAudiobooksEnabled && UseServiceWorkerForOfflineAudiobookDownloads) {
+    (async () => {
+        await appFileStorage.init()
+        await offlineAudiobookManagerWorker.init()
+        console.log(LogTag, 'ServiceWorkerOfflineAudiobookManagerWorker Initialized');
+    })()
+}
 
 self.addEventListener("install", function (event) {
     console.log(LogTag, 'Service worker install');
@@ -40,17 +55,3 @@ self.addEventListener("install", function (event) {
 self.addEventListener("activate", function (event) {
     console.log(LogTag, 'Service worker activate');
 });
-
-
-//TODO PWA Service Worker DownloadTasks
-
-// import {WorkerOfflineAudiobookManager} from "@/src/offline-audiobooks/WorkerOfflineAudiobookManager.web";
-// import {offlineAudiobooksManager} from "@/src/offline-audiobooks";
-// const offlineAudiobookManager = new WorkerOfflineAudiobookManager();
-// (async () => {
-//     console.log(LogTag, 'Initializing...');
-//     await appFileStorage.init()
-//     await offlineAudiobooksManager.init()
-//     await offlineAudiobookManager.init()
-//     console.log(LogTag, 'Initialized');
-// })()

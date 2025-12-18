@@ -1,12 +1,10 @@
-//TODO PWA Service Worker DownloadTasks
-
 import {Message, serviceWorkerMessageBus} from "@/src/service-worker";
 import {WorkerMessageType, WorkerState} from "@/src/offline-audiobooks/Types";
 import {Audiobook} from 'shared'
 import {downloadAudiobook, initializeOfflineAudiobooksFileStorage} from "@/src/offline-audiobooks/Functions";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 
-export class WorkerOfflineAudiobookManager {
+export class ServiceWorkerOfflineAudiobookManagerWorker {
     private abortController: AbortController | null = null;
 
     private state: WorkerState = {

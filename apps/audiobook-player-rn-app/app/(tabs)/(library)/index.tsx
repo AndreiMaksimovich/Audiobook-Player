@@ -12,7 +12,7 @@ import SpacerView from "@/src/views/SpacerView";
 import {AudiobookListView} from "@/src/views/AudiobookListView";
 import DownloadTaskListView from "@/src/views/DownloadTaskListView";
 import ActiveDownloadTaskView from "@/src/views/ActiveDownloadTaskView";
-import {useAreOfflineAudiobooksAvailable} from "@/src/store/SettingsHooks";
+import {useAreOfflineAudiobooksAvailable} from "@/src/store/Hooks";
 
 enum Mode {
     Favorites = 0,

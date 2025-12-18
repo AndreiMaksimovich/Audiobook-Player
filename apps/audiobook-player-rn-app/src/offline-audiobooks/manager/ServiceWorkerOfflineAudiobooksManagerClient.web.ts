@@ -1,12 +1,10 @@
-//TODO PWA Service Worker DownloadTasks
-
 import {
     DownloadTask,
     IOfflineAudiobooksManager,
     OfflineAudiobooksManagerListeners,
     WorkerMessageType, WorkerState
-} from "./Types";
-import {Audiobook} from "shared"
+} from "../Types";
+import {Audiobook} from "../../../../../packages/shared"
 import {
     getOfflineAudiobook,
     removeOfflineAudiobook,
@@ -20,10 +18,8 @@ import {
 } from "@/src/offline-audiobooks/Functions";
 import {Message, serviceWorkerMessageBus} from "@/src/service-worker";
 
-export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
+export class ServiceWorkerOfflineAudiobookManagerClient implements IOfflineAudiobooksManager {
     private listeners?: OfflineAudiobooksManagerListeners;
-    private isDownloading = false;
-    private downloadingAudiobook: Audiobook | null = null;
 
     configure(listeners: OfflineAudiobooksManagerListeners): void {
         this.listeners = listeners;
@@ -35,8 +31,6 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
         serviceWorkerMessageBus.addMessageListener(
             WorkerMessageType.DownloadTasks_Worker_DownloadComplete,
             (message: Message<Audiobook>) => {
-                this.isDownloading = false
-                this.downloadingAudiobook = null
                 audiobookToOfflineAudiobook(message.payload!, false)
                     .then((audiobook) => this.listeners?.onDownloadTaskComplete(audiobook))
                     .catch(console.error);
@@ -46,8 +40,6 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
         serviceWorkerMessageBus.addMessageListener(
             WorkerMessageType.DownloadTasks_Worker_DownloadFailed,
             (message: Message<any>) => {
-                this.isDownloading = false
-                this.downloadingAudiobook = null
                 this.listeners?.onDownloadTaskFailed(message.payload)
             }
         )
@@ -69,14 +61,10 @@ export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
 
     cancelDownload(): void {
         serviceWorkerMessageBus.post(WorkerMessageType.DownloadTasks_Client_CancelDownload)
-        this.isDownloading = false;
     }
 
     downloadAudiobook(audiobook: Audiobook) {
         serviceWorkerMessageBus.post(WorkerMessageType.DownloadTasks_Client_Download, audiobook)
-
-        this.isDownloading = true;
-        this.downloadingAudiobook = audiobook;
     }
 
     private handleWorkerState(state: WorkerState) {

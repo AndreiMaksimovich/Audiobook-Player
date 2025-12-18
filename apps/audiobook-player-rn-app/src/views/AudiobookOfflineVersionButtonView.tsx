@@ -9,7 +9,7 @@ import {cancelDownloadTask, downloadAudiobook} from "@/src/store/OfflineAudioboo
 import {useState} from "react";
 import DownloadTaskRemovalConfirmationModal from "@/src/views/DownloadTaskRemovalConfirmationModal";
 import OfflineAudiobookRemovalConfirmationModal from "@/src/views/OfflineAudiobookRemovalConfirmationModal";
-import {removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {removeOfflineAudiobook} from "@/src/store/Actions";
 import {themeStyles} from "@/src/theme";
 
 export interface AudiobookOfflineVersionButtonViewProps {

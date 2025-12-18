@@ -4,7 +4,7 @@ import {Audiobook, MediaFile} from "shared";
 import {audiobookPlayer} from "@/src/audio-player";
 import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, PlaybackState, Progress, PlaybackErrorEvent, State} from '@/src/wrappers/react-native-track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
-import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/Actions";
 import {toasts, ToastType} from "@/src/toasts";
 import i18next from '@/src/localization'
 

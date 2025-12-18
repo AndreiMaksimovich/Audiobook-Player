@@ -2,8 +2,8 @@ import {
     DownloadTask,
     IOfflineAudiobooksManager,
     OfflineAudiobooksManagerListeners
-} from "./Types";
-import {Audiobook} from "shared"
+} from "../Types";
+import {Audiobook} from "../../../../../packages/shared"
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {
     downloadAudiobook as downloadAudiobookTask,

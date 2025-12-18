@@ -1,7 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {Audiobook} from "shared";
 import {DownloadTask, offlineAudiobooksManager} from "@/src/offline-audiobooks";
-import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/Actions";
 import {toasts, ToastType} from "@/src/toasts";
 import i18next from '@/src/localization'
 

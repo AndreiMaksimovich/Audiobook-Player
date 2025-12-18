@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AudiobookHistoryRecord} from "@/src/data/AudiobookHistoryRecord";
 import {CurrentlyPlayingState} from "@/src/store/CurrentlyPlaying";
-import {settingsInitialState, SettingsState} from "@/src/store/Settings";
+import {SettingsState} from "@/src/store/Settings";
 
 const recentlyViewedStorageKey = 'AudiobookHistory.RecentlyViewed';
 const recentlyPlayedStorageKey = 'AudiobookHistory.RecentlyPlayed';

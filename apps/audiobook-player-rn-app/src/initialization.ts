@@ -1,5 +1,9 @@
 import {appFileStorage} from "@/src/app-file-storage";
-import {setIsPersistentStorageAvailable} from "@/src/store/Settings";
+import {
+    setAreaOfflineAudiobooksInitialized,
+    setIsPersistentStorageAvailable,
+    setIsServiceWorkerRegistered
+} from "@/src/store/Global";
 import {offlineAudiobooksManager, WorkerState} from "@/src/offline-audiobooks";
 import {
     handleActiveDownloadTaskFailure,
@@ -14,8 +18,12 @@ import {setFavoriteAudiobooks} from "@/src/store/AudiobookFavorites";
 import {setAudiobookHistory} from "@/src/store/AudiobookHistory";
 import {setAudiobook} from "@/src/store/CurrentlyPlaying";
 import {Dispatch} from "@reduxjs/toolkit";
-import {handleOfflineAudiobooksActiveDownloadTaskCompletion} from "@/src/store/GlobalActions";
+import {handleOfflineAudiobooksActiveDownloadTaskCompletion} from "@/src/store/Actions";
 import {Audiobook} from 'shared'
+import i18next from "@/src/localization";
+import {delay} from "@/src/utils";
+import {setSettings, settingsInitialState} from "@/src/store/Settings";
+import {getDefaultSupportedLanguageCode} from "@/src/localization/Localization";
 
 const LogTag = 'Initialization:'
 
@@ -25,10 +33,10 @@ export interface InitializationOptions {
 }
 
 export async function initializeApplicationDataAndServices(options: InitializationOptions) {
-
     let areOfflineAudiobooksAvailable = false;
 
     await Promise.all([
+        loadSettings(options),
         initializeWebServiceWorker(options),
         initializeOfflineAudiobooks(options).then(value => areOfflineAudiobooksAvailable = value),
         initializeTrackPlayer(options),
@@ -42,6 +50,7 @@ export async function initializeWebServiceWorker(options: InitializationOptions)
     if (Platform.OS === 'web') {
         try {
             await navigator.serviceWorker.register("/service-worker.js", {scope: "/"})
+            options.dispatch(setIsServiceWorkerRegistered(true))
             console.log(LogTag, 'Service Worker Registered');
         } catch (error) {
             console.error(LogTag, 'Service Worker registration failed', error);
@@ -56,9 +65,9 @@ export async function initializeOfflineAudiobooks(options: InitializationOptions
 
     try {
         await appFileStorage.init()
-        await offlineAudiobooksManager.init()
-
         options.dispatch(setIsPersistentStorageAvailable(true))
+
+        await offlineAudiobooksManager.init()
 
         try {
             const offlineAudiobooks = await offlineAudiobooksManager.loadOfflineAudiobooks()
@@ -74,6 +83,9 @@ export async function initializeOfflineAudiobooks(options: InitializationOptions
         } catch (error) {
             console.error(LogTag, 'Retrieval of the saved offline audiobooks and download tasks failed', error)
         }
+
+        options.dispatch(setAreaOfflineAudiobooksInitialized(true))
+
     } catch (error) {
         console.warn(LogTag, 'Failed to initialize app persistent storage', error);
         options.dispatch(setIsPersistentStorageAvailable(false))
@@ -157,4 +169,16 @@ export async function loadCurrentlyPlayedSavedState(options: InitializationOptio
     }))
 
     console.log(LogTag, 'Audiobook currently played loaded')
+}
+
+export async function loadSettings(options: InitializationOptions) {
+    while (!i18next.isInitialized) {
+        await delay(50)
+    }
+    const defaultSettings = {...settingsInitialState}
+    defaultSettings.localizationLanguageCode = getDefaultSupportedLanguageCode()
+    const settings = await appStorage.loadSettings(defaultSettings);
+    options.dispatch(setSettings(settings));
+
+    console.log(LogTag, 'Settings loaded')
 }

@@ -17,6 +17,7 @@ class ServiceWorkerMessageBus {
 
     handleMessage(event: MessageEvent<any>) {
         const message = event.data as Message<any>
+        console.log(message)
         if (this.listeners.has(message.type)) {
             for (const listener of this.listeners.get(message.type)!) {
                 listener(message)
@@ -37,6 +38,16 @@ class ServiceWorkerMessageBus {
             this.listeners.set(type, [listener])
         } else {
             this.listeners.get(type)!.push(listener)
+        }
+    }
+
+    removeMessageListener(type: string, listener: ServiceWorkerMessageBusMessageListener) {
+        if (this.listeners.has(type)) {
+            const listeners = this.listeners.get(type)!
+            const index = listeners.indexOf(listener)
+            if (index > -1) {
+                listeners.splice(index, 1)
+            }
         }
     }
 }

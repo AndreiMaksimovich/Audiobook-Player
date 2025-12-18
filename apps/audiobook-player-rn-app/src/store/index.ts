@@ -7,10 +7,13 @@ import {audiobookFavoritesStateSlice} from "@/src/store/AudiobookFavorites";
 import {useDispatch} from "react-redux";
 import {currentlyPlayingStateSlice} from "@/src/store/CurrentlyPlaying"
 import {offlineAudiobooksStateSlice} from '@/src/store/OfflineAudiobooks'
+import {globalStateSlice} from "@/src/store/Global";
 
 export const store = configureStore({
     reducer: {
-        audiobookProviderApi: audiobookProviderApi.reducer,
+        audiobookProviderApi: audiobookProviderApi.reducer, // Server API
+
+        global: globalStateSlice.reducer,
         settings: settingsStateSlice.reducer,
         currentlyPlaying: currentlyPlayingStateSlice.reducer,
         audiobookFavorites: audiobookFavoritesStateSlice.reducer,

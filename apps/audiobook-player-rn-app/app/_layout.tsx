@@ -8,14 +8,14 @@ import AudiobookHistorySaveController from "@/src/data/AudiobookHistorySaveContr
 import {useEffect, useState} from "react";
 import AudiobookHistoryRecentlyPlayedController from "@/src/data/AudiobookHistoryRecentlyPlayedController";
 import AudiobookCurrentlyPlayingController from "@/src/data/AudiobookCurrentlyPlayingController";
-import AppSettingsController from "@/src/data/AppSettingsController";
+import AppSettingsSaveController from "@/src/data/AppSettingsSaveController";
 import SplashScreenView from "@/src/views/SplashScreenView";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {SplashScreenMinDisplayDuration} from "@/src/config";
 import {delay} from "@/src/utils";
 import {ToastController} from "@/src/toasts";
 import AudioPlaybackProgressController from "@/src/audio-player/AudioPlaybackProgressController";
-import ServiceWorkerController from "@/src/service-worker/ServiceWorkerController.web";
+import ServiceWorkerController from "@/src/service-worker/ServiceWorkerController";
 import {initializeApplicationDataAndServices} from '@/src/initialization'
 
 export const unstable_settings = {
@@ -83,7 +83,7 @@ export default function App() {
 function FunctionalComponents() {
     return (
         <>
-            <AppSettingsController/>
+            <AppSettingsSaveController/>
             <AudiobookHistoryRecentlyPlayedController/>
             <AudiobookHistorySaveController/>
             <AudiobookCurrentlyPlayingController/>
