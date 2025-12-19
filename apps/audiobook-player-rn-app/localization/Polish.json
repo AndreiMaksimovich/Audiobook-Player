@@ -54,6 +54,8 @@
     "No": "Nie",
 
     "DownloadTaskFailed.ToastMessage": "Błąd pobierania: «{title}»",
-    "AudiobookPlaybackError.ToastMessage": "Błąd odtwarzania: {message}"
+    "AudiobookPlaybackError.ToastMessage": "Błąd odtwarzania: {message}",
+
+    "AppInitializationFailedMessage": "Coś poszło nie tak podczas uruchamiania aplikacji. Uruchom aplikację ponownie."
   }
 }

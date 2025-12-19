@@ -53,6 +53,8 @@
     "No": "Не",
 
     "DownloadTaskFailed.ToastMessage": "Памылка спампоўкі «{title}»",
-    "AudiobookPlaybackError.ToastMessage": "Памылка прайгравання: {message}"
+    "AudiobookPlaybackError.ToastMessage": "Памылка прайгравання: {message}",
+
+    "AppInitializationFailedMessage": "Падчас запуску прыкладання нешта пайшло не так. Калі ласка, перазапусціце прыкладанне."
   }
 }

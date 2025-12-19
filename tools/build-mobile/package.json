@@ -1,0 +1,12 @@
+{
+  "name": "build-mobile",
+  "author": "Andrei Maksimovich",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}
