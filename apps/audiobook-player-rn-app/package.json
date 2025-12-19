@@ -5,11 +5,9 @@
   "scripts": {
     "lint": "expo lint",
     "start": "npx expo start",
-    "export-web-development": "npx cross-env environment=development expo export --platform web",
-    "export-web-testing": "npx cross-env environment=testing expo export --platform web",
-    "export-web-production": "npx cross-env environment=production expo export --platform web",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "clear-metro-cache": "rm -rf $TMPDIR/metro-cache"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
