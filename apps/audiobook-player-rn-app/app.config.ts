@@ -1,7 +1,10 @@
 import 'tsx/cjs';
+import {config} from 'dotenv'
+config()
 
 module.exports = () => {
-    const environment = process.env.environment ?? "development"
+    const profile = process.env.PROFILE  ?? "development"
+    const API_URL = process.env.API_URL ?? process.env[`API_URL_${profile.toUpperCase()}`]
 
     return {
         expo: {
@@ -18,15 +21,16 @@ module.exports = () => {
                 favicon: "./assets/images/favicon.png"
             },
             android: {
-                package: "com.amaxsoftware.audiobookplayer"
+                package: "com.amaxsoftware.audiobookplayerdemo",
             },
             ios: {
                 supportsTablet: true,
-                bundleIdentifier: "com.amaxsoftware.audiobookplayer",
+                bundleIdentifier: "com.amaxsoftware.audiobookplayerdemo",
                 infoPlist: {
                     UIBackgroundModes: [
                         "audio"
-                    ]
+                    ],
+                    "ITSAppUsesNonExemptEncryption": false
                 }
             },
             plugins: [
@@ -39,7 +43,10 @@ module.exports = () => {
                 reactCompiler: true,
             },
             extra: {
-                API_URL: process.env[`API_URL_${environment.toUpperCase()}`],
+                API_URL: API_URL,
+                eas: {
+                    projectId: process.env.EAS_PROJECT_ID,
+                },
             }
         }
     }

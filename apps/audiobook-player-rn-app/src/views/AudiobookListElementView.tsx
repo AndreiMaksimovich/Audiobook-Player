@@ -12,7 +12,7 @@ import HSplitterView from "@/src/views/HSplitterView";
 import {useState} from "react";
 import OfflineAudiobookRemovalConfirmationModal from "./OfflineAudiobookRemovalConfirmationModal";
 import {useDispatch} from "react-redux";
-import {removeOfflineAudiobook} from "@/src/store/GlobalActions";
+import {removeOfflineAudiobook} from "@/src/store/Actions";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export interface AudiobookListElementViewProps {

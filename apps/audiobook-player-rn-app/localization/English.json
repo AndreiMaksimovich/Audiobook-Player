@@ -55,7 +55,9 @@
     "No": "No",
 
     "DownloadTaskFailed.ToastMessage": "Failed to download {title}",
-    "AudiobookPlaybackError.ToastMessage": "Playback error: {message}"
+    "AudiobookPlaybackError.ToastMessage": "Playback error: {message}",
+
+    "AppInitializationFailedMessage": "Something went wrong during app startup. Please restart the app."
 
   }
 }

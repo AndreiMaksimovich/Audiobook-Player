@@ -41,13 +41,14 @@ async function run(configuration) {
 
     // server
     if (configuration.addServer) {
-        await execAsync(`cd ${serverDir} && webpack `)
+        await execAsync(`cd ${serverDir} && webpack `) // "Pack" server into a single standalone file
         await fs.cp(`${serverDir}/dist/`, tmpServerDir, {recursive: true})
         await fs.cp(serverEnvFilePath, path.join(tmpServerDir, '.env'))
     }
 
     // client
     if (configuration.addClient) {
+        await execAsync(`cd ${clientDir} && webpack `) // "Pack" service worker
         await execAsync(`npm run export-web-${configuration.production ? 'production' : 'testing'} --prefix ${clientDir}`)
         await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true})
     }

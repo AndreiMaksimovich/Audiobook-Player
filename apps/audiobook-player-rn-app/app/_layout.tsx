@@ -8,38 +8,43 @@ import AudiobookHistorySaveController from "@/src/data/AudiobookHistorySaveContr
 import {useEffect, useState} from "react";
 import AudiobookHistoryRecentlyPlayedController from "@/src/data/AudiobookHistoryRecentlyPlayedController";
 import AudiobookCurrentlyPlayingController from "@/src/data/AudiobookCurrentlyPlayingController";
-import AppSettingsController from "@/src/data/AppSettingsController";
+import AppSettingsSaveController from "@/src/data/AppSettingsSaveController";
 import SplashScreenView from "@/src/views/SplashScreenView";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {SplashScreenMinDisplayDuration} from "@/src/config";
 import {delay} from "@/src/utils";
 import {ToastController} from "@/src/toasts";
 import AudioPlaybackProgressController from "@/src/audio-player/AudioPlaybackProgressController";
-import ServiceWorkerController from "@/src/service-worker/ServiceWorkerController.web";
+import ServiceWorkerController from "@/src/service-worker/ServiceWorkerController";
 import {initializeApplicationDataAndServices} from '@/src/initialization'
+import AppInitializationFailed from "@/src/views/AppInitializationFailedView";
 
 export const unstable_settings = {
     anchor: '(tabs)',
 };
 
-// App Data & Services Initialization
-initializeApplicationDataAndServices({
-    dispatch: appDispatch,
-    initializeOfflineAudiobooks: true
-})
-    .catch((error: Error) => {
-        console.error('Initialization critical error', error)
-        //TODO handle critical error
-    })
+type InitializationState = 'not-initialized' | 'in-progress' | 'failed' | 'initialized';
 
 export default function App() {
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [initializationState, setInitializationState] = useState<InitializationState>('not-initialized');
+    const [showSplashScreen, setShowSplashScreen] = useState(true);
+
     const router = useRouter()
     const path = usePathname()
 
     // Initialization
     async function initialize() {
-
+        setInitializationState('in-progress');
+        try {
+            await initializeApplicationDataAndServices({
+                dispatch: appDispatch,
+                initializeOfflineAudiobooks: true
+            })
+            setInitializationState('initialized');
+        } catch (error) {
+            console.log(error)
+            setInitializationState('failed');
+        }
     }
 
     // Handle click on Audio/Music player notification -> Route to currently playing screen
@@ -54,21 +59,33 @@ export default function App() {
         (async () => {
             const startTime = DateTimeUtils.now()
             await initialize()
-            const timeRemaining = SplashScreenMinDisplayDuration - DateTimeUtils.now() + startTime
-            if (timeRemaining > 0) {
-                await delay(timeRemaining)
+            if (initializationState !== 'failed') {
+                const timeRemaining = SplashScreenMinDisplayDuration - DateTimeUtils.now() + startTime
+                if (timeRemaining > 0) {
+                    await delay(timeRemaining)
+                }
             }
-            setIsInitialized(true);
+            setShowSplashScreen(false)
         })()
     }, []);
 
     return (
         <ReduxProvider store={store}>
-            {isInitialized ?
+            {!showSplashScreen ?
                 (
                     <>
-                        <RootLayout/>
-                        <FunctionalComponents/>
+                        {initializationState === 'initialized' ?
+                            // App
+                            (<>
+                                <RootLayout/>
+                                <FunctionalComponents/>
+                            </>)
+                            :
+                            // Initialization failed
+                            (
+                                <AppInitializationFailed/>
+                            )
+                        }
                     </>
                 )
                 :
@@ -83,7 +100,7 @@ export default function App() {
 function FunctionalComponents() {
     return (
         <>
-            <AppSettingsController/>
+            <AppSettingsSaveController/>
             <AudiobookHistoryRecentlyPlayedController/>
             <AudiobookHistorySaveController/>
             <AudiobookCurrentlyPlayingController/>

@@ -18,7 +18,7 @@ import {HStackView} from "@/src/views/HStackView";
 import SpacerView from "@/src/views/SpacerView";
 import {useTranslation} from "react-i18next";
 import AudiobookOfflineVersionButtonView from "@/src/views/AudiobookOfflineVersionButtonView";
-import {useAreOfflineAudiobooksAvailable} from "@/src/store/SettingsHooks";
+import {useAreOfflineAudiobooksAvailable} from "@/src/store/Hooks";
 
 export interface AudiobookViewProps {
     audiobook: Audiobook;

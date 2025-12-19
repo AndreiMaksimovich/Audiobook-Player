@@ -1,14 +1,10 @@
-
-
 export class DateTimeUtils {
 
     static now(): number {
         return new Date().getTime();
     }
 
-
     static formatDuration(duration: number) {
-
         function format(value: number) {
             return ("0" + value).slice(-2);
         }

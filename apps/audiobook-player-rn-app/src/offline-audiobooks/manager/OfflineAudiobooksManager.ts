@@ -2,7 +2,7 @@ import {
     DownloadTask,
     IOfflineAudiobooksManager,
     OfflineAudiobooksManagerListeners
-} from "./Types";
+} from "../Types";
 import {Audiobook} from "shared"
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {
@@ -16,7 +16,7 @@ import {
     loadDownloadTasks,
     initializeOfflineAudiobooksFileStorage,
     audiobookToOfflineAudiobook
-} from "@/src/offline-audiobooks";
+} from "../Functions";
 
 export class OfflineAudiobooksManager implements IOfflineAudiobooksManager {
 
