@@ -40,7 +40,7 @@ export default function AudiobookPlayerPanelView(props: AudiobookPlayerPanelView
         if (isCurrentAudiobook) {
             dispatch(handleButtonPlay());
         } else {
-            const timePlayed = audiobookHistory.recentlyPlayed.find(ab => ab.id == audiobook.id)?.timePlayed
+            const timePlayed = audiobookHistory.recentlyPlayed.find(ab => ab.id === audiobook.id)?.timePlayed
             dispatch(setAudiobook({
                 audiobook: props.audiobook,
                 totalTime: timePlayed,

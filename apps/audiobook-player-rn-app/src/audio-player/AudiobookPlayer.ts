@@ -23,8 +23,6 @@ export class AudiobookPlayer {
 
     protected callbacks?: AudiobookPlayerCallbacks;
 
-    constructor() {}
-
     configure(callbacks: AudiobookPlayerCallbacks) {
         this.callbacks = callbacks;
     }

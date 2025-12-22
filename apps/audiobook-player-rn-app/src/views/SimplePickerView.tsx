@@ -30,7 +30,7 @@ export default function SimplePickerView<T>(props: SimplePickerProps<T>) {
     const selectedItem = props.items.filter((item) => item.value === props.selectedValue)[0];
 
     // iOS
-    if (Platform.OS == 'ios') {
+    if (Platform.OS === 'ios') {
         const labels = getLabelArray(props);
         return (
             <Button

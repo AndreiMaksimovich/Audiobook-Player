@@ -68,7 +68,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             }
 
             // In progress - resume
-            if (state.activeDownloadTask && state.activeDownloadTask.audiobook.id == action.payload.id) {
+            if (state.activeDownloadTask && state.activeDownloadTask.audiobook.id === action.payload.id) {
                 state.activeDownloadTask.isActive = true
                 state.activeDownloadTask.error = undefined;
                 offlineAudiobooksManager.downloadAudiobook(clone(state.activeDownloadTask.audiobook));
@@ -130,7 +130,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             const task = action.payload
             const audiobook = task.audiobook
 
-            const index = state.downloadTasks.findIndex(task => task.audiobook.id == audiobook.id)
+            const index = state.downloadTasks.findIndex(task => task.audiobook.id === audiobook.id)
             if (index === -1) {
                 console.error(`DownloadTask not found.`);
                 return

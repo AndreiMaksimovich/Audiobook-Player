@@ -27,7 +27,7 @@ export default function AudiobookAudioFileRowView(props: AudiobookAudioFileRowVi
     const isOffline = props.mode === "offline";
     const dispatch = useDispatch()
     const currentlyPlaying = useSelector((state: RootState) => state.currentlyPlaying)
-    const isCurrentAudioFile = currentlyPlaying.audiobook && compareAudiobooks(currentlyPlaying.audiobook, props.audiobook) && currentlyPlaying.currentAudioFileIndex == props.audioFileIndex
+    const isCurrentAudioFile = currentlyPlaying.audiobook && compareAudiobooks(currentlyPlaying.audiobook, props.audiobook) && currentlyPlaying.currentAudioFileIndex === props.audioFileIndex
 
     function onPress() {
         if (isCurrentAudioFile) {

@@ -6,11 +6,11 @@ import {
 } from "@/src/app-file-storage/Types";
 import {PATH_SEPARATOR} from "@/src/constants";
 
-function pathName(path: string): string {
+export function pathName(path: string): string {
     return path.split(PATH_SEPARATOR).pop() ?? ""
 }
 
-function pathJoin(...parts: string[]) {
+export function pathJoin(...parts: string[]) {
     let joinedPath = parts.join(PATH_SEPARATOR);
     joinedPath = joinedPath.replace(new RegExp(PATH_SEPARATOR + '{2,}', 'g'), PATH_SEPARATOR);
     if (joinedPath.startsWith(PATH_SEPARATOR)) {
@@ -22,14 +22,14 @@ function pathJoin(...parts: string[]) {
     return joinedPath;
 }
 
-function pathParse(path: string): ParsedPath {
+export function pathParse(path: string): ParsedPath {
     const parts = path.split(PATH_SEPARATOR);
     const name = parts.length > 0 ? parts[parts.length - 1] : null
     const dir = parts.length > 1 ? path.substring(0, path.length - name!.length - 1) : null;
     return {
         name: name,
         dir: dir,
-        path: path
+        path: pathJoin(path)
     }
 }
 

@@ -12,7 +12,6 @@ const settingsStorageKey = 'Settings'
 export type AudiobookHistoryArray = AudiobookHistoryRecord[];
 
 export class AppStorage {
-    constructor() {}
 
     protected async save(key: string, value: any): Promise<void> {
         const json = JSON.stringify(value);

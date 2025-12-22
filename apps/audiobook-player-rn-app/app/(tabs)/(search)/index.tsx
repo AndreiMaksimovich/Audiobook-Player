@@ -10,7 +10,7 @@ import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
 import SpacerView from "@/src/views/SpacerView";
 import AuthorDynamicListView from "@/src/views/AuthorDynamicListView";
 import ReaderDynamicListView from "@/src/views/ReaderDynamicListView";
-import {useLocalSearchParams, useNavigation} from "expo-router";
+import {useLocalSearchParams} from "expo-router";
 import {SearchSource} from "@/src/navigation/Search";
 import AppScreenView from "@/src/views/AppScreenView";
 
@@ -54,7 +54,7 @@ export default function SearchScreen() {
         const pQuery = paramsQuery as string ?? ""
         const pSource = parseInt(paramsSource as string) as SearchSource ?? SearchSource.Audiobooks
         setSearchQuery(pQuery)
-        if (pSource != source) {
+        if (pSource !== source) {
             setSource(pSource)
         } else {
             search(pQuery, false)
@@ -85,15 +85,15 @@ export default function SearchScreen() {
             setErrorMessage("")
             clearRequests()
 
-            if (source == SearchSource.Audiobooks) {
+            if (source === SearchSource.Audiobooks) {
                 const request = {...initialGetAudiobooksRequest}
                 request.searchFor = searchFor
                 setAudiobooksRequest(request)
-            } else if (source == SearchSource.Authors) {
+            } else if (source === SearchSource.Authors) {
                 const request = {...initialGetAuthorsRequest}
                 request.searchFor = searchFor
                 setAuthorsRequest(request)
-            } else if (source == SearchSource.Readers) {
+            } else if (source === SearchSource.Readers) {
                 const request = {...initialGetReadersRequest}
                 request.searchFor = searchFor
                 setReadersRequest(request)
