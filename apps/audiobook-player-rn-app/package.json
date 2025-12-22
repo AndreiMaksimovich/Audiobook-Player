@@ -5,9 +5,8 @@
   "scripts": {
     "lint": "expo lint",
     "start": "npx expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "clear-metro-cache": "rm -rf $TMPDIR/metro-cache"
+    "clear-metro-cache": "rm -rf $TMPDIR/metro-cache",
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -48,14 +47,22 @@
     "shaka-player": "^4.16.9",
     "shared": "*",
     "workbox-routing": "^7.4.0",
-    "workbox-strategies": "^7.4.0"
+    "workbox-strategies": "^7.4.0",
+    "react-hot-toast": "^2.6.0",
+    "react-native-toast-message": "^2.3.3"
   },
   "devDependencies": {
+    "@types/jest": "29.5.14",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "jest": "~29.7.0",
+    "jest-expo": "~54.0.16",
+    "ts-loader": "^9.5.4",
     "tsx": "^4.21.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "webpack": "^5.103.0",
+    "webpack-cli": "^6.0.1"
   },
   "private": true
 }

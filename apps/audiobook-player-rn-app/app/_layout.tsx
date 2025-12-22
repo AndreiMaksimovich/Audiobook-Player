@@ -25,7 +25,7 @@ export const unstable_settings = {
 
 type InitializationState = 'not-initialized' | 'in-progress' | 'failed' | 'initialized';
 
-export default function App() {
+export default function RootLayout() {
     const [initializationState, setInitializationState] = useState<InitializationState>('not-initialized');
     const [showSplashScreen, setShowSplashScreen] = useState(true);
 
@@ -77,7 +77,7 @@ export default function App() {
                         {initializationState === 'initialized' ?
                             // App
                             (<>
-                                <RootLayout/>
+                                <RootView/>
                                 <FunctionalComponents/>
                             </>)
                             :
@@ -110,7 +110,7 @@ function FunctionalComponents() {
     )
 }
 
-function RootLayout() {
+function RootView() {
     const colorScheme = useColorScheme();
 
     return (
@@ -118,7 +118,6 @@ function RootLayout() {
             <Stack>
                 <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
                 <Stack.Screen name="+not-found" options={{headerShown: false}}/>
-                <Stack.Screen name="test" options={{headerShown: false}}/>
             </Stack>
             <StatusBar style="auto"/>
         </ThemeProvider>

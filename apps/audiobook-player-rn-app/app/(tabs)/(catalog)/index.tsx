@@ -1,4 +1,4 @@
-import {ActivityIndicator, RefreshControl, StyleSheet} from 'react-native';
+import {ActivityIndicator, RefreshControl} from 'react-native';
 import '@/src/localization'
 import {useTranslation} from 'react-i18next'
 import {AudiobookLimit, AudiobooksOrderBy, GetAudiobooksRequest} from "shared";

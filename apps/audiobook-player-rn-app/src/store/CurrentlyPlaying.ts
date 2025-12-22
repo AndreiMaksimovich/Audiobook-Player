@@ -42,7 +42,7 @@ function setTime(state: CurrentlyPlayingState, time: number) {
 let _getAudiobookTimePlayedCache = [-1, -1, -1]
 
 export function getAudiobookTimePlayed(audiobook: Audiobook, audioFileCount: number, time: number = 0): number {
-    if (_getAudiobookTimePlayedCache[0] == audiobook.id && _getAudiobookTimePlayedCache[1] == audioFileCount) {
+    if (_getAudiobookTimePlayedCache[0] === audiobook.id && _getAudiobookTimePlayedCache[1] === audioFileCount) {
         return _getAudiobookTimePlayedCache[2] + time
     }
 
@@ -147,7 +147,7 @@ export const currentlyPlayingStateSlice = createSlice({
 
         handleButtonSkipBackward: (state, action: PayloadAction<void>) => {
             if (!state.audiobook) return
-            if (state.currentAudioFileIndex == 0) return;
+            if (state.currentAudioFileIndex === 0) return;
             state.currentAudioFileIndex -= 1
             state.currentAudioFileTime = 0
             audiobookPlayer.playAudioFile(state.currentAudioFileIndex, state.currentAudioFileTime).catch(console.error)

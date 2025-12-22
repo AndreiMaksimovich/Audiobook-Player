@@ -1,10 +1,11 @@
 ///<reference lib="WebWorker" />
 import {appFileStorage} from "@/src/app-file-storage";
-declare const self: ServiceWorkerGlobalScope;
 import { registerRoute, Route } from 'workbox-routing';
 import { NetworkFirst } from 'workbox-strategies';
 import {OfflineAudiobooksEnabled, UseServiceWorkerForOfflineAudiobookDownloads} from "@/src/config";
 import {ServiceWorkerOfflineAudiobookManagerWorker} from "@/src/offline-audiobooks/manager/ServiceWorkerOfflineAudiobookManagerWorker.web";
+
+declare const self: ServiceWorkerGlobalScope;
 
 const LogTag = 'Service-Worker:'
 

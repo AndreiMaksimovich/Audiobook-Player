@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/src/store";
-import {use, useEffect} from "react";
+import {useEffect} from "react";
 import {handleTrackPlayerProgress, setCurrentAudioFileNormalizedProgress} from "@/src/store/CurrentlyPlaying";
 import TrackPlayer from "@/src/wrappers/react-native-track-player";
 

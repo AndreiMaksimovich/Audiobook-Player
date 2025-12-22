@@ -65,7 +65,7 @@ export default function LibraryScreen() {
                                 }}
                             >
                                 <ThemedText
-                                    type={item.mode != mode ? "linkSemiBold" : "linkSemiBoldInactive"}>{item.label}</ThemedText>
+                                    type={item.mode !== mode ? "linkSemiBold" : "linkSemiBoldInactive"}>{item.label}</ThemedText>
                             </Pressable>
                         ))}
                     </HStackView>
