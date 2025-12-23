@@ -1,12 +1,12 @@
 import {Link, useLocalSearchParams, useNavigation} from 'expo-router';
-import AudiobookView from "@/src/views/AudiobookView";
-import AppScreenView from "@/src/views/AppScreenView";
-import {ThemedText} from "@/src/views/ThemedText";
+import AudiobookView from "@/src/components/app/AudiobookView";
+import AppScreen from "@/src/components/screens/AppScreen";
+import {ThemedText} from "@/src/components/common/ThemedText";
 import {useTranslation} from "react-i18next";
 import {ActivityIndicator, Button} from "react-native";
 import {useEffect, useState} from "react";
 import {Audiobook} from "shared"
-import {offlineAudiobooksManager} from "@/src/offline-audiobooks";
+import {offlineAudiobooksManager} from "@/src/lib/offline-audiobooks";
 import {OfflineAudiobookState, useOfflineAudiobookState} from "@/src/store/OfflineAudiobooksHooks";
 
 export default function ScreenAudiobook() {
@@ -43,7 +43,7 @@ export default function ScreenAudiobook() {
     }, [bookState]);
 
     return (
-        <AppScreenView>
+        <AppScreen>
 
             {/* Loading Indicator */}
             {!audiobook && !error && (<ActivityIndicator size={"large"}/>)}
@@ -61,6 +61,6 @@ export default function ScreenAudiobook() {
             {/* Audiobook */}
             {audiobook && (<AudiobookView mode={"offline"} audiobook={audiobook}/>)}
 
-        </AppScreenView>
+        </AppScreen>
     )
 }

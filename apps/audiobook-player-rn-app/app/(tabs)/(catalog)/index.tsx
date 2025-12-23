@@ -2,22 +2,22 @@ import {ActivityIndicator, RefreshControl} from 'react-native';
 import '@/src/localization'
 import {useTranslation} from 'react-i18next'
 import {AudiobookLimit, AudiobooksOrderBy, GetAudiobooksRequest} from "shared";
-import {ThemedText} from "@/src/views/ThemedText";
-import SearchPanelLinkView from "@/src/views/SearchPanelLinkView";
+import {ThemedText} from "@/src/components/common/ThemedText";
+import SearchPanelLink from "@/src/components/app/SearchPanelLink";
 import {Link} from "expo-router";
-import {HStackView} from "@/src/views/HStackView";
-import AppScreenView from "@/src/views/AppScreenView";
-import SpacerView from "@/src/views/SpacerView";
+import {HStack} from "@/src/components/common/HStack";
+import AppScreen from "@/src/components/screens/AppScreen";
+import Spacer from "@/src/components/common/Spacer";
 import {useEffect} from "react";
 import {
     useLazyGetAudiobooksQuery,
     useLazyGetCategoriesQuery,
     useLazyGetTagsQuery
 } from "@/src/store/AudiobookProviderApi";
-import {HumanReadableErrorView} from "@/src/views/HumanReadableErrorView";
-import {AudiobookListView} from "@/src/views/AudiobookListView";
-import TagsView from "@/src/views/TagsView";
-import CategoriesView from "@/src/views/CategoriesView";
+import {HumanReadableError} from "@/src/components/common/HumanReadableError";
+import {AudiobookList} from "@/src/components/app/AudiobookList";
+import Tags from "@/src/components/app/Tags";
+import Categories from "@/src/components/app/Categories";
 
 const getNewBooksRequest: GetAudiobooksRequest = {
     offset: 0,
@@ -55,16 +55,17 @@ export default function CatalogMainScreen() {
     }, []);
 
     return (
-        <AppScreenView
+        <AppScreen
+            testID={"Screen.Catalog"}
             refreshControl={<RefreshControl refreshing={isLoading} onRefresh={retry}/>}>
 
             {/* Search */}
             <ThemedText type={"subtitle"}>{t("Search")}</ThemedText>
-            <SpacerView size={5}/>
-            <SearchPanelLinkView />
-            <SpacerView size={10}/>
+            <Spacer size={5}/>
+            <SearchPanelLink />
+            <Spacer size={10}/>
 
-            <HStackView justifyContent={"space-around"}>
+            <HStack justifyContent={"space-around"}>
                 <Link href={"/(tabs)/(catalog)/audiobooks"}>
                     <ThemedText type={"linkSemiBold"}>{t("Audiobooks")}</ThemedText>
                 </Link>
@@ -74,37 +75,37 @@ export default function CatalogMainScreen() {
                 <Link href={"/(tabs)/(catalog)/readers"}>
                     <ThemedText type={"linkSemiBold"}>{t("Readers")}</ThemedText>
                 </Link>
-            </HStackView>
+            </HStack>
 
-            <SpacerView size={10}/>
+            <Spacer size={10}/>
 
             {/* Is Loading */}
             {isLoading && (<ActivityIndicator />)}
 
             {/* Error */}
-            {error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={retry} /> )}
+            {error && (<HumanReadableError error={error} showRetryButton={true} onRetryButtonClick={retry} /> )}
 
             {/* Recent Audiobooks */}
             {loadNewBooksResponse && (<>
                 <ThemedText type={"subtitle"}>{t("NewAudiobooks")}</ThemedText>
-                <AudiobookListView audiobooks={loadNewBooksResponse.audiobooks}/>
-                <SpacerView size={10}/>
+                <AudiobookList audiobooks={loadNewBooksResponse.audiobooks}/>
+                <Spacer size={10}/>
             </>)}
 
             {/* Tags */}
             {loadTagsResponse && (<>
                 <ThemedText type={"subtitle"}>{t("Tags")}</ThemedText>
-                <TagsView tags={loadTagsResponse}/>
-                <SpacerView size={10}/>
+                <Tags tags={loadTagsResponse}/>
+                <Spacer size={10}/>
             </>)}
 
             {/* Categories */}
             {loadCategoriesResponse && (<>
                 <ThemedText type={"subtitle"}>{t("Categories")}</ThemedText>
-                <CategoriesView categories={loadCategoriesResponse}/>
-                <SpacerView size={10}/>
+                <Categories categories={loadCategoriesResponse}/>
+                <Spacer size={10}/>
             </>)}
 
-        </AppScreenView>
+        </AppScreen>
     );
 }

@@ -1,11 +1,11 @@
-import {ThemedText} from "@/src/views/ThemedText";
+import {ThemedText} from "@/src/components/common/ThemedText";
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import {useEffect} from "react";
 import {useGetReaderQuery} from "@/src/store/AudiobookProviderApi";
 import {ActivityIndicator, View} from "react-native"
-import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
+import AudiobookDynamicList from "@/src/components/app/AudiobookDynamicList";
 import {AudiobooksPerPage} from "@/src/config";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 export default function ScreenReader() {
     const navigation = useNavigation();
@@ -21,7 +21,7 @@ export default function ScreenReader() {
     }, [reader]);
 
     return (
-        <AppScreenView>
+        <AppScreen>
             {isLoading && (<ActivityIndicator />)}
 
             {reader && (
@@ -31,11 +31,11 @@ export default function ScreenReader() {
                 </View>
             )}
 
-            <AudiobookDynamicListView baseRequest={{
+            <AudiobookDynamicList baseRequest={{
                 readerId: id,
                 offset: 0,
                 limit: AudiobooksPerPage,
             }} />
-        </AppScreenView>
+        </AppScreen>
     )
 }

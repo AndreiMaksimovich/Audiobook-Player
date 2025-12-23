@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import Constants from 'expo-constants';
 import {
     Audiobook,
     Author,
@@ -12,12 +11,11 @@ import {
     GetReadersRequest,
     Tag
 } from "shared";
-
-console.log("Constants", Constants.expoConfig)
+import {API_URL} from "@/src/env-configuration";
 
 export const audiobookProviderApi = createApi({
     reducerPath: 'audiobookProviderApi',
-    baseQuery: fetchBaseQuery({ baseUrl: Constants.expoConfig!.extra!.API_URL! }),
+    baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
     endpoints: (builder) => ({
 
         getAudiobooks: builder.query<GetAudiobooksResponse, GetAudiobooksRequest>({

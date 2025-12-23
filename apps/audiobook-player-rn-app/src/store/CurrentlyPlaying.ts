@@ -1,11 +1,11 @@
 import type {PayloadAction} from '@reduxjs/toolkit'
 import {createSlice} from '@reduxjs/toolkit'
 import {Audiobook, MediaFile} from "shared";
-import {audiobookPlayer} from "@/src/audio-player";
+import {audiobookPlayer} from "@/src/lib/audio-player";
 import {PlaybackActiveTrackChangedEvent, PlaybackQueueEndedEvent, PlaybackState, Progress, PlaybackErrorEvent, State} from '@/src/wrappers/react-native-track-player';
 import {AudioPlaybackFastBackwardDuration, AudioPlaybackFastForwardDuration} from "@/src/config";
 import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/Actions";
-import {toasts, ToastType} from "@/src/toasts";
+import {toastManager, ToastType} from "@/src/lib/toasts";
 import i18next from '@/src/localization'
 
 export interface CurrentlyPlayingState {
@@ -188,7 +188,7 @@ export const currentlyPlayingStateSlice = createSlice({
                 state.isPlaying = false
             }
             console.error(action.payload)
-            toasts.show(ToastType.Error, i18next.t('AudiobookPlaybackError.ToastMessage').replace('{message}', action.payload.message))
+            toastManager.show(ToastType.Error, i18next.t('AudiobookPlaybackError.ToastMessage').replace('{message}', action.payload.message))
         }
     },
 

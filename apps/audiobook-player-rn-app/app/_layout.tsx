@@ -4,20 +4,20 @@ import {StatusBar} from 'expo-status-bar';
 import {store, appDispatch} from "@/src/store";
 import {Provider as ReduxProvider} from 'react-redux'
 import {useColorScheme} from '@/src/hooks/use-color-scheme';
-import AudiobookHistorySaveController from "@/src/data/AudiobookHistorySaveController";
+import AudiobookHistorySaver from "@/src/components/functional/AudiobookHistorySaver";
 import {useEffect, useState} from "react";
-import AudiobookHistoryRecentlyPlayedController from "@/src/data/AudiobookHistoryRecentlyPlayedController";
-import AudiobookCurrentlyPlayingController from "@/src/data/AudiobookCurrentlyPlayingController";
-import AppSettingsSaveController from "@/src/data/AppSettingsSaveController";
-import SplashScreenView from "@/src/views/SplashScreenView";
+import AudiobookHistoryRecentlyPlayedAudiobookSaver from "@/src/components/functional/AudiobookHistoryRecentlyPlayedAudiobookSaver";
+import AudiobookCurrentlyPlayingAudiobookSaver from "@/src/components/functional/AudiobookCurrentlyPlayingAudiobookSaver";
+import AppSettingsSaver from "@/src/components/functional/AppSettingsSaver";
+import SplashScreen from "@/src/components/screens/SplashScreen";
 import {DateTimeUtils} from "@/src/utils/DateTimeUtils";
 import {SplashScreenMinDisplayDuration} from "@/src/config";
 import {delay} from "@/src/utils";
-import {ToastController} from "@/src/toasts";
-import AudioPlaybackProgressController from "@/src/audio-player/AudioPlaybackProgressController";
-import ServiceWorkerController from "@/src/service-worker/ServiceWorkerController";
+import {Toasts} from "@/src/components/toasts/Toasts";
+import TrackPlayerAudioPlaybackProgressUpdater from "@/src/components/functional/TrackPlayerAudioPlaybackProgressUpdater";
+import ServiceWorkerRegistrator from "@/src/components/functional/ServiceWorkerRegistrator";
 import {initializeApplicationDataAndServices} from '@/src/initialization'
-import AppInitializationFailed from "@/src/views/AppInitializationFailedView";
+import AppInitializationFailed from "@/src/components/screens/AppInitializationFailed";
 
 export const unstable_settings = {
     anchor: '(tabs)',
@@ -90,9 +90,9 @@ export default function RootLayout() {
                 )
                 :
                 (
-                    <SplashScreenView/>
+                    <SplashScreen/>
                 )}
-            <ToastController/>
+            <Toasts/>
         </ReduxProvider>
     )
 }
@@ -100,12 +100,12 @@ export default function RootLayout() {
 function FunctionalComponents() {
     return (
         <>
-            <AppSettingsSaveController/>
-            <AudiobookHistoryRecentlyPlayedController/>
-            <AudiobookHistorySaveController/>
-            <AudiobookCurrentlyPlayingController/>
-            <AudioPlaybackProgressController />
-            <ServiceWorkerController />
+            <AppSettingsSaver/>
+            <AudiobookHistoryRecentlyPlayedAudiobookSaver/>
+            <AudiobookHistorySaver/>
+            <AudiobookCurrentlyPlayingAudiobookSaver/>
+            <TrackPlayerAudioPlaybackProgressUpdater />
+            <ServiceWorkerRegistrator />
         </>
     )
 }

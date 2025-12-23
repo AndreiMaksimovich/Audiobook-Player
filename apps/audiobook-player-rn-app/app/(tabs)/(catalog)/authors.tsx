@@ -1,14 +1,14 @@
-import AuthorDynamicListView from "@/src/views/AuthorDynamicListView";
+import AuthorDynamicList from "@/src/components/app/AuthorDynamicList";
 import {AuthorsPerPage} from "@/src/config";
 import {useTranslation} from "react-i18next";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 export default function ScreenAuthors() {
     const {t} = useTranslation();
 
     return (
-        <AppScreenView title={t("Authors")}>
-            <AuthorDynamicListView
+        <AppScreen title={t("Authors")}>
+            <AuthorDynamicList
                 baseRequest={{
                     offset: 0,
                     limit: AuthorsPerPage,
@@ -16,6 +16,6 @@ export default function ScreenAuthors() {
                     nameStartWith: null
                 }}
             />
-        </AppScreenView>
+        </AppScreen>
     )
 }

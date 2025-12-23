@@ -1,13 +1,13 @@
 import {useLocalSearchParams, useNavigation} from 'expo-router';
 import {useLazyGetAudiobookQuery} from "@/src/store/AudiobookProviderApi";
 import {ActivityIndicator} from "react-native"
-import AudiobookView from "@/src/views/AudiobookView";
-import {HumanReadableErrorView} from "@/src/views/HumanReadableErrorView";
+import AudiobookView from "@/src/components/app/AudiobookView";
+import {HumanReadableError} from "@/src/components/common/HumanReadableError";
 import {useEffect, useState} from "react";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 import {OfflineAudiobookState, useOfflineAudiobook, useOfflineAudiobookState} from "@/src/store/OfflineAudiobooksHooks";
 import {Audiobook} from "shared"
-import {offlineAudiobooksManager} from "@/src/offline-audiobooks";
+import {offlineAudiobooksManager} from "@/src/lib/offline-audiobooks";
 
 export default function ScreenAudiobook() {
     const navigation = useNavigation();
@@ -64,14 +64,14 @@ export default function ScreenAudiobook() {
     }, [audiobook]);
 
     return (
-        <AppScreenView  >
+        <AppScreen  >
 
             {isLoading && (<ActivityIndicator />)}
 
-            {!offlineAudiobook && error && (<HumanReadableErrorView error={error} showRetryButton={true} onRetryButtonClick={() => { trigger(audiobookId) }}/> )}
+            {!offlineAudiobook && error && (<HumanReadableError error={error} showRetryButton={true} onRetryButtonClick={() => { trigger(audiobookId) }}/> )}
 
             {(onlineAudiobook !== null || offlineAudiobook !== null) && (<AudiobookView audiobook={offlineAudiobook ?? onlineAudiobook!} mode={offlineAudiobook ? 'offline' : 'online'}/>)}
 
-        </AppScreenView>
+        </AppScreen>
     )
 }

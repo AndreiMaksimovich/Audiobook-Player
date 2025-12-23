@@ -49,7 +49,7 @@ async function run(configuration) {
     // client
     if (configuration.addClient) {
         await execAsync(`cd ${clientDir} && webpack `) // "Pack" service worker
-        await execAsync(`npm run export-web-${configuration.production ? 'production' : 'testing'} --prefix ${clientDir}`)
+        await execAsync(`npm run export-web-${configuration.production ? 'production' : 'preview'} --prefix ${clientDir}`)
         await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true})
     }
 

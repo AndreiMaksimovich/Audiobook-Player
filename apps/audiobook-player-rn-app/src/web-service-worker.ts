@@ -1,9 +1,9 @@
 ///<reference lib="WebWorker" />
-import {appFileStorage} from "@/src/app-file-storage";
+import {appFileStorage} from "@/src/lib/app-file-storage";
 import { registerRoute, Route } from 'workbox-routing';
 import { NetworkFirst } from 'workbox-strategies';
 import {OfflineAudiobooksEnabled, UseServiceWorkerForOfflineAudiobookDownloads} from "@/src/config";
-import {ServiceWorkerOfflineAudiobookManagerWorker} from "@/src/offline-audiobooks/manager/ServiceWorkerOfflineAudiobookManagerWorker.web";
+import {ServiceWorkerOfflineAudiobookManagerWorker} from "@/src/lib/offline-audiobooks/manager/ServiceWorkerOfflineAudiobookManagerWorker.web";
 
 declare const self: ServiceWorkerGlobalScope;
 

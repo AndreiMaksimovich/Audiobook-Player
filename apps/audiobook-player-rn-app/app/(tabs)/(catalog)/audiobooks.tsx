@@ -1,18 +1,18 @@
 import {AudiobooksPerPage} from "@/src/config";
-import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
+import AudiobookDynamicList from "@/src/components/app/AudiobookDynamicList";
 import {useTranslation} from "react-i18next";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 export default function ScreenAudiobooks() {
     const {t} = useTranslation();
     return (
-        <AppScreenView title={t("Audiobooks")}>
-            <AudiobookDynamicListView
+        <AppScreen title={t("Audiobooks")}>
+            <AudiobookDynamicList
                 baseRequest={{
                     offset: 0,
                     limit: AudiobooksPerPage,
                 }}
             />
-        </AppScreenView>
+        </AppScreen>
     )
 }

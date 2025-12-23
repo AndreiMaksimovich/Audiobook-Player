@@ -1,0 +1,8 @@
+appId: com.amaxsoftware.audiobookplayerdemo
+env:
+  APP_URL: ""
+  APP_ID: com.amaxsoftware.audiobookplayerdemo
+---
+- launchApp
+- runFlow: flows/catalog-search.yaml
+

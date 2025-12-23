@@ -1,7 +1,6 @@
-import {AudiobookHistoryArray} from "@/src/data/AppStorage";
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {Audiobook} from "shared";
-import {audiobookToHistoryRecord} from "@/src/data/AudiobookHistoryRecord";
+import {audiobookToHistoryRecord, AudiobookHistoryArray} from "@/src/lib/app-persistent-storage";
 
 export interface AudiobookFavoritesState {
     favorites: AudiobookHistoryArray

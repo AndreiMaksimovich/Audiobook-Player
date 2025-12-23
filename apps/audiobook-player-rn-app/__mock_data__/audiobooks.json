@@ -1,0 +1,513 @@
+{
+  "audiobooks": [
+    {
+      "id": 1,
+      "addTime": 1764080716380,
+      "description": "Source: https://librivox.org/hamlet-by-william-shakespeare/",
+      "shortDescription": null,
+      "title": "Hamlet",
+      "totalDuration": 14001293,
+      "totalSize": 112013636,
+      "updateTime": 1764080716380,
+      "version": 1,
+      "authors": [
+        {
+          "id": 30,
+          "name": "William Shakespeare",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        30
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 19,
+          "name": "N/A",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 548,
+        "mediaType": 0,
+        "fileId": "0_1_4644e320-092b-432c-acd7-a0e7d48d6244.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "a9dba0c79a40241b2d529679615c975e4e515249cbe20214db2b1c3d21d676b3",
+        "fileSize": 85979,
+        "ownerId": 1,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_1_4644e320-092b-432c-acd7-a0e7d48d6244.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        19
+      ],
+      "tagIds": [
+        33,
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 2,
+      "addTime": 1764080716812,
+      "description": "Source: https://librivox.org/henry-v-by-william-shakespeare/",
+      "shortDescription": null,
+      "title": "Henry V",
+      "totalDuration": 10961450,
+      "totalSize": 87694693,
+      "updateTime": 1764080716812,
+      "version": 1,
+      "authors": [
+        {
+          "id": 30,
+          "name": "William Shakespeare",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        30
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 19,
+          "name": "N/A",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 555,
+        "mediaType": 0,
+        "fileId": "0_2_5c87d49d-f463-4e64-b0b9-b5f3372ad56a.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "3c57b0e414de604a9f50beb05b91be76786c77ec11fd3f06cdd2273160d054f4",
+        "fileSize": 17385,
+        "ownerId": 2,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_2_5c87d49d-f463-4e64-b0b9-b5f3372ad56a.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        19
+      ],
+      "tagIds": [
+        33,
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 3,
+      "addTime": 1764080717252,
+      "description": "Source: https://librivox.org/julius-caesar-by-william-shakespeare/",
+      "shortDescription": null,
+      "title": "Julius Caesar",
+      "totalDuration": 8974106,
+      "totalSize": 71796660,
+      "updateTime": 1764080717252,
+      "version": 1,
+      "authors": [
+        {
+          "id": 30,
+          "name": "William Shakespeare",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        30
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 19,
+          "name": "N/A",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 561,
+        "mediaType": 0,
+        "fileId": "0_3_b92064e4-7640-479f-b5aa-f06fb1d5c82b.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "756f189940322653ad73b462a3b79ac030451ad6422be1135a0f31ff395696be",
+        "fileSize": 23598,
+        "ownerId": 3,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_3_b92064e4-7640-479f-b5aa-f06fb1d5c82b.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        19
+      ],
+      "tagIds": [
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 4,
+      "addTime": 1764080717727,
+      "description": "Source: https://librivox.org/king-lear-by-william-shakespeare/",
+      "shortDescription": null,
+      "title": "King Lear",
+      "totalDuration": 12185052,
+      "totalSize": 97916416,
+      "updateTime": 1764080717727,
+      "version": 1,
+      "authors": [
+        {
+          "id": 30,
+          "name": "William Shakespeare",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        30
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 19,
+          "name": "N/A",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 568,
+        "mediaType": 0,
+        "fileId": "0_4_d06a2c62-9700-42e7-80d8-98a58065d1bd.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "4ba4af7c754fec587ce7b43b9d971b82e99272d984f841802cf6c8e139b775bf",
+        "fileSize": 47510,
+        "ownerId": 4,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_4_d06a2c62-9700-42e7-80d8-98a58065d1bd.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        19
+      ],
+      "tagIds": [
+        33,
+        34
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 5,
+      "addTime": 1764080720333,
+      "description": "Source: https://librivox.org/christmas-short-works-collection-2022-by-various/",
+      "shortDescription": null,
+      "title": "Christmas Short Works Collection 2022",
+      "totalDuration": 26962417,
+      "totalSize": 219201483,
+      "updateTime": 1764080720333,
+      "version": 1,
+      "authors": [
+        {
+          "id": 31,
+          "name": "Charles Dickens",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        31
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 19,
+          "name": "N/A",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 574,
+        "mediaType": 0,
+        "fileId": "0_5_4237e5f5-8826-4a2e-a16d-10c9e6ca2f61.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "379883c714cb926ea7f38d59312cb8e0ab2363481f8a60517f3cc696a26b1eef",
+        "fileSize": 145514,
+        "ownerId": 5,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_5_4237e5f5-8826-4a2e-a16d-10c9e6ca2f61.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        19
+      ],
+      "tagIds": [
+        33,
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 6,
+      "addTime": 1764080725770,
+      "description": "Source: https://librivox.org/bleak-house-by-charles-dickens/",
+      "shortDescription": null,
+      "title": "Bleak House",
+      "totalDuration": 156650500,
+      "totalSize": 1253227047,
+      "updateTime": 1764080725770,
+      "version": 1,
+      "authors": [
+        {
+          "id": 31,
+          "name": "Charles Dickens",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        31
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 20,
+          "name": "Cynthia Lyons",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 609,
+        "mediaType": 0,
+        "fileId": "0_6_634f8855-a9c9-4611-972e-e2266ae423ef.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "6efdaba6ac59294c68edb88b9928793f199a701252f7e5a5843aefa615443bf2",
+        "fileSize": 120443,
+        "ownerId": 6,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_6_634f8855-a9c9-4611-972e-e2266ae423ef.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        20
+      ],
+      "tagIds": [
+        33,
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 7,
+      "addTime": 1764080726327,
+      "description": "Source: https://librivox.org/the-battle-of-life-by-charles-dickens/",
+      "shortDescription": null,
+      "title": "The Battle of Life",
+      "totalDuration": 12527726,
+      "totalSize": 100226345,
+      "updateTime": 1764080726327,
+      "version": 1,
+      "authors": [
+        {
+          "id": 31,
+          "name": "Charles Dickens",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        31
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 21,
+          "name": "Mark F. Smith",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 677,
+        "mediaType": 0,
+        "fileId": "0_7_a1ca0caf-58ba-4aae-9ad0-fa6d5ac8a48e.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "86b04b5ce7b32ee7112a34840756b082b3bf960e4c26aa0226c6d18177a2136b",
+        "fileSize": 36902,
+        "ownerId": 7,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_7_a1ca0caf-58ba-4aae-9ad0-fa6d5ac8a48e.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        21
+      ],
+      "tagIds": [
+        34,
+        35
+      ],
+      "tags": null,
+      "categories": null
+    },
+    {
+      "id": 8,
+      "addTime": 1764080731836,
+      "description": "Source: https://librivox.org/barnaby-rudge-by-charles-dickens/",
+      "shortDescription": null,
+      "title": "Barnaby Rudge",
+      "totalDuration": 87470053,
+      "totalSize": 699807363,
+      "updateTime": 1764080731836,
+      "version": 1,
+      "authors": [
+        {
+          "id": 31,
+          "name": "Charles Dickens",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "authorIds": [
+        31
+      ],
+      "categoryIds": [
+        25
+      ],
+      "parameters": null,
+      "readers": [
+        {
+          "id": 22,
+          "name": "Debra Lynn",
+          "description": "",
+          "parentId": 0,
+          "parameters": null
+        }
+      ],
+      "icon": {
+        "id": 685,
+        "mediaType": 0,
+        "fileId": "0_8_1586ca11-6132-48bd-a455-79000a57178c.jpg",
+        "name": "",
+        "description": "",
+        "fileName": "icon.jpg",
+        "duration": 0,
+        "fileHash": "9198addae3ca0b0da0e906b9ffbad50025d9a2ec9f8ec54d5990971114b70fee",
+        "fileSize": 82003,
+        "ownerId": 8,
+        "ownerIndex": 0,
+        "url": "http://10.10.1.101:4000/files/0_8_1586ca11-6132-48bd-a455-79000a57178c.jpg",
+        "ownerType": 0
+      },
+      "images": null,
+      "audioFiles": null,
+      "providerId": null,
+      "readerIds": [
+        22
+      ],
+      "tagIds": [
+        33,
+        34
+      ],
+      "tags": null,
+      "categories": null
+    }
+  ],
+  "totalCount": 8
+}

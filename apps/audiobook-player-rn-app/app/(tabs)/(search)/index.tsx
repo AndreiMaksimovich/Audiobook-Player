@@ -2,17 +2,17 @@ import {Button, Pressable, StyleSheet, TextInput} from 'react-native';
 import '@/src/localization'
 import {useTranslation} from 'react-i18next'
 import {GetAudiobooksRequest, GetAuthorsRequest, GetReadersRequest} from "shared";
-import {ThemedText} from "@/src/views/ThemedText";
+import {ThemedText} from "@/src/components/common/ThemedText";
 import {useEffect, useState} from "react";
-import {HStackView} from "@/src/views/HStackView";
+import {HStack} from "@/src/components/common/HStack";
 import {AudiobooksPerPage, AuthorsPerPage, ReadersPerPage} from "@/src/config";
-import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
-import SpacerView from "@/src/views/SpacerView";
-import AuthorDynamicListView from "@/src/views/AuthorDynamicListView";
-import ReaderDynamicListView from "@/src/views/ReaderDynamicListView";
+import AudiobookDynamicList from "@/src/components/app/AudiobookDynamicList";
+import Spacer from "@/src/components/common/Spacer";
+import AuthorDynamicList from "@/src/components/app/AuthorDynamicList";
+import ReaderDynamicList from "@/src/components/app/ReaderDynamicList";
 import {useLocalSearchParams} from "expo-router";
 import {SearchSource} from "@/src/navigation/Search";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 const initialGetAudiobooksRequest: GetAudiobooksRequest = {
     offset: 0,
@@ -108,21 +108,20 @@ export default function SearchScreen() {
     }
 
     return (
-        <AppScreenView title={t("Search")}>
-            <SpacerView size={10}/>
-            <HStackView>
-                <TextInput id={"searchQuery"} style={styles.searchField}  value={searchQuery}
-                           onChangeText={onSearchQueryTextChange}/>
-                <SpacerView size={5}/>
+        <AppScreen testID={'Screen.Search'} title={t("Search")}>
+            <Spacer size={10}/>
+            <HStack>
+                <TextInput style={styles.searchField}  value={searchQuery} onChangeText={onSearchQueryTextChange}/>
+                <Spacer size={5}/>
                 <Button title={t("Search")} onPress={() => search(searchQuery)}/>
-            </HStackView>
+            </HStack>
             <SearchModesView onChangeMode={onModeChange} selectedMode={source}/>
-            <SpacerView size={10}/>
+            <Spacer size={10}/>
 
             {errorMessage.length>0 && (<ThemedText type={"error"}>{errorMessage}</ThemedText>)}
 
             {audiobooksRequest && (
-                <AudiobookDynamicListView
+                <AudiobookDynamicList
                     baseRequest={audiobooksRequest}
                     onQueryStateChanged={(response, error, isLoading) => {
                         setIsLoading(isLoading)
@@ -131,7 +130,7 @@ export default function SearchScreen() {
             )}
 
             {authorsRequest && (
-                <AuthorDynamicListView
+                <AuthorDynamicList
                     baseRequest={authorsRequest}
                     onQueryStateChanged={(response, error, isLoading) => {
                         setIsLoading(isLoading)
@@ -140,7 +139,7 @@ export default function SearchScreen() {
             )}
 
             {readersRequest && (
-                <ReaderDynamicListView
+                <ReaderDynamicList
                     baseRequest={readersRequest}
                     onQueryStateChanged={(response, error, isLoading) => {
                         setIsLoading(isLoading)
@@ -148,7 +147,7 @@ export default function SearchScreen() {
                 />
             )}
 
-        </AppScreenView>
+        </AppScreen>
     );
 }
 
@@ -161,7 +160,7 @@ function SearchModesView(props: SearchModesViewProps) {
     const {t} = useTranslation()
 
     return (
-        <HStackView justifyContent={"space-around"}>
+        <HStack justifyContent={"space-around"}>
             {[t('Audiobooks'), t('Authors'), t('Readers')].map((name, index) => (
                 <Pressable key={index} onPress={() => {
                     if (props.selectedMode !== index) {
@@ -171,7 +170,7 @@ function SearchModesView(props: SearchModesViewProps) {
                     <ThemedText type={index == props.selectedMode ? "linkSemiBoldInactive" : "linkSemiBold"}>{name}</ThemedText>
                 </Pressable>
             ))}
-        </HStackView>
+        </HStack>
     )
 }
 
