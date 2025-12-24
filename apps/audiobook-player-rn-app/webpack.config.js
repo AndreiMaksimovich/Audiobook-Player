@@ -11,6 +11,7 @@ module.exports = {
         extensions: ['.web.ts', '.ts', '.js'],
         alias: {
             '@': path.resolve(__dirname, ''),
+            "react-native$": "react-native-web",
         },
     },
     module: {
@@ -24,6 +25,8 @@ module.exports = {
                             compilerOptions: {
                                 noEmit: false, // Override tsconfig.json here
                                 module: "preserve",
+                                moduleDetection: "force",
+                                moduleResolution: "bundler",
                             },
                         },
                     },

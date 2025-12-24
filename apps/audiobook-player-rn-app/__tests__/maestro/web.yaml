@@ -1,0 +1,7 @@
+url: http://localhost:8081/
+env:
+    APP_URL: http://localhost:8081/
+    APP_ID: ""
+---
+- launchApp
+- runFlow: flows/catalog-search.yaml

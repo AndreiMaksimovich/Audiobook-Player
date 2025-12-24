@@ -1,0 +1,16 @@
+url: ${APP_URL}
+appId: ${APP_ID}
+---
+- tapOn:
+    id: 'TabButton.Catalog'
+- tapOn:
+    id: 'Search.TextInput'
+- inputText: 'Hamlet'
+- tapOn:
+    id: 'Screen.Catalog'
+- tapOn:
+    id: 'Search.Button'
+- assertVisible:
+    text: "William Shakespeare"
+- assertVisible:
+    id: "Screen.Search"

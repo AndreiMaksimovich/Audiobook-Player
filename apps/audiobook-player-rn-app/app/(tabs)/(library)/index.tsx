@@ -1,17 +1,17 @@
 import {Pressable, StyleSheet, View} from 'react-native';
-import {ThemedText} from '@/src/views/ThemedText';
-import {VStackView} from "@/src/views/VStackView";
-import {HStackView} from "@/src/views/HStackView";
+import {ThemedText} from '@/src/components/common/ThemedText';
+import {VStack} from "@/src/components/common/VStack";
+import {HStack} from "@/src/components/common/HStack";
 import {useSelector} from "react-redux";
 import {RootState} from "@/src/store";
-import AudiobookHistoryRecordView from "@/src/views/AudiobookHistoryRecordView";
+import AudiobookHistoryRecordView from "@/src/components/app/AudiobookHistoryRecordView";
 import {useMemo, useState} from "react";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 import {useTranslation} from "react-i18next";
-import SpacerView from "@/src/views/SpacerView";
-import {AudiobookListView} from "@/src/views/AudiobookListView";
-import DownloadTaskListView from "@/src/views/DownloadTaskListView";
-import ActiveDownloadTaskView from "@/src/views/ActiveDownloadTaskView";
+import Spacer from "@/src/components/common/Spacer";
+import {AudiobookList} from "@/src/components/app/AudiobookList";
+import DownloadTaskList from "@/src/components/app/DownloadTaskList";
+import ActiveDownloadTask from "@/src/components/app/ActiveDownloadTask";
 import {useAreOfflineAudiobooksAvailable} from "@/src/store/Hooks";
 
 enum Mode {
@@ -50,13 +50,13 @@ export default function LibraryScreen() {
     }, [areOfflineAudiobooksAvailable])
 
     return (
-        <AppScreenView title={t("Library")}>
+        <AppScreen title={t("Library")}>
 
-            <SpacerView size={5}/>
+            <Spacer size={5}/>
 
             <View style={styles.headerContainer}>
                 {header.map((row, index) => (
-                    <HStackView key={`header-${index}`} justifyContent={'space-around'} style={styles.headerRow}>
+                    <HStack key={`header-${index}`} justifyContent={'space-around'} style={styles.headerRow}>
                         {row.map(item => (
                             <Pressable
                                 key={item.mode}
@@ -68,11 +68,11 @@ export default function LibraryScreen() {
                                     type={item.mode !== mode ? "linkSemiBold" : "linkSemiBoldInactive"}>{item.label}</ThemedText>
                             </Pressable>
                         ))}
-                    </HStackView>
+                    </HStack>
                 ))}
             </View>
 
-            <VStackView>
+            <VStack>
 
                 {mode === Mode.Favorites && (<>{favoriteAudiobooks.favorites.toReversed().map((record) => (
                     <AudiobookHistoryRecordView record={record} key={`favorite.${record.id}`}/>))}</>)}
@@ -84,18 +84,18 @@ export default function LibraryScreen() {
                     <AudiobookHistoryRecordView record={record} key={`viewed.${record.id}`}/>))}</>)}
 
                 {mode === Mode.OfflineAudiobooks && (
-                    <AudiobookListView audiobooks={offlineAudiobooks} mode={'offline'}/>)}
+                    <AudiobookList audiobooks={offlineAudiobooks} mode={'offline'}/>)}
 
                 {mode === Mode.DownloadTasks && (
                     <>
-                        <ActiveDownloadTaskView/>
-                        <DownloadTaskListView/>
+                        <ActiveDownloadTask/>
+                        <DownloadTaskList/>
                     </>
                 )}
 
-            </VStackView>
+            </VStack>
 
-        </AppScreenView>
+        </AppScreen>
     );
 }
 

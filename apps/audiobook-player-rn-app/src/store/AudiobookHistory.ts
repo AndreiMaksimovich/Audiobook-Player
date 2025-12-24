@@ -1,7 +1,7 @@
-import {AudiobookHistoryArray} from "@/src/data/AppStorage";
+import {AudiobookHistoryArray} from "@/src/lib/app-persistent-storage";
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {Audiobook} from "shared";
-import {audiobookToHistoryRecord} from "@/src/data/AudiobookHistoryRecord";
+import {audiobookToHistoryRecord} from "@/src/lib/app-persistent-storage";
 import {RecentlyPlayedAudiobooksMaxCount, RecentlyViewedAudiobooksMaxCount} from "@/src/config";
 
 export interface AudiobookHistoryState {

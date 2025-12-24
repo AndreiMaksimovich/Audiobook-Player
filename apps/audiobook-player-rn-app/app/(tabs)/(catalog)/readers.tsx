@@ -1,14 +1,14 @@
 import {ReadersPerPage} from "@/src/config";
-import ReaderDynamicListView from "@/src/views/ReaderDynamicListView";
+import ReaderDynamicList from "@/src/components/app/ReaderDynamicList";
 import {useTranslation} from "react-i18next";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 export default function ScreenReaders() {
     const { t } = useTranslation();
 
     return (
-        <AppScreenView title={t("Readers")}>
-            <ReaderDynamicListView
+        <AppScreen title={t("Readers")}>
+            <ReaderDynamicList
                 baseRequest={{
                     offset: 0,
                     limit: ReadersPerPage,
@@ -16,6 +16,6 @@ export default function ScreenReaders() {
                     nameStartWith: null
                 }}
             />
-        </AppScreenView>
+        </AppScreen>
     )
 }

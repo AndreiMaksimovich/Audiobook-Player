@@ -1,8 +1,8 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {Audiobook} from "shared";
-import {DownloadTask, offlineAudiobooksManager} from "@/src/offline-audiobooks";
+import {DownloadTask, offlineAudiobooksManager} from "@/src/lib/offline-audiobooks";
 import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/Actions";
-import {toasts, ToastType} from "@/src/toasts";
+import {toastManager, ToastType} from "@/src/lib/toasts";
 import i18next from '@/src/localization'
 
 export interface OfflineAudiobooksState {
@@ -118,7 +118,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             state.activeDownloadTask.error = action.payload;
 
             console.log(state.activeDownloadTask);
-            toasts.show(ToastType.Error, i18next.t('DownloadTaskFailed.ToastMessage').replace('{title}', state.activeDownloadTask.audiobook.title));
+            toastManager.show(ToastType.Error, i18next.t('DownloadTaskFailed.ToastMessage').replace('{title}', state.activeDownloadTask.audiobook.title));
         },
 
         removeAllOfflineAudiobooks: (state) => {

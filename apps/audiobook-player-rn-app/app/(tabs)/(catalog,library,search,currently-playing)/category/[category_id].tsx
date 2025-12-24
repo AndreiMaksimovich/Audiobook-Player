@@ -1,11 +1,11 @@
-import {ThemedText} from "@/src/views/ThemedText";
+import {ThemedText} from "@/src/components/common/ThemedText";
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import {ActivityIndicator, View} from "react-native"
 import {useLazyGetCategoryQuery} from "@/src/store/AudiobookProviderApi";
 import {useEffect} from "react";
-import AudiobookDynamicListView from "@/src/views/AudiobookDynamicListView";
+import AudiobookDynamicList from "@/src/components/app/AudiobookDynamicList";
 import {AudiobooksPerPage} from "@/src/config";
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 
 export default function ScreenCategory() {
     const navigation = useNavigation();
@@ -25,7 +25,7 @@ export default function ScreenCategory() {
     }, [category]);
 
     return (
-        <AppScreenView>
+        <AppScreen>
             {isCategoryLoading && (<ActivityIndicator />)}
 
             {category && (
@@ -35,11 +35,11 @@ export default function ScreenCategory() {
                 </View>
             )}
 
-            <AudiobookDynamicListView baseRequest={{
+            <AudiobookDynamicList baseRequest={{
                 categoryId: id,
                 offset: 0,
                 limit: AudiobooksPerPage,
             }} />
-        </AppScreenView>
+        </AppScreen>
     )
 }

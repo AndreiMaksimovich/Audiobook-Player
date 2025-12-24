@@ -1,15 +1,15 @@
 import {View} from 'react-native';
-import AppScreenView from "@/src/views/AppScreenView";
+import AppScreen from "@/src/components/screens/AppScreen";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/src/store";
 import {setLocalizationLanguageCode} from "@/src/store/Settings";
 import {SupportedLanguages} from "@/src/localization/Localization";
-import {VStackView} from "@/src/views/VStackView";
-import {HStackView} from "@/src/views/HStackView";
-import {ThemedText} from "@/src/views/ThemedText";
-import SpacerView from "@/src/views/SpacerView";
-import SimplePickerView from "@/src/views/SimplePickerView";
+import {VStack} from "@/src/components/common/VStack";
+import {HStack} from "@/src/components/common/HStack";
+import {ThemedText} from "@/src/components/common/ThemedText";
+import Spacer from "@/src/components/common/Spacer";
+import SimplePicker from "@/src/components/common/SimplePicker";
 
 export default function HomeScreen() {
     const {t} = useTranslation()
@@ -20,30 +20,30 @@ export default function HomeScreen() {
     })
 
     return (
-        <AppScreenView title={t("Settings")}>
+        <AppScreen title={t("Settings")}>
 
-            <SpacerView size={10}/>
+            <Spacer size={10}/>
 
-            <VStackView>
+            <VStack>
 
                 {/* Language */}
-                <HStackView alignItems={"center"}>
+                <HStack alignItems={"center"}>
 
                     <View style={{flex: 1}}>
                         <ThemedText type={"defaultSemiBold"}>{t("Language")}</ThemedText>
                     </View>
 
                     <View style={{flex: 1}}>
-                        <SimplePickerView
+                        <SimplePicker
                             items={languages}
                             selectedValue={settings.localizationLanguageCode}
                             onSelectionChanged={(code) => dispatch(setLocalizationLanguageCode(code))}/>
                     </View>
 
-                </HStackView>
+                </HStack>
 
-            </VStackView>
+            </VStack>
 
-        </AppScreenView>
+        </AppScreen>
     );
 }

@@ -1,19 +1,18 @@
-import {appFileStorage} from "@/src/app-file-storage";
+import {appFileStorage} from "@/src/lib/app-file-storage";
 import {
     setAreaOfflineAudiobooksInitialized,
     setIsPersistentStorageAvailable,
     setIsServiceWorkerRegistered
 } from "@/src/store/Global";
-import {offlineAudiobooksManager, WorkerState} from "@/src/offline-audiobooks";
+import {offlineAudiobooksManager, WorkerState} from "@/src/lib/offline-audiobooks";
 import {
     handleActiveDownloadTaskFailure,
     handleActiveDownloadTaskProgress,
     setState as setOfflineAudiobooksState, updateActiveDownloadTask
 } from "@/src/store/OfflineAudiobooks";
-import { Platform } from 'react-native';
 import TrackPlayer from '@/src/wrappers/react-native-track-player'
-import {trackPlayerPlaybackService} from "@/src/track-player/PlaybackService";
-import {appStorage} from "@/src/data/AppStorage";
+import {trackPlayerPlaybackService} from "@/src/lib/track-player";
+import {appPersistentStorage} from "@/src/lib/app-persistent-storage";
 import {setFavoriteAudiobooks} from "@/src/store/AudiobookFavorites";
 import {setAudiobookHistory} from "@/src/store/AudiobookHistory";
 import {setAudiobook} from "@/src/store/CurrentlyPlaying";
@@ -21,7 +20,7 @@ import {Dispatch} from "@reduxjs/toolkit";
 import {handleOfflineAudiobooksActiveDownloadTaskCompletion} from "@/src/store/Actions";
 import {Audiobook} from 'shared'
 import i18next from "@/src/localization";
-import {delay} from "@/src/utils";
+import {delay, isWeb} from "@/src/utils";
 import {setSettings, settingsInitialState} from "@/src/store/Settings";
 import {getDefaultSupportedLanguageCode} from "@/src/localization/Localization";
 
@@ -47,7 +46,7 @@ export async function initializeApplicationDataAndServices(options: Initializati
 }
 
 export async function initializeWebServiceWorker(options: InitializationOptions) {
-    if (Platform.OS === 'web') {
+    if (isWeb) {
         try {
             await navigator.serviceWorker.register("/service-worker.js", {scope: "/"})
             options.dispatch(setIsServiceWorkerRegistered(true))
@@ -127,9 +126,9 @@ export async function initializeTrackPlayer(options: InitializationOptions) {
 
 export async function loadAudiobookHistory(options: InitializationOptions) {
     try {
-        const favorites = await appStorage.loadFavorites()
-        const recentlyPlayed = await appStorage.loadRecentlyPlayed()
-        const recentlyViewed = await appStorage.loadRecentlyViewed()
+        const favorites = await appPersistentStorage.loadFavorites()
+        const recentlyPlayed = await appPersistentStorage.loadRecentlyPlayed()
+        const recentlyViewed = await appPersistentStorage.loadRecentlyViewed()
 
         options.dispatch(setFavoriteAudiobooks(favorites))
         options.dispatch(setAudiobookHistory({
@@ -143,7 +142,7 @@ export async function loadAudiobookHistory(options: InitializationOptions) {
 }
 
 export async function loadCurrentlyPlayedSavedState(options: InitializationOptions, areOfflineAudiobooksAvailable: boolean) {
-    let savedState = await appStorage.loadCurrentlyPlaying()
+    let savedState = await appPersistentStorage.loadCurrentlyPlaying()
 
     if (savedState.audiobook && savedState.isOffline) {
         if (areOfflineAudiobooksAvailable) {
@@ -177,7 +176,7 @@ export async function loadSettings(options: InitializationOptions) {
     }
     const defaultSettings = {...settingsInitialState}
     defaultSettings.localizationLanguageCode = getDefaultSupportedLanguageCode()
-    const settings = await appStorage.loadSettings(defaultSettings);
+    const settings = await appPersistentStorage.loadSettings(defaultSettings);
     options.dispatch(setSettings(settings));
 
     console.log(LogTag, 'Settings loaded')
