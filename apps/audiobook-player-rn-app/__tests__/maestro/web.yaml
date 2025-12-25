@@ -5,3 +5,5 @@ env:
 ---
 - launchApp
 - runFlow: flows/catalog-search.yaml
+- runFlow: flows/settings-language.yaml
+

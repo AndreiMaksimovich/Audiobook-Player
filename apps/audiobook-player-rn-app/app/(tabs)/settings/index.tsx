@@ -20,7 +20,7 @@ export default function HomeScreen() {
     })
 
     return (
-        <AppScreen title={t("Settings")}>
+        <AppScreen title={t("Settings")} testID={'Screen.Settings'}>
 
             <Spacer size={10}/>
 
@@ -33,7 +33,7 @@ export default function HomeScreen() {
                         <ThemedText type={"defaultSemiBold"}>{t("Language")}</ThemedText>
                     </View>
 
-                    <View style={{flex: 1}}>
+                    <View testID={'LanguagePicker'} style={{flex: 1}}>
                         <SimplePicker
                             items={languages}
                             selectedValue={settings.localizationLanguageCode}
