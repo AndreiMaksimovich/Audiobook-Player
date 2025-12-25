@@ -41,9 +41,13 @@ export class ServiceWorkerOfflineAudiobookManagerWorker {
         serviceWorkerMessageBus.addMessageListener(
             WorkerMessageType.DownloadTasks_Client_GetState,
             (message: Message<Audiobook>) => {
-                serviceWorkerMessageBus.post(WorkerMessageType.DownloadTasks_Worker_State, this.state)
+                this.sendState()
             }
         )
+    }
+
+    private sendState() {
+        serviceWorkerMessageBus.post(WorkerMessageType.DownloadTasks_Worker_State, this.state)
     }
 
     private async download(audiobook: Audiobook): Promise<void> {
@@ -56,6 +60,8 @@ export class ServiceWorkerOfflineAudiobookManagerWorker {
             isActive: true,
             currentlyDownloading: audiobook
         }
+
+        this.sendState()
 
         let lastProgressUpdateTime = DateTimeUtils.now()
 

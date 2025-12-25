@@ -42,7 +42,7 @@ export default function RootLayout() {
             })
             setInitializationState('initialized');
         } catch (error) {
-            console.log(error)
+            console.log('Root Layout Initialization', error)
             setInitializationState('failed');
         }
     }

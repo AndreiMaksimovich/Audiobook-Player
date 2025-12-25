@@ -5,7 +5,7 @@ config()
 module.exports = () => {
     const profile = process.env.PROFILE  ?? "development"
     const API_URL = process.env.API_URL ?? process.env[`API_URL_${profile.toUpperCase()}`]
-    console.log(API_URL)
+
     return {
         expo: {
             name: "audiobook-player-rn-app",

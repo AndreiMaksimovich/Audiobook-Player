@@ -1,2 +1,2 @@
 
-export * from './PlaybackService'
+export * from './trackPlayerPlaybackService'

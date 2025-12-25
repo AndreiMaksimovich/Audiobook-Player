@@ -1,0 +1,23 @@
+url: ${APP_URL}
+appId: ${APP_ID}
+---
+- tapOn:
+    id: 'TabButton.Settings'
+- tapOn:
+    id: 'LanguagePicker'
+- tapOn:
+    text: 'Беларуская (BE)'
+- assertVisible:
+    text: 'Налады'
+- tapOn:
+    id: 'TabButton.Library'
+- assertVisible:
+    text: 'Бібліятэка'
+- tapOn:
+    id: 'TabButton.Settings'
+- tapOn:
+    id: 'LanguagePicker'
+- tapOn:
+    text: 'English (EN)'
+- assertVisible:
+    text: 'Settings'

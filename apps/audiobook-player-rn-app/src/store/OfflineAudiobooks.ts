@@ -4,12 +4,7 @@ import {DownloadTask, offlineAudiobooksManager} from "@/src/lib/offline-audioboo
 import {handleOfflineAudiobooksActiveDownloadTaskCompletion, removeOfflineAudiobook} from "@/src/store/Actions";
 import {toastManager, ToastType} from "@/src/lib/toasts";
 import i18next from '@/src/localization'
-
-export interface OfflineAudiobooksState {
-    offlineAudiobooks: Audiobook[];
-    downloadTasks: DownloadTask[];
-    activeDownloadTask: DownloadTask | null;
-}
+import {OfflineAudiobooksState} from "@/src/store/Types";
 
 const initialState: OfflineAudiobooksState = {
     offlineAudiobooks: [],
@@ -27,6 +22,12 @@ function updateIsActiveOnBacklogTasks(state: OfflineAudiobooksState) {
 
 function clone(audiobook: Audiobook) {
     return JSON.parse(JSON.stringify(audiobook));
+}
+
+let shareState: (state: OfflineAudiobooksState) => void = (state) => {}
+
+export function setOfflineAudiobooksStateSharer(_shareState: (state: OfflineAudiobooksState) => void) {
+    shareState = _shareState;
 }
 
 export const offlineAudiobooksStateSlice = createSlice({
@@ -72,6 +73,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                 state.activeDownloadTask.isActive = true
                 state.activeDownloadTask.error = undefined;
                 offlineAudiobooksManager.downloadAudiobook(clone(state.activeDownloadTask.audiobook));
+                shareState(state)
                 return;
             }
 
@@ -83,6 +85,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                 state.activeDownloadTask.error = undefined;
                 updateIsActiveOnBacklogTasks(state)
                 offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook));
+                shareState(state)
                 return;
             }
 
@@ -96,6 +99,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             state.activeDownloadTask = task;
             updateIsActiveOnBacklogTasks(state)
             offlineAudiobooksManager.downloadAudiobook(clone(task.audiobook));
+            shareState(state)
         },
 
         pauseActiveDownloadTask: (state) => {
@@ -156,6 +160,8 @@ export const offlineAudiobooksStateSlice = createSlice({
             }
 
             setTimeout(() => offlineAudiobooksManager.removeDownloadTask(audiobook.id).catch(console.error), 1000)
+
+            shareState(state)
         },
 
         cancelAllDownloadTasks: (state, action: PayloadAction<DownloadTask[]>) => {
@@ -165,6 +171,7 @@ export const offlineAudiobooksStateSlice = createSlice({
             state.downloadTasks = []
             state.activeDownloadTask = null
             offlineAudiobooksManager.removeAllDownloadTasks().catch(console.error)
+            shareState(state)
         }
     },
 
@@ -197,6 +204,7 @@ export const offlineAudiobooksStateSlice = createSlice({
                     state.offlineAudiobooks.splice(index, 1);
                     offlineAudiobooksManager.removeOfflineAudiobook(audiobookId).catch(console.error);
                 }
+                shareState(state)
             })
     }
 })
