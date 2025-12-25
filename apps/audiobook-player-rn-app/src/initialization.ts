@@ -31,7 +31,11 @@ export interface InitializationOptions {
     dispatch: Dispatch,
 }
 
+let isInitialized = false;
+
 export async function initializeApplicationDataAndServices(options: InitializationOptions) {
+    if (isInitialized) return;
+
     let areOfflineAudiobooksAvailable = false;
 
     await Promise.all([
@@ -43,6 +47,8 @@ export async function initializeApplicationDataAndServices(options: Initializati
     ])
 
     await loadCurrentlyPlayedSavedState(options, areOfflineAudiobooksAvailable);
+
+    isInitialized = true;
 }
 
 export async function initializeWebServiceWorker(options: InitializationOptions) {

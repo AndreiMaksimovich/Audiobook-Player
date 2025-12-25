@@ -41,18 +41,17 @@ registerRoute(styleRoute);
 
 const offlineAudiobookManagerWorker = new ServiceWorkerOfflineAudiobookManagerWorker()
 
-if (OfflineAudiobooksEnabled && UseServiceWorkerForOfflineAudiobookDownloads) {
-    (async () => {
-        await appFileStorage.init()
-        await offlineAudiobookManagerWorker.init()
-        console.log(LogTag, 'ServiceWorkerOfflineAudiobookManagerWorker Initialized');
-    })()
-}
-
 self.addEventListener("install", function (event) {
     console.log(LogTag, 'Service worker install');
 });
 
 self.addEventListener("activate", function (event) {
     console.log(LogTag, 'Service worker activate');
+    if (OfflineAudiobooksEnabled && UseServiceWorkerForOfflineAudiobookDownloads) {
+        (async () => {
+            await appFileStorage.init()
+            await offlineAudiobookManagerWorker.init()
+            console.log(LogTag, 'ServiceWorkerOfflineAudiobookManagerWorker Initialized');
+        })()
+    }
 });

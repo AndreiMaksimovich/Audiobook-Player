@@ -5,7 +5,7 @@ import {setupListeners} from '@reduxjs/toolkit/query'
 import {audiobookHistoryStateSlice} from "@/src/store/AudiobookHistory";
 import {audiobookFavoritesStateSlice} from "@/src/store/AudiobookFavorites";
 import {useDispatch} from "react-redux";
-import {offlineAudiobooksStateSlice} from '@/src/store/OfflineAudiobooks'
+import {offlineAudiobooksStateSlice, setState} from '@/src/store/OfflineAudiobooks'
 import {globalStateSlice} from "@/src/store/Global";
 import {currentlyPlayingStateSlice} from "@/src/store/CurrentlyPlaying";
 
@@ -40,5 +40,13 @@ export const appDispatch: AppDispatch = store.dispatch
 export const useAppDispatch = (): AppDispatch => {
     return useDispatch();
 }
+
+// ---- Configure cross browser tabs offline audiobooks state sharing
+import {setOfflineAudiobooksStateSharer} from "./OfflineAudiobooks"
+import {configureSharedStateHandlers, shareOfflineAudiobooksState} from "@/src/store/shared-state";
+setOfflineAudiobooksStateSharer(shareOfflineAudiobooksState);
+configureSharedStateHandlers({
+    handleOfflineAudiobooks: (state) => appDispatch(setState(state))
+})
 
 setupListeners(store.dispatch)
