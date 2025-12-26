@@ -8,12 +8,10 @@
   "main": "index.js",
   "scripts": {
     "export": "node index.js",
-    "export-client": "node index.js -- client",
-    "export-server": "node index.js -- server",
-    "export-client-server": "node index.js -- client server",
-    "export-production": "node index.js -- production",
-    "export-all": "node index.js -- client server database files",
-    "export-all-production": "node index.js -- client server database files production"
+    "export-client": "node index.js --client --profile=preview",
+    "export-server": "node index.js --server --profile=preview",
+    "export-client-server": "node index.js --client --server --profile=preview",
+    "export-all-production": "node index.js --client --database --server --files --profile=production"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

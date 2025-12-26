@@ -1,0 +1,96 @@
+services:
+
+  # Database
+  database:
+    image: mysql:latest
+    container_name: audiobook_player__database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: audiobooks
+      MYSQL_TCP_PORT: "3306"
+    ports:
+      - "33306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - audiobook-player
+
+  # Server
+  server:
+    build: ./server
+    container_name: audiobook_player__server
+    depends_on:
+      - database
+      - files
+    restart: always
+    volumes:
+      - ./files/audiobook-files/:/app/audiobook-files/
+    ports:
+      - "34000:34000"
+    environment:
+      MYSQL_HOST: database
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "audiobooks"
+      WEB_SERVICE_ROOT: "/api"
+      WEB_SERVICE_PORT: "34000"
+      FILE_STORAGE_BASE_URL: "https://audiobooks.amaxsoftware.com/files"
+      FILE_STORAGE_LOCAL_PATH: "./audiobook-files"
+      HASH_ALGORITHM: "sha256"
+      VERSION: "1"
+      VERSION_NAME: "0.1.0"
+    networks:
+      - audiobook-player
+
+  # Client
+  client:
+    build: ./client
+    container_name: audiobook_player__client
+    depends_on:
+      - server
+    restart: always
+    ports:
+      - "30080:80"
+    volumes:
+      - ./client/dist/:/usr/share/nginx/html/
+    networks:
+      - audiobook-player
+
+  # Files
+  files:
+    build: ./files
+    container_name: audiobook_player__files
+    ports:
+      - "30081:80"
+    volumes:
+      - ./files/audiobook-files/:/usr/share/nginx/html/files/
+    networks:
+      - audiobook-player
+
+  # Local Reverse Proxy
+#  local-reverse-proxy:
+#    build: ./local-reverse-proxy
+#    container_name: audiobooks_player__local_reverse_proxy
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - audiobook-player
+
+# Reverse Proxy
+  reverse-proxy:
+    build: ./reverse-proxy
+    container_name: audiobooks_player__reverse_proxy
+    ports:
+      - "443:443"
+      - "80:80"
+    networks:
+      - audiobook-player
+
+# Network
+networks:
+  audiobook-player:
+    name: audiobook-player
+    driver: bridge

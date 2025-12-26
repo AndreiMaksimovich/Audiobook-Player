@@ -4,7 +4,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "node index.js"
+    "build": "node index.js",
+    "build-preview-android": "node index.js --buildAndroid profile=preview",
+    "build-preview-android-install": "node index.js --buildAndroid --installAndroid profile=preview",
+    "build-preview-ios": "node index.js --buildIOS profile=preview",
+    "build-preview-ios-install": "node index.js --buildIOS --installIOS profile=preview"
   },
   "dependencies": {
     "dotenv": "^17.2.3"

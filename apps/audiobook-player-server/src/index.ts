@@ -21,7 +21,9 @@ if (filesPath !== null) {
         console.error("Files directory does not exist", filesPath);
         process.exit(1);
     }
-    app.use('/files', express.static(filesPath))
+    if (process.env.FILE_STORAGE_LOCAL === "true") {
+        app.use('/files', express.static(filesPath))
+    }
 }
 
 // HTTPS

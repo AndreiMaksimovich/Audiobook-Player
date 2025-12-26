@@ -3,6 +3,7 @@ dotenv.config();
 import {execute} from 'tools-shared'
 import fs from'node:fs/promises'
 import path from 'path';
+import { parseArgs } from 'node:util';
 
 
 const serverDir = '../../apps/audiobook-player-server'
@@ -18,17 +19,47 @@ const tmpClientDir = path.join(tmpDir, 'client')
 const tmpDatabaseDir = path.join(tmpDir, 'database')
 const tmpFilesDir = path.join(tmpDir, 'files')
 
-const configuration = {
-    addDatabase: argsContainKey('database'),
-    addFiles: argsContainKey('files'),
-    addServer: argsContainKey('server'),
-    addClient: argsContainKey('client'),
-    production: argsContainKey('production'),
+const argumentOptions = {
+    server: {
+        type: 'boolean',
+        short: 's',
+        default: false,
+    },
+    client: {
+        type: 'boolean',
+        short: 'c',
+        default: false,
+    },
+    files: {
+        type: 'boolean',
+        short: 'f',
+        default: false,
+    },
+    database: {
+        type: 'boolean',
+        short: 'd',
+        default: false,
+    },
+    profile: {
+        type: 'string',
+        short: 'p',
+    },
+    output: {
+        type: 'string',
+        short: 'o',
+        default: '',
+    },
+    cleanup: {
+        type: 'boolean',
+        default: true,
+    }
 }
 
-const debug = argsContainKey('debug')
+const {values: configuration} = parseArgs({options: argumentOptions});
 
-const serverEnvFilePath = path.join(secretsDir, `server-env--${configuration.production ? 'production' : 'preview'}.ini`)
+
+
+const serverEnvFilePath = path.join(secretsDir, `server-env--${configuration.profile}.ini`)
 
 async function run(configuration) {
     await clearTmpDir()
@@ -38,26 +69,28 @@ async function run(configuration) {
     await fs.writeFile(path.join(tmpDir, 'config.json'), JSON.stringify(configuration, null, 2), 'utf8')
 
     // server
-    if (configuration.addServer) {
-        await execute(`cd ${serverDir} && webpack `) // "Pack" server into a single standalone file
+    if (configuration.server) {
+        const webPackConfigurationFile = configuration.profile === 'production' ? 'webpack.config.production.js' : 'webpack.config.js'
+        await execute(`cd ${serverDir} && webpack --config ${webPackConfigurationFile}`)
         await fs.cp(`${serverDir}/dist/`, tmpServerDir, {recursive: true})
         await fs.cp(serverEnvFilePath, path.join(tmpServerDir, '.env'))
     }
 
     // client
-    if (configuration.addClient) {
-        await execute(`cd ${clientDir} && webpack `) // "Pack" service worker
-        await execute(`npm run export-web-${configuration.production ? 'production' : 'preview'} --prefix ${clientDir}`)
-        await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true})
+    if (configuration.client) {
+        await execute(`npm run clear-metro-cache --prefix ${clientDir}`) // Clear cache, yep, it is required
+        await execute(`cd ${clientDir} && webpack `) // Pack the service worker
+        await execute(`npm run export-web-${configuration.profile} --prefix ${clientDir}`) // Export the app
+        await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true}) // Copy the app
     }
 
     // media files
-    if (configuration.addFiles) {
+    if (configuration.files) {
         await fs.cp(audiobookFileDir, tmpFilesDir, {recursive: true})
     }
 
     // database
-    if (configuration.addDatabase) {
+    if (configuration.database) {
         const sqlFilePath = `${tmpDatabaseDir}/database.sql`
         await execute(`mysqldump --defaults-extra-file=${secretsDir}/mysql-config--local.ini --skip-lock-tables --routines --add-drop-table --disable-keys --set-gtid-purged=COMMENTED --extended-insert audiobooks  > ${sqlFilePath}`)
         const sql = await fs.readFile(sqlFilePath, { encoding: 'utf8' })
@@ -70,16 +103,19 @@ async function run(configuration) {
     }
 
     // zip build
-    await execute(`cd ${tmpDir} && zip -r ${path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)} .`)
+    const outputZipFilePath = configuration.output ? path.resolve(configuration.output) : path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)
+    await execute(`cd ${tmpDir} && zip -r ${outputZipFilePath} .`)
 
-    if (!debug) {
+    if (configuration.cleanup) {
         await clearTmpDir()
     }
+
+    console.log(`Build: ${outputZipFilePath}`)
 
     process.exit(0)
 }
 
-run(configuration)
+run(configuration).catch(console.error)
 
 async function clearTmpDir() {
     try {
@@ -94,19 +130,19 @@ async function clearTmpDir() {
 }
 
 async function createDistSubfolders(config) {
-    if (config.addClient) {
+    if (config.client) {
         await fs.mkdir(tmpClientDir)
     }
 
-    if (config.addServer) {
+    if (config.server) {
         await fs.mkdir(tmpServerDir)
     }
 
-    if (config.addDatabase) {
+    if (config.database) {
         await fs.mkdir(tmpDatabaseDir)
     }
 
-    if (config.addFiles) {
+    if (config.files) {
         await fs.mkdir(tmpFilesDir)
     }
 }
@@ -126,8 +162,4 @@ function getBuildFileName() {
     }
 
     return `audiobooks__${year}-${formatTimePart(month)}-${formatTimePart(day)}_${formatTimePart(hours)}-${formatTimePart(minutes)}`;
-}
-
-function argsContainKey(key) {
-    return process.argv.includes(key)
 }

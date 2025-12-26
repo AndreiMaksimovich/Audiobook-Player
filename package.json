@@ -12,6 +12,7 @@
     "packages/*",
     "tools/build-export",
     "tools/build-import",
+    "tools/build-import-docker",
     "tools/build-mobile"
   ],
   "devDependencies": {

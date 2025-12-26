@@ -1,13 +1,13 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.ts',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
     },
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.js'],
     },

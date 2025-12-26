@@ -3,6 +3,7 @@ dotenv.config();
 import fs from 'fs/promises'
 import path from 'path'
 import {spawn} from 'child_process';
+import { parseArgs } from 'node:util';
 
 
 const appDir = '../../apps/audiobook-player-rn-app'
@@ -10,65 +11,34 @@ const buildDir = './builds'
 const relativeBuildDir = '../../tools/build-mobile/builds'
 const credentialsPath = '../../secrets/credentials/credentials-{profile}.json'
 
-const configuration = {
-    buildAndroid: false,
-    buildIOS: false,
-    profile: "preview",
-    installAndroid: false,
-    installIOS: false,
-}
-
-const supportedProfiles = ["preview", "production", "development"];
-
-for (let i=0; i<process.argv.length; i++) {
-    const arg = process.argv[i];
-
-    // Profile
-    if (arg === '--profile') {
-        if (i === process.argv.length - 1) {
-            die('Profile value argument is required');
-        }
-        i += 1
-        const value = process.argv[i];
-        if (value.startsWith('--')) {
-            die('Profile value is required');
-        }
-        configuration.profile = value;
-        continue;
-    }
-
-    // Android
-    if (arg === '--android') {
-        configuration.buildAndroid = true;
-        continue
-    }
-
-    // Install Android
-    if (arg === '--installAndroid') {
-        configuration.installAndroid = true;
-        continue
-    }
-
-    // iOS
-    if (arg === '--ios') {
-        configuration.buildIOS = true;
-        continue
-    }
-
-    // Install iOS
-    if (arg === '--installIOS') {
-        configuration.installIOS = true;
-        continue
+const argumentOptions = {
+    profile: {
+        type: 'string',
+        default: 'development',
+    },
+    buildAndroid: {
+        type: 'boolean',
+        default: false,
+        short: 'a'
+    },
+    buildIOS: {
+        type: 'boolean',
+        default: false,
+        short: 'i'
+    },
+    installAndroid: {
+        type: 'boolean',
+        default: false,
+        short: 'ia'
+    },
+    installIOS: {
+        type: 'boolean',
+        default: false,
+        short: 'ii'
     }
 }
 
-if (configuration.buildAndroid === false && configuration.buildIOS === false) {
-    die('arguments --android or/and --ios are required')
-}
-
-if (supportedProfiles.indexOf(configuration.profile) === -1) {
-    die(`Unknow profile ${configuration.profile}`);
-}
+const {configuration} = parseArgs({options: argumentOptions});
 
 (async () => {
     console.log('Build', configuration)
@@ -94,7 +64,7 @@ if (supportedProfiles.indexOf(configuration.profile) === -1) {
 
         await execute(`cd ${appDir} && PROFILE="${configuration.profile}" eas build --platform ios --local --output ${outputRelativePath}`)
 
-        if (configuration.buildIOS) {
+        if (configuration.installIOS) {
             const outputPath = path.join(buildDir, fileName)
             await execute(`cfgutil --foreach install-app "${outputPath}"`)
         }
