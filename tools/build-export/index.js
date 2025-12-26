@@ -1,11 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
+import {execute} from 'tools-shared'
 import fs from'node:fs/promises'
 import path from 'path';
-import util from 'util';
-import {exec} from 'child_process';
-const execAsync = util.promisify(exec);
+
 
 const serverDir = '../../apps/audiobook-player-server'
 const clientDir = '../../apps/audiobook-player-rn-app'
@@ -30,7 +28,7 @@ const configuration = {
 
 const debug = argsContainKey('debug')
 
-const serverEnvFilePath = path.join(secretsDir, `server-env--${configuration.production ? 'production' : 'testing'}.ini`)
+const serverEnvFilePath = path.join(secretsDir, `server-env--${configuration.production ? 'production' : 'preview'}.ini`)
 
 async function run(configuration) {
     await clearTmpDir()
@@ -41,15 +39,15 @@ async function run(configuration) {
 
     // server
     if (configuration.addServer) {
-        await execAsync(`cd ${serverDir} && webpack `) // "Pack" server into a single standalone file
+        await execute(`cd ${serverDir} && webpack `) // "Pack" server into a single standalone file
         await fs.cp(`${serverDir}/dist/`, tmpServerDir, {recursive: true})
         await fs.cp(serverEnvFilePath, path.join(tmpServerDir, '.env'))
     }
 
     // client
     if (configuration.addClient) {
-        await execAsync(`cd ${clientDir} && webpack `) // "Pack" service worker
-        await execAsync(`npm run export-web-${configuration.production ? 'production' : 'preview'} --prefix ${clientDir}`)
+        await execute(`cd ${clientDir} && webpack `) // "Pack" service worker
+        await execute(`npm run export-web-${configuration.production ? 'production' : 'preview'} --prefix ${clientDir}`)
         await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true})
     }
 
@@ -61,7 +59,7 @@ async function run(configuration) {
     // database
     if (configuration.addDatabase) {
         const sqlFilePath = `${tmpDatabaseDir}/database.sql`
-        await execAsync(`mysqldump --defaults-extra-file=${secretsDir}/mysql-config--local.ini --skip-lock-tables --routines --add-drop-table --disable-keys --set-gtid-purged=COMMENTED --extended-insert audiobooks  > ${sqlFilePath}`)
+        await execute(`mysqldump --defaults-extra-file=${secretsDir}/mysql-config--local.ini --skip-lock-tables --routines --add-drop-table --disable-keys --set-gtid-purged=COMMENTED --extended-insert audiobooks  > ${sqlFilePath}`)
         const sql = await fs.readFile(sqlFilePath, { encoding: 'utf8' })
         const sqlToSave =
             sql
@@ -72,7 +70,7 @@ async function run(configuration) {
     }
 
     // zip build
-    await execAsync(`cd ${tmpDir} && zip -r ${path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)} .`)
+    await execute(`cd ${tmpDir} && zip -r ${path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)} .`)
 
     if (!debug) {
         await clearTmpDir()

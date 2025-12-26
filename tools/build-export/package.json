@@ -16,6 +16,7 @@
     "export-all-production": "node index.js -- client server database files production"
   },
   "dependencies": {
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "tools-shared": "*"
   }
 }

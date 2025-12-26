@@ -9,7 +9,10 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "tools/build-export",
+    "tools/build-import",
+    "tools/build-mobile"
   ],
   "devDependencies": {
 
