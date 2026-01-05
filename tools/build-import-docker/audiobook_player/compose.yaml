@@ -8,9 +8,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: audiobooks
-      MYSQL_TCP_PORT: "3306"
+      MYSQL_TCP_PORT: "33306"
     ports:
-      - "33306:3306"
+      - "33306:33306"
     volumes:
       - ./mysql-data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
@@ -31,7 +31,7 @@ services:
       - "34000:34000"
     environment:
       MYSQL_HOST: database
-      MYSQL_PORT: "3306"
+      MYSQL_PORT: "33306"
       MYSQL_USER: "root"
       MYSQL_PASSWORD: "password"
       MYSQL_DATABASE: "audiobooks"
@@ -71,18 +71,23 @@ services:
       - audiobook-player
 
   # Local Reverse Proxy
-#  local-reverse-proxy:
-#    build: ./local-reverse-proxy
-#    container_name: audiobooks_player__local_reverse_proxy
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - audiobook-player
+  local-reverse-proxy:
+    build: ./local-reverse-proxy
+    container_name: audiobooks_player__local_reverse_proxy
+    profiles:
+      - local-reverse-proxy
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    networks:
+      - audiobook-player
 
 # Reverse Proxy
   reverse-proxy:
     build: ./reverse-proxy
     container_name: audiobooks_player__reverse_proxy
+    profiles:
+      - reverse-proxy
     ports:
       - "443:443"
       - "80:80"

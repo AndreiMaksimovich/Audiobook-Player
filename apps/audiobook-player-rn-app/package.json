@@ -9,6 +9,7 @@
     "test": "jest --watchAll",
 
     "export-web-development": "PROFILE=development npx cross-env environment=development expo export --platform web",
+    "export-web-local": "PROFILE=local npx cross-env environment=development expo export --platform web",
     "export-web-preview": "PROFILE=preview npx cross-env environment=testing expo export --platform web",
     "export-web-production": "PROFILE=production npx cross-env environment=production expo export --platform web"
 

@@ -22,6 +22,10 @@ const argumentOptions = {
         type: 'string',
         required: true,
     },
+    profile: {
+        type: 'string',
+        default: '',
+    },
     cleanup: {
         type: 'boolean',
         default: true,
@@ -67,7 +71,8 @@ if (!fs.existsSync(configuration.path)) {
     }
 
     // Run docker compose
-    await execute(`cd ${dockerComposeRoot} && docker-compose up -d --build`)
+    const dockerComposeProfile = configuration.profile ? `--profile ${configuration.profile}` : ''
+    await execute(`cd ${dockerComposeRoot} && docker compose ${dockerComposeProfile} up -d --build`)
 
     // clear tmp dir
     if (configuration.cleanup) {
