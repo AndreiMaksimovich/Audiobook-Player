@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobook-player--server
+  labels:
+    app: audiobook-player
+    tier: server
+spec:
+  selector:
+    matchLabels:
+      app: audiobook-player
+      tier: server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: audiobook-player
+        tier: server
+    spec:
+      containers:
+        - image: node:24-alpine
+          name: server
+          env:
+            - name: MYSQL_HOST
+              value: "audiobook-player--mysql"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: audiobook-player--mysql-password-bc6ggk5g2t
+                  key: password
+            - name: MYSQL_DATABASE
+              value: audiobooks
+            - name: WEB_SERVICE_ROOT
+              value: /api
+            - name: WEB_SERVICE_PORT
+              value: "4000"
+            - name: FILE_STORAGE_BASE_URL
+              value: "http://localhost/files"
+          workingDir: "/project/apps/audiobook-player-server"
+          command: [ "npm", "run", "dev" ]
+          ports:
+            - containerPort: 4000
+          volumeMounts:
+            - name: project
+              mountPath: /project
+      volumes:
+        - name: project
+          persistentVolumeClaim:
+            claimName: audiobook-player--project-pvc

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobook-player--files
+  labels:
+    app: audiobook-player
+    tier: files
+spec:
+  selector:
+    matchLabels:
+      app: audiobook-player
+      tier: files
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: audiobook-player
+        tier: files
+    spec:
+      containers:
+        - image: nginx:alpine
+          name: files
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: media-files
+              mountPath: /usr/share/nginx/html/files/
+      volumes:
+        - name: media-files
+          persistentVolumeClaim:
+            claimName: audiobook-player--files-pvc

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audiobook-player--client-nginx-config
+data:
+  default.conf: |
+    server {
+        listen *:80;
+    
+        root /usr/share/nginx/html;
+        index index.html;
+    
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }

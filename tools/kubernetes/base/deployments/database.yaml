@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobook-player--mysql
+  labels:
+    app: audiobook-player
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: audiobook-player
+      tier: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: audiobook-player
+        tier: database
+    spec:
+      containers:
+        - image: mysql:latest
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: audiobook-player--mysql-password-bc6ggk5g2t
+                  key: password
+            - name: MYSQL_DATABASE
+              value: audiobooks
+            - name: MYSQL_USER
+              value: audiobooks
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: audiobook-player--mysql-password-bc6ggk5g2t
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-init
+              mountPath: /docker-entrypoint-initdb.d
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: mysql-init
+          persistentVolumeClaim:
+            claimName: audiobook-player--database-init-pvc
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: audiobook-player--database-pvc

@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: audiobook-player--ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: audiobook-player--client
+                port:
+                  number: 8080
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: audiobook-player--server
+                port:
+                  number: 4000
+          - path: /files/
+            pathType: Prefix
+            backend:
+              service:
+                name: audiobook-player--files
+                port:
+                  number: 8080

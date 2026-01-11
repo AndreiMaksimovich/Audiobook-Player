@@ -12,21 +12,24 @@ services:
     ports:
       - "33306:33306"
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - database:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
     networks:
       - audiobook-player
 
   # Server
-  server:
+  local-server:
     build: ./server
     container_name: audiobook_player__server
     depends_on:
       - database
       - files
     restart: always
+    profiles:
+      - preview
+      - production
     volumes:
-      - ./files/audiobook-files/:/app/audiobook-files/
+      - files:/app/audiobook-files/
     ports:
       - "34000:34000"
     environment:
@@ -38,6 +41,37 @@ services:
       WEB_SERVICE_ROOT: "/api"
       WEB_SERVICE_PORT: "34000"
       FILE_STORAGE_BASE_URL: "https://audiobooks.amaxsoftware.com/files"
+      FILE_STORAGE_LOCAL_PATH: "./audiobook-files"
+      HASH_ALGORITHM: "sha256"
+      VERSION: "1"
+      VERSION_NAME: "0.1.0"
+    networks:
+      - audiobook-player
+
+  # Local Server
+  server:
+    build: ./server
+    container_name: audiobook_player__server
+    depends_on:
+      - database
+      - files
+    restart: always
+    profiles:
+      - local
+      - development
+    volumes:
+      - files:/app/audiobook-files/
+    ports:
+      - "34000:34000"
+    environment:
+      MYSQL_HOST: database
+      MYSQL_PORT: "33306"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "audiobooks"
+      WEB_SERVICE_ROOT: "/api"
+      WEB_SERVICE_PORT: "34000"
+      FILE_STORAGE_BASE_URL: "https://192.168.100.93/files"
       FILE_STORAGE_LOCAL_PATH: "./audiobook-files"
       HASH_ALGORITHM: "sha256"
       VERSION: "1"
@@ -61,24 +95,28 @@ services:
 
   # Files
   files:
-    build: ./files
+    build: ./files/
     container_name: audiobook_player__files
     ports:
       - "30081:80"
     volumes:
-      - ./files/audiobook-files/:/usr/share/nginx/html/files/
+      - files:/usr/share/nginx/html/files/
     networks:
       - audiobook-player
 
   # Local Reverse Proxy
   local-reverse-proxy:
     build: ./local-reverse-proxy
-    container_name: audiobooks_player__local_reverse_proxy
+    environment:
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+      SERVER_NAME: 192.168.100.93
+    container_name: audiobooks_player__reverse_proxy
     profiles:
-      - local-reverse-proxy
+      - local
+      - development
     ports:
-      - "8080:8080"
-      - "8443:8443"
+      - "80:80"
+      - "443:443"
     networks:
       - audiobook-player
 
@@ -86,8 +124,12 @@ services:
   reverse-proxy:
     build: ./reverse-proxy
     container_name: audiobooks_player__reverse_proxy
+    environment:
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+      SERVER_NAME: audiobooks.amaxsoftware.com
     profiles:
-      - reverse-proxy
+      - preview
+      - production
     ports:
       - "443:443"
       - "80:80"
@@ -99,3 +141,17 @@ networks:
   audiobook-player:
     name: audiobook-player
     driver: bridge
+
+volumes:
+  files:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './files/audiobook-files/'
+  database:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './mysql-data'

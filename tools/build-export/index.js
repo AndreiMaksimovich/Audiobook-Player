@@ -19,6 +19,20 @@ const tmpClientDir = path.join(tmpDir, 'client')
 const tmpDatabaseDir = path.join(tmpDir, 'database')
 const tmpFilesDir = path.join(tmpDir, 'files')
 
+const clientImageConfig = {
+    name: 'audiobook-player-client',
+    repository: 'amaxsoftware',
+    dockerDirectory: './docker/client',
+    distDirectory: './docker/client/dist'
+}
+
+const serverImageConfig = {
+    name: 'audiobook-player-server',
+    repository: 'amaxsoftware',
+    dockerDirectory: './docker/server',
+    distDirectory: './docker/server/dist'
+}
+
 const argumentOptions = {
     server: {
         type: 'boolean',
@@ -40,6 +54,22 @@ const argumentOptions = {
         short: 'd',
         default: false,
     },
+    serverImage: {
+        type: 'boolean',
+        default: false,
+    },
+    serverImageTag: {
+        type: 'string',
+        default: 'latest',
+    },
+    clientImage: {
+        type: 'boolean',
+        default: false,
+    },
+    clientImageTag: {
+        type: 'string',
+        default: 'latest',
+    },
     profile: {
         type: 'string',
         short: 'p',
@@ -52,36 +82,57 @@ const argumentOptions = {
     cleanup: {
         type: 'boolean',
         default: true,
+    },
+    pushImages: {
+        type: 'boolean',
+        default: false,
+    },
+    imagePlatforms: {
+        type: 'string',
+        default: 'linux/amd64,linux/arm64',
     }
 }
 
 const {values: configuration} = parseArgs({options: argumentOptions});
 
-
-
 const serverEnvFilePath = path.join(secretsDir, `server-env--${configuration.profile}.ini`)
 
 async function run(configuration) {
     await clearTmpDir()
+    await clearDockerDistDirs()
     await createDistSubfolders(configuration)
 
     // Save configuration
     await fs.writeFile(path.join(tmpDir, 'config.json'), JSON.stringify(configuration, null, 2), 'utf8')
 
     // server
-    if (configuration.server) {
+    if (configuration.server || configuration.serverImage) {
         const webPackConfigurationFile = configuration.profile === 'production' ? 'webpack.config.production.js' : 'webpack.config.js'
         await execute(`cd ${serverDir} && webpack --config ${webPackConfigurationFile}`)
-        await fs.cp(`${serverDir}/dist/`, tmpServerDir, {recursive: true})
-        await fs.cp(serverEnvFilePath, path.join(tmpServerDir, '.env'))
+
+        if (configuration.server) {
+            await fs.cp(`${serverDir}/dist/`, tmpServerDir, {recursive: true})
+            await fs.cp(serverEnvFilePath, path.join(tmpServerDir, '.env'))
+        }
+
+        if (configuration.serverImage) {
+            await buildDockerImage(serverImageConfig, `${serverDir}/dist/`, configuration.serverImageTag)
+        }
     }
 
     // client
-    if (configuration.client) {
+    if (configuration.client || configuration.clientImage ) {
         await execute(`npm run clear-metro-cache --prefix ${clientDir}`) // Clear cache, yep, it is required
         await execute(`cd ${clientDir} && webpack `) // Pack the service worker
         await execute(`npm run export-web-${configuration.profile} --prefix ${clientDir}`) // Export the app
-        await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true}) // Copy the app
+
+        if (configuration.client) {
+            await fs.cp(`${clientDir}/dist/`, tmpClientDir, {recursive: true})
+        }
+
+        if (configuration.clientImage) {
+            await buildDockerImage(clientImageConfig, `${clientDir}/dist/`, configuration.clientImageTag)
+        }
     }
 
     // media files
@@ -103,19 +154,40 @@ async function run(configuration) {
     }
 
     // zip build
-    const outputZipFilePath = configuration.output ? path.resolve(configuration.output) : path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)
-    await execute(`cd ${tmpDir} && zip -r ${outputZipFilePath} .`)
+    if (configuration.server || configuration.client || configuration.files || configuration.database) {
+        const outputZipFilePath = configuration.output ? path.resolve(configuration.output) : path.join(path.resolve(buildDir), `${getBuildFileName()}.zip`)
+        await execute(`cd ${tmpDir} && zip -r ${outputZipFilePath} .`)
+        console.log(`Build: ${outputZipFilePath}`)
+    }
 
     if (configuration.cleanup) {
         await clearTmpDir()
+        await clearDockerDistDirs()
     }
-
-    console.log(`Build: ${outputZipFilePath}`)
 
     process.exit(0)
 }
 
 run(configuration).catch(console.error)
+
+async function buildDockerImage(config, distSrcDir, tag) {
+    await fs.cp(distSrcDir, config.distDirectory, {recursive: true})
+    await execute(`docker buildx build --platform ${configuration.imagePlatforms} -t ${config.name} ${config.dockerDirectory}`)
+    await execute(`docker tag ${config.name}:${tag} ${config.repository}/${config.name}:${tag}`)
+    if (configuration.pushImages) {
+        await execute(`docker push ${config.repository}/${config.name}:${tag}`)
+    }
+}
+
+async function clearDockerDistDirs() {
+    for (const config of [serverImageConfig, clientImageConfig]) {
+        const files = await fs.readdir(config.distDirectory);
+        for (const file of files) {
+            const filePath = path.join(config.distDirectory, file);
+            await fs.rm(filePath, { recursive: true, force: true });
+        }
+    }
+}
 
 async function clearTmpDir() {
     try {

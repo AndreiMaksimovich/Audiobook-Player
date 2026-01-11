@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audiobook-player--config
+data:
+  APP_HOSTNAME: "audiobooks.amaxsoftware.com"
+  FILE_STORAGE_BASE_URL: "https://audiobooks.amaxsoftware.com/files"

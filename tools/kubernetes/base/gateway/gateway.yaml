@@ -1,0 +1,30 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: audiobook-player--gateway
+spec:
+  gatewayClassName: nginx
+  listeners:
+
+    # HTTP
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "localhost"
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # HTTPS
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "localhost"
+      allowedRoutes:
+        namespaces:
+          from: Same
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: audiobook-player--gateway-tls

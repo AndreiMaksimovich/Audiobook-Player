@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: audiobook-player--gateway-httproute
+spec:
+  parentRefs:
+    - name: audiobook-player--gateway
+  hostnames:
+    - "localhost"
+  rules:
+
+    # Client
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: audiobook-player--client
+          port: 8080
+
+    # Server / API
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: audiobook-player--server
+          port: 4000
+
+    # Files
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /files
+      backendRefs:
+        - name: audiobook-player--files
+          port: 8080

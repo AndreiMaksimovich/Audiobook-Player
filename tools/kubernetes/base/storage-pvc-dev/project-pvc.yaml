@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: audiobook-player--project-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 250Gi
+  storageClassName: local-hostpath
+  volumeName: audiobook-player--project-pv

@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - configuration.yaml
+  - ../../base/gateway
+  - ../../base/deployments-prod
+replacements:
+  - source:
+      kind: ConfigMap
+      name: audiobook-player--config
+      fieldPath: data.APP_HOSTNAME
+    targets:
+      - select:
+          kind: Gateway
+          name: audiobook-player--gateway
+        fieldPaths:
+          - spec.listeners.[name=http].hostname
+          - spec.listeners.[name=https].hostname
+      - select:
+          kind: HTTPRoute
+          name: audiobook-player--gateway-httproute
+        fieldPaths:
+          - spec.hostnames.0
+  - source:
+      kind: ConfigMap
+      name: audiobook-player--config
+      fieldPath: data.FILE_STORAGE_BASE_URL
+    targets:
+        - select:
+            kind: Deployment
+            name: audiobook-player--server
+          fieldPaths:
+            - spec.template.spec.containers.0.env.[name=FILE_STORAGE_BASE_URL].value

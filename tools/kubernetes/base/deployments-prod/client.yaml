@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobook-player--client
+  labels:
+    app: audiobook-player
+    tier: client
+spec:
+  selector:
+    matchLabels:
+      app: audiobook-player
+      tier: client
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: audiobook-player
+        tier: client
+    spec:
+      containers:
+        - image: amaxsoftware/audiobook-player-client:latest
+          name: client
+          ports:
+            - containerPort: 80
