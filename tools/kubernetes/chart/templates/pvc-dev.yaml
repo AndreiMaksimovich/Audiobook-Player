@@ -1,0 +1,27 @@
+{{- if eq .Values.profile "dev" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.appName }}--client-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: local-hostpath
+  volumeName: {{ .Values.appName }}--client-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.appName }}--project-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 250Gi
+  storageClassName: local-hostpath
+  volumeName: {{ .Values.appName }}--project-pv
+{{- end }}

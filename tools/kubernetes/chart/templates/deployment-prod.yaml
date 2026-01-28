@@ -1,0 +1,77 @@
+{{- if eq .Values.profile "prod" }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}--client
+  labels:
+    app: {{ .Values.appName }}
+    tier: client
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: client
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: client
+    spec:
+      containers:
+        - image: {{ .Values.client.image }}:{{ .Values.client.imageTag }}
+          imagePullPolicy: Always
+          name: client
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}--server
+  labels:
+    app: {{ .Values.appName }}
+    tier: server
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: server
+    spec:
+      containers:
+        - name: server
+          imagePullPolicy: Always
+          image: {{ .Values.server.image }}:{{ .Values.server.imageTag }}
+          env:
+            - name: MYSQL_HOST
+              value: {{ .Values.appName }}--database
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: {{ .Values.database.user }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.database.password }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.database.database }}
+            - name: WEB_SERVICE_ROOT
+              value: /api
+            - name: WEB_SERVICE_PORT
+              value: "4000"
+            - name: FILE_STORAGE_BASE_URL
+              value: {{ .Values.server.fileStorageBaseUrl }}
+          command: [ "node", "/app/index.js" ]
+          ports:
+            - containerPort: 4000
+
+{{- end }}

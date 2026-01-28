@@ -1,0 +1,54 @@
+replicaCount: 1
+profile: dev
+
+appName: audiobook-player-dev
+nameOverride: ""
+fullnameOverride: ""
+
+gateway:
+  host: localhost
+  httpPort: 80
+  httpsPort: 443
+  # localhost TLS
+  tls:
+    crt: ""
+    key: ""
+
+pv:
+  client:
+    path: "/Users/andreimaksimovich/Projects/Audiobook-Player/apps/audiobook-player-rn-app/dist"
+  project:
+    path: "/Users/andreimaksimovich/Projects/Audiobook-Player"
+  databaseInit:
+    path: "/Users/andreimaksimovich/Projects/Audiobook-Player/data/database-init"
+  database:
+    path: "/Users/andreimaksimovich/Projects/Audiobook-Player/data/database-data"
+  audiobookFiles:
+    path: "/Users/andreimaksimovich/Projects/Audiobook-Player/data/audiobook-files"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - docker-desktop
+
+databaseService:
+  spec:
+    type: LoadBalancer
+
+database:
+  database: "audiobooks"
+  user: "audiobooks"
+  password: "password"
+  rootPassword: "password"
+
+server:
+  fileStorageBaseUrl: "http://localhost/files"
+  image: "amaxsoftware/audiobook-player-server"
+  imageTag: "latest"
+
+client:
+  image: "amaxsoftware/audiobook-player-client"
+  imageTag: "latest"

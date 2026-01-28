@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: audiobook-player--database-pv
+  name: audiobook-player--database-init-pv
 spec:
   capacity:
     storage: 10Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-hostpath
   local:
-    path: /Users/andreimaksimovich/Projects/Audiobook-Player/data/mysql-data
+    path: /var/kubernetes-apps/audiobook-player/database-init
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -19,4 +19,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - docker-desktop
+                - my-vps

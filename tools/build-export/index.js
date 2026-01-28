@@ -172,7 +172,7 @@ run(configuration).catch(console.error)
 
 async function buildDockerImage(config, distSrcDir, tag) {
     await fs.cp(distSrcDir, config.distDirectory, {recursive: true})
-    await execute(`docker buildx build --platform ${configuration.imagePlatforms} -t ${config.name} ${config.dockerDirectory}`)
+    await execute(`docker buildx build --platform ${configuration.imagePlatforms} -t ${config.name}:${tag} ${config.dockerDirectory}`)
     await execute(`docker tag ${config.name}:${tag} ${config.repository}/${config.name}:${tag}`)
     if (configuration.pushImages) {
         await execute(`docker push ${config.repository}/${config.name}:${tag}`)

@@ -18,4 +18,4 @@ export const OfflineAudiobooksDownloadTasksDir = 'OfflineAudiobooks/DownloadTask
 export const OfflineAudiobooksDir = 'OfflineAudiobooks/Audiobooks'
 
 export const OfflineAudiobooksEnabled = true
-export const UseServiceWorkerForOfflineAudiobookDownloads = true
+export const UseServiceWorkerForOfflineAudiobookDownloads = false

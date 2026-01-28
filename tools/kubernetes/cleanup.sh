@@ -4,3 +4,7 @@ kubectl delete pods --all
 kubectl delete pvc --all
 kubectl delete pv --all
 kubectl delete ingress --all
+kubectl delete secret --all
+kubectl delete configMap --all
+kubectl delete httpRoute --all
+kubectl delete gateway --all

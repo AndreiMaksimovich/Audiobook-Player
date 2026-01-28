@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-hostpath
   local:
-    path: /Users/andreimaksimovich/Projects/Audiobook-Player/data/mysql-init
+    path: /Users/andreimaksimovich/Projects/Audiobook-Player/data/database-init
   nodeAffinity:
     required:
       nodeSelectorTerms:

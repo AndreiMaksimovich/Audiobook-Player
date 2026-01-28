@@ -1,0 +1,35 @@
+{{- if eq .Values.profile "dev" }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.appName }}--client-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-hostpath
+  local:
+    path: {{ .Values.pv.client.path }}
+  nodeAffinity:
+    {{ toYaml .Values.pv.nodeAffinity | nindent 4 }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.appName }}--project-pv
+spec:
+  capacity:
+    storage: 250Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-hostpath
+  local:
+    path: {{ .Values.pv.project.path }}
+  nodeAffinity:
+    {{ toYaml .Values.pv.nodeAffinity | nindent 4 }}
+{{- end }}

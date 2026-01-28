@@ -1,0 +1,96 @@
+{{- if eq .Values.profile "dev" }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}--client
+  labels:
+    app: {{ .Values.appName }}
+    tier: client
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: client
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: client
+    spec:
+      containers:
+        - image: nginx:alpine
+          name: client
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+            - name: files
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: {{ .Values.appName }}--client-nginx-config
+        - name: files
+          persistentVolumeClaim:
+            claimName: {{ .Values.appName }}--client-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}--server
+  labels:
+    app: {{ .Values.appName }}
+    tier: server
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: server
+    spec:
+      containers:
+        - image: node:24-alpine
+          name: server
+          env:
+            - name: MYSQL_HOST
+              value: {{ .Values.appName }}--database
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: {{ .Values.database.user }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.database.password }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.database.database }}
+            - name: WEB_SERVICE_ROOT
+              value: /api
+            - name: WEB_SERVICE_PORT
+              value: "4000"
+            - name: FILE_STORAGE_BASE_URL
+              value: {{ .Values.server.fileStorageBaseUrl }}
+          workingDir: "/project/apps/audiobook-player-server"
+          command: [ "npm", "run", "dev" ]
+          ports:
+            - containerPort: 4000
+          volumeMounts:
+            - name: project
+              mountPath: /project
+      volumes:
+        - name: project
+          persistentVolumeClaim:
+            claimName: {{ .Values.appName }}--project-pvc
+
+{{- end }}

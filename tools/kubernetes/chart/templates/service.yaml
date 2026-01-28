@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}--client
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+  selector:
+    app: {{ .Values.appName }}
+    tier: client
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}--database
+  labels:
+    app: {{ .Values.appName }}
+    tier: database
+spec:
+  type: {{ .Values.databaseService.spec.type }}
+  ports:
+    - port: 3306
+  selector:
+    app: {{ .Values.appName }}
+    tier: database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}--files
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+  selector:
+    app: {{ .Values.appName }}
+    tier: files
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}--server
+  labels:
+    app: {{ .Values.appName }}
+    tier: server
+spec:
+  ports:
+    - port: 4000
+  selector:
+    app: {{ .Values.appName }}
+    tier: server
+  type: ClusterIP

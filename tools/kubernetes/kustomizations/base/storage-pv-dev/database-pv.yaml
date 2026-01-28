@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-hostpath
   local:
-    path: /var/kubernetes-apps/audiobook-player/mysql-data
+    path: /Users/andreimaksimovich/Projects/Audiobook-Player/data/database-data
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -19,4 +19,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - my-vps
+                - docker-desktop
