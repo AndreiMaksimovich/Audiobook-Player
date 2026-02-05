@@ -8,7 +8,7 @@ Check out the demo here: https://audiobooks.amaxsoftware.com
 
 This project is currently in an early development stage.
 
-It is intended to serve as a universal platform for distributing public-domain audiobooks, featuring both a dedicated server solution and a mobile client for the web, Android, and iOS.
+It is intended to serve as a universal platform for distributing public-domain audiobooks, featuring both a dedicated server solution, kubernetes cluster solution and a mobile client for the web, Android, and iOS.
 
 The server is built with Node.js and uses MySQL/MariaDB as its database layer.
 
@@ -21,11 +21,14 @@ The server architecture will support simple single-machine deployments while als
 #### Project Structure
 * apps/audiobook-player-rn-app – React Native Audiobook Player (client).
 * apps/audiobook-player-server – Node.js backend server (server).
-* audiobook-files/ – Local storage directory for audiobook media files.
+* data/ – Local storage directory for audiobook media files, database data and init data.
 * docs/ – Project documentation.
 * import/ – Directory for audiobooks/assets prepared for import.
 * packages/shared – Package with shared data types used by both the server and client.
 * secrets/ – Private keys, secrets, configuration files, and provisioning profiles.
-* tools/build-export – Utility for building/exporting archives containing the server, client, media files, and database for quick deployment on a server.
+* tools/build-export – Utility for building/exporting archives containing the server, client, media files, and database for quick deployment on a server, or/and build tool for docker images.
+* tools/build-import-docker - Importer for Docker Compose deployment variant.
+* tools/build-mobile - Automation tool for local Android and iOS builds using React Native and Expo EAS.
 * tools/build-import – Utility for importing exported builds.
+* tools/kubernetes - Kubernetes configuration for the project using Kustomize and Helm variants.
 * tools/ffmpeg – FFmpeg executables used during audiobook processing and import.
